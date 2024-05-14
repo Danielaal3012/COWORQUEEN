@@ -1,11 +1,16 @@
 import { Label } from '@/components/UI/label.jsx';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from "@/components/UI/button";
 import { Input } from "@/components/UI/Input";
 import { useNavigate } from "react-router-dom";
 import { Textarea } from '@/components/UI/textarea.jsx';
+import { AuthContext } from "../auth/auth-context";
+import { ToastContainer, toast } from 'react-toastify';
+
+
 
 function ReviewUseForm() {
+    const { authState} = useContext(AuthContext);
   const [formData, setFormData] = useState({
     description: "",
     rate: "",
@@ -20,7 +25,6 @@ function ReviewUseForm() {
       [name]: value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.description || !formData.rate) {
@@ -28,7 +32,7 @@ function ReviewUseForm() {
       return;
     }
     try {
-      const reservationResponse = await fetch("http://localhost:3000/reservations/:userId", 
+      const reservationResponseUser = await fetch("http://localhost:3000/reservations/:userId", 
       {
         method: 'GET',
         headers: {
@@ -37,24 +41,24 @@ function ReviewUseForm() {
 
         },
       });
-      if (!reservationResponse.ok) {
+      if (!reservationResponseUser.ok) {
         toast.error("Error al obtener la información de la reserva");
         return;
       }
-
-      const reservationData = await reservationResponse.json();
+      const reservationData = await reservationResponseUser.json();
       if (!reservationData || !reservationData.length) {
-        toast.error("No se encontraron reservas asociadas a este usuario");
-        return;
-      }
-
-      const reservationId = reservationData[0].id; // Suponiendo que solo hay una reserva por usuario
-console.log(reservationId);
-      const reviewFormData = {
-        ...formData,
-        reservationId: reservationId,
-      };
-
+          toast.error("No se encontraron reservas asociadas a este usuario");
+          return;
+        }
+        
+        console.log(reservationData);
+console.log(reservationResponseUser);
+        const reservationId = reservationData[0].id; // Suponiendo que solo hay una reserva por usuario
+        console.log();
+        const reviewFormData = {
+            ...formData,
+            reservationId: reservationId,
+        };
       const response = await fetch("http://localhost:3000/review/add", {
         method: 'POST',
         headers: {
