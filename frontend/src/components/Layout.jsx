@@ -6,6 +6,7 @@ import coworqueen from "../assets/images/coworqueen.svg";
 import { AuthContext } from "../auth/auth-context";
 import { ScrollArea } from "./UI/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
+import { Button } from "@/components/UI/button";
 import Mobile from "@/components/Mobile";
 import useMediaQuery from "@/utils/mediaquery";
 
@@ -36,9 +37,22 @@ const Layout = ({ children }) => {
         </nav>
 
         <div className="flex flex-row w-full h-full py-4">
-          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200">
-            menu lateral solo admin
+
+{authState.user.role === "admin" && (
+          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4">
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/">
+                Inicio
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin">
+                Panel de administración
+              </Link>
+            </Button>
           </div>
+          )}
+
           <div className="flex flex-row w-full h-full p-4 mx-4 rounded-lg bg-secondary/15">
             {children}
           </div>

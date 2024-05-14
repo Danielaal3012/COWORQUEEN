@@ -32,12 +32,11 @@ const Room = () => {
     console.log(room)
 
     return (
-        <div className="flex flex-col justify-center w-full p-4">
+        <div className="flex flex-col w-full">
+        <h2>Sala {room.name}</h2>
             {room && room && (
                 <div>
-                    <h2 className="mb-8 text-xl font-bold">
-                        Sala {room.name}
-                    </h2>
+
                     <ul className="flex flex-col gap-y-4">
                         <li>
                             <span className="font-bold">ID:</span> {room.id}

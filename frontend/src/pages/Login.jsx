@@ -107,7 +107,7 @@ function LoginForm() {
           </Button>
 
           <Button asChild variant="link">
-            <Link to="/register">¿Aún no tienes cuenta?</Link>
+            <Link to="/register">Crear cuenta</Link>
           </Button>
 
           <Button asChild variant="link">

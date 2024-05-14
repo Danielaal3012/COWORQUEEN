@@ -90,7 +90,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {user && (
         <div className="flex flex-col w-full p-4 ">
           <div className="flex flex-row items-center justify-between w-full ">

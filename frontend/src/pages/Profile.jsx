@@ -54,7 +54,7 @@ const Profile = () => {
     };
     
     return (
-        <div className='flex flex-col bg-secondary/75'>
+        <div className='flex flex-col w-full bg-secondary/75'>
             <section className='m-4'>
                 <h3 className='text-xl font-bold '>Perfil</h3>
                 <h2 className='text-2xl font-bold'>Hola {authState?.user?.firstName}</h2>
