@@ -17,15 +17,15 @@ const Layout = ({ children }) => {
   if (isDesktop) {
     return (
       <div className="relative w-full bg-transparent h-dvh">
-        <nav className="flex h-12 px-4 bg-secondary/75 ">
+        <nav className="flex px-4 h-14 bg-secondary/75 ">
           
           <section className="flex items-center justify-between w-full">
             <Link to="/">
-              <img src={Logo} alt="Logo" className="h-8" />
+              <img src={Logo} alt="Logo" className="h-10" />
             </Link>
             <section className="flex items-center gap-4">
               <Link to="/profile">
-              <Avatar>
+              <Avatar className="h-11 w-11">
                 <AvatarFallback>
                   <FaUserCircle />
                 </AvatarFallback>
