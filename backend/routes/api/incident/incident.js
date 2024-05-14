@@ -68,6 +68,12 @@ categoryIncidentsRouter.post(
         [reservationId, userId]
       );
 
+      if (reservation[0].reservationCheckin === 0) {
+        return res.status(400).json({
+          message: "No puedes añadir una incidencia a una reserva no confirmada",
+        });
+      }
+
       if (!reservation[0]) {
         return res.status(404).json({
           message: "Reserva no encontrada o no pertenece al usuario",

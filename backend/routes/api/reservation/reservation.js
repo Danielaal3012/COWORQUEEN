@@ -157,3 +157,26 @@ reservationRouter.delete(
     }
   }
 );
+
+// Reserva por id de reserva
+reservationRouter.get(
+  "/reservations/by-reservationId/:reservationId",
+  authenticate,
+  async (req, res, next) => {
+    try {
+      const reservationId = req.params.reservationId;
+      const [reservation] = await pool.execute(
+        `SELECT * FROM reservations WHERE id = ?`,
+        [reservationId]
+      );
+      if (reservation.length === 0) {
+        throw createError(404, "Reserva no encontrada");
+      }
+      res.status(200).json({
+        reservation,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);

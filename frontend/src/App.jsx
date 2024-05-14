@@ -68,7 +68,7 @@ const App = () => {
           <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
           <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
           <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
-          <Route path="/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
+          <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
 
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
