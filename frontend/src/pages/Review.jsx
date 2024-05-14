@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/UI/button";
 import { Input } from "@/components/UI/Input";
 import { useNavigate } from "react-router-dom";
+import { Textarea } from '@/components/UI/textarea.jsx';
 
 function ReviewUseForm() {
   const [formData, setFormData] = useState({
@@ -27,11 +28,13 @@ function ReviewUseForm() {
       return;
     }
     try {
-      // Realizar consulta para obtener reservationId asociado al userId
-      const reservationResponse = await fetch(`http://localhost:3000/reservations/:userId`, {
+      const reservationResponse = await fetch("http://localhost:3000/reservations/:userId", 
+      {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: authState.token,
+
         },
       });
       if (!reservationResponse.ok) {
@@ -64,7 +67,7 @@ console.log(reservationId);
         toast.error("Error en los datos introducidos");
       } else {
         toast.success("Review hecha exitosamente");
-        // Redirigir a la página de validate
+
         await new Promise((resolve) => setTimeout(resolve, 5000));
         navigate("/rooms");
       }
@@ -80,7 +83,7 @@ console.log(reservationId);
       <form onSubmit={handleSubmit}>
         <Label>
           Descripción:
-          <Input
+          <Textarea
             type="text"
             name="description"
             value={formData.description}
