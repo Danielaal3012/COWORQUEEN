@@ -17,7 +17,6 @@ export const reservationRouter = Router();
 reservationRouter.get(
   "/reservations/:userId",
   authenticate,
-  isAdmin,
   async (req, res, next) => {
     try {
       const userId = req.params.userId;
@@ -27,15 +26,15 @@ reservationRouter.get(
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
-      const [reviews] = await pool.execute(
+      const [reservations] = await pool.execute(
         "SELECT * FROM reservations WHERE userId = ?",
         [userId]
       );
-      if (!reviews) {
+      if (!reservations) {
         throw createError(404, "Reservas no encontradas");
       }
       res.status(200).json({
-        data: reviews,
+        reservations
       });
     } catch (error) {
       next(error);

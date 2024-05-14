@@ -11,8 +11,32 @@ const Help = () => {
     const [previousIncidents, setPreviousIncidents] = useState([])
 
     useEffect (() => {
-        // fetch reservations
+        const fetchUserReservations = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_APP_HOST}/reservations/${authState.user.id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: authState.token
+                    }
+                })
+
+                if (!response.ok) {
+                    throw new Error('No se han podido cargar las reservas');
+                }
+
+                const data = await response.json();
+                setReservations(data.reservations);
+
+            }
+            catch (error) {
+                console.error('Error loading reservations:', error);
+            }
+        }
+        fetchUserReservations();
     } ,[])
+
+    console.log(reservations)
 
     useEffect (() => {
 
@@ -56,6 +80,22 @@ const Help = () => {
                 {reservations.length === 0 && (
                     <>
                         No existen reservas recientes
+                    </>
+                )}
+
+                {reservations.length > 0 && (
+                    <>
+                        {reservations.map((reservation) => (
+                            <Link key={reservation.id} className='flex flex-row justify-between' to={`/reservation/${reservation.id}`}>
+                                <p>{reservation.roomId}</p>
+                                <p> {new Date(reservation.createdAt).toLocaleString('es-ES', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}</p>
+                            </Link>
+                        ))}
                     </>
                 )}
 
