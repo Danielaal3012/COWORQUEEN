@@ -45,17 +45,19 @@ reservationRouter.get(
 
 // Creación de reserva
 reservationRouter.post(
-  "/room/:roomId",
+  "/reservation/add/:roomId",
   authenticate,
   async (req, res, next) => {
     try {
       const roomId = req.params.roomId;
+      const userId = req.user.id;
       const { reservationDateBeg, reservationDateEnd } = req.body;
       const { error } = addReservationSchema.validate({
         roomId,
         reservationDateBeg,
         reservationDateEnd,
       });
+
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
