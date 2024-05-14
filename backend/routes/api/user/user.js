@@ -210,10 +210,9 @@ userRouter.put("/user/update/profile/", authenticate, async (req, res, next) => 
 //Cambio de contraseña
 userRouter.patch("/change-password", authenticate, async (req, res, next) => {
   try {
-    const { email, currentPassword, newPassword, confirmPassword } = req.body;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
    
     const { error } = changePasswordSchema.validate({
-      email,
       currentPassword,
       newPassword,
       confirmPassword,
@@ -221,6 +220,10 @@ userRouter.patch("/change-password", authenticate, async (req, res, next) => {
     if (error) {
       throw createError(400, "Datos de entrada no válidos");
     }
+
+    // Obtén el correo electrónico del usuario autenticado
+    const email = req.user.email;
+
     const [[user]] = await pool.query("SELECT * FROM users WHERE email = ?", [
       email,
     ]);
@@ -243,7 +246,8 @@ userRouter.patch("/change-password", authenticate, async (req, res, next) => {
       hashedNewPassword,
       user.id,
     ]);
-    res.status(200).json({ message: "Contraseña actualizada exitosamente" });  } catch (error) {
+    res.status(200).json({ message: "Contraseña actualizada exitosamente" });  
+  } catch (error) {
     next(error);
   }
 });

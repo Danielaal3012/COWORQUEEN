@@ -32,6 +32,78 @@ reviewRouter.get("/reviews", async (req, res, next) => {
   }
 });
 
+// Listado de reviews por usuario
+reviewRouter.get("/reviews/by-userId/:userId", async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const { error } = viewReviewSchema.validate({ userId });
+    if (error) {
+      throw createError(400, "Datos de entrada no válidos");
+    }
+    const [reviews] = await pool.execute(
+      "SELECT reviews.id, reviews.rate, reviews.description, reviews.reservationId FROM reviews JOIN reservations ON reviews.reservationId = reservations.id WHERE reservations.userId = ?",
+      [userId]
+    );
+    if (!reviews) {
+      throw createError(404, "Reviews no encontradas");
+    }
+    res.status(200).json({
+      data: reviews,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Listado de reviews por sala
+reviewRouter.get("/reviews/by-roomId/:roomId", async (req, res, next) => {
+  try {
+    const roomId = req.params.roomId;
+    const { error } = viewReviewSchema.validate({ roomId });
+    if (error) {
+      throw createError(400, "Datos de entrada no válidos");
+    }
+    const [reviews] = await pool.execute(
+      "SELECT reviews.id, reviews.rate, reviews.description, reviews.reservationId FROM reviews JOIN reservations ON reviews.reservationId = reservations.id WHERE reservations.roomId = ?",
+      [roomId]
+    );
+    if (!reviews) {
+      throw createError(404, "Reviews no encontradas");
+    }
+    res.status(200).json({
+      data: reviews,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Listado de reviews por reserva
+reviewRouter.get(
+  "/reviews/by-reservationId/:reservationId",
+  async (req, res, next) => {
+    try {
+      const reservationId = req.params.reservationId;
+      const { error } = viewReviewSchema.validate({ reservationId });
+      if (error) {
+        throw createError(400, "Datos de entrada no válidos");
+      }
+      const [reviews] = await pool.execute(
+        "SELECT reviews.id, reviews.rate, reviews.description, reviews.reservationId FROM reviews WHERE reviews.reservationId = ?",
+        [reservationId]
+      );
+      if (!reviews) {
+        throw createError(404, "Reviews no encontradas");
+      }
+      res.status(200).json({
+        data: reviews,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // Ver review por id
 reviewRouter.get("/review/:reviewId", async (req, res, next) => {
   try {

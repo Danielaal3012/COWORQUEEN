@@ -14,7 +14,7 @@ const ViewIncident = () => {
     const incidentId = id;
 
     useEffect(() => {
-        fetch(`http://localhost:3000/incidents/${id}`, {
+        fetch(`${import.meta.env.VITE_APP_HOST}/incidents/${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: token,

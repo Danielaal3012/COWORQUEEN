@@ -13,8 +13,9 @@ const Room = () => {
     const { id } = useParams();
     const roomId = id;
 
+
     useEffect(() => {
-        fetch(`http://localhost:3000/room/${id}`, {
+        fetch(`${import.meta.env.VITE_APP_HOST}/room/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: authState.token,

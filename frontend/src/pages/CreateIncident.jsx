@@ -32,7 +32,7 @@ const CreateIncident = () => {
         }
 
         try {
-            const response = await fetch(`/${authState.user.id}/:roomId/incidents/add`, {
+            const response = await fetch(`${import.meta.env.VITE_APP_HOST}/:roomId/incidents/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

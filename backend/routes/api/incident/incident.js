@@ -46,11 +46,12 @@ categoryIncidentsRouter.post(
 
 //Agregar una incidencia como usuario
 categoryIncidentsRouter.post(
-  "/:userId/:roomId/incidents/add",
+  "/incidents/add/:roomId/:reservationId",
   authenticate,
   async (req, res, next) => {
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const roomId = req.params.roomId;
+    const reservationId = req.params.reservationId;
 
     if (req.user.id !== userId) {
       return res.status(401).json({
@@ -62,6 +63,18 @@ categoryIncidentsRouter.post(
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
+      // Comprobar si la reserva existe y fue hecha por el usuario
+      const [reservation] = await dbPool.execute(
+        `SELECT * FROM reservations WHERE id = ? AND userId = ?`,
+        [reservationId, userId]
+      );
+
+      if (!reservation[0]) {
+        return res.status(404).json({
+          message: "Reserva no encontrada o no pertenece al usuario",
+        });
+      }
+
       const { description, equipmentId } = req.body;
 
       const addIncident = await dbPool.execute(
@@ -402,3 +415,4 @@ categoryIncidentsRouter.delete(
     }
   }
 );
+
