@@ -30,7 +30,7 @@ function CreateEditRoomForm() {
   const roomId = id;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/room/${roomId}`, {
+    fetch(`${import.meta.env.VITE_APP_HOST}/room/${roomId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token,

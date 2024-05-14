@@ -17,7 +17,6 @@ export const reservationRouter = Router();
 reservationRouter.get(
   "/reservations/:userId",
   authenticate,
-  isAdmin,
   async (req, res, next) => {
     try {
       const userId = req.params.userId;
@@ -27,15 +26,15 @@ reservationRouter.get(
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
-      const [reviews] = await pool.execute(
+      const [reservations] = await pool.execute(
         "SELECT * FROM reservations WHERE userId = ?",
         [userId]
       );
-      if (!reviews) {
+      if (!reservations) {
         throw createError(404, "Reservas no encontradas");
       }
       res.status(200).json({
-        data: reviews,
+        reservations
       });
     } catch (error) {
       next(error);
@@ -45,22 +44,37 @@ reservationRouter.get(
 
 // Creación de reserva
 reservationRouter.post(
-  "/room/:roomId",
+  "/reservation/add/:roomId",
   authenticate,
   async (req, res, next) => {
     try {
       const userId = req.user.Id;
       const roomId = req.params.roomId;
+      const userId = req.user.id;
       const { reservationDateBeg, reservationDateEnd } = req.body;
+
       const { error } = addReservationSchema.validate({
         roomId,
         reservationDateBeg,
         reservationDateEnd,
       });
+
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
-      const [existingReservation] = await pool.execute(
+
+      const [room] = await pool.execute(
+        `SELECT * FROM rooms WHERE id = ?`,
+        [roomId]
+      );
+
+      if (!room || room.length === 0) {
+        throw createError(404, "Sala no encontrada");
+      }
+      
+      const { typeOf, capacity } = room[0];
+      
+      let [existingReservations] = await pool.execute(
         `SELECT * FROM reservations
             WHERE roomId = ? AND
             (reservationDateBeg <= ? AND reservationDateEnd >= ?) OR
@@ -73,12 +87,30 @@ reservationRouter.post(
           reservationDateEnd,
         ]
       );
-      if (existingReservation.length > 0) {
+      
+      const userReservationInSameSlot = existingReservations.some(
+        (reservation) => reservation.userId === userId
+      );
+      
+      if (userReservationInSameSlot) {
+        throw createError(
+          400,
+          "Ya tienes una reserva en la misma franja horaria"
+        );
+      }
+      
+      if (typeOf === "Pública" && existingReservations.length >= capacity) {
         throw createError(
           404,
           "La sala ya está completa para las fechas seleccionadas"
         );
+      } else if (typeOf === "Privada" && existingReservations.length > 0) {
+        throw createError(
+          404,
+          "La sala ya está reservada para las fechas seleccionadas"
+        );
       }
+      
       const reservationsId = crypto.randomUUID();
       await pool.execute(
         `INSERT INTO reservations (id, roomId, userId, reservationDateBeg, reservationDateEnd) VALUES (?,?,?,?,?)`,

@@ -108,3 +108,34 @@ mediaRouter.post(
     }
   }
 );
+
+// Añadir imagen a incidencia
+mediaRouter.post(
+  "/incidence/:id/media/add-media",
+  authenticate,
+  handleFileUpload,
+  async (req, res, next) => {
+    try {
+      const { id: incidentId } = req.params;
+      const { API_HOST } = process.env;
+      const mediaId = crypto.randomUUID();
+      const { fileName } = req.body;
+
+      const url = `${API_HOST}/uploads/media/${fileName}`;
+
+      await dbPool.execute(
+        `INSERT INTO media(id, url, incidenceId) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE url = ?, id = ?`,
+        [mediaId, url, incidentId, url, mediaId]
+      );
+
+      // la tabla incidents no tiene una columna media
+
+      res.status(201).json({
+        message: `Se ha añadido el archivo correctamente`,
+        url: url,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);

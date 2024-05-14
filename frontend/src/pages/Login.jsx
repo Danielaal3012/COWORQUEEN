@@ -27,7 +27,7 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center p-4">
+    <div className="flex flex-col w-full p-4">
       <h1 className="mb-4 text-center">Iniciar sesión</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,7 +107,7 @@ function LoginForm() {
           </Button>
 
           <Button asChild variant="link">
-            <Link to="/register">¿Aún no tienes cuenta?</Link>
+            <Link to="/register">Crear cuenta</Link>
           </Button>
 
           <Button asChild variant="link">

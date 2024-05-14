@@ -19,42 +19,42 @@ const Profile = () => {
         }
     }, [authState]);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
-            [name]: value
-        }));
-    };
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setUser(prevUser => ({
+    //         ...prevUser,
+    //         [name]: value
+    //     }));
+    // };
 
-    const handleSaveChanges = async () => {
-        try {
+    // const handleSaveChanges = async () => {
+    //     try {
 
-            console.log(authState.token)
-            console.log(user)
+    //         console.log(authState.token)
+    //         console.log(user)
 
-            const response = await fetch('http://localhost:3000/user/update/profile/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: authState.token, 
-                },
-                body: JSON.stringify(user),
-            });
+    //         const response = await fetch('http://localhost:3000/user/update/profile/', {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: authState.token, 
+    //             },
+    //             body: JSON.stringify(user),
+    //         });
     
-            if (!response.ok) {
-                throw new Error('Failed to update profile');
-            } else {
-                updateUser(user);
-                setEditing(false); 
-            }
-        } catch (error) {
-            console.error('Error saving changes:', error);
-        }
-    };
+    //         if (!response.ok) {
+    //             throw new Error('Failed to update profile');
+    //         } else {
+    //             updateUser(user);
+    //             setEditing(false); 
+    //         }
+    //     } catch (error) {
+    //         console.error('Error saving changes:', error);
+    //     }
+    // };
     
     return (
-        <div className='flex flex-col bg-secondary/75'>
+        <div className='flex flex-col w-full bg-secondary/75'>
             <section className='m-4'>
                 <h3 className='text-xl font-bold '>Perfil</h3>
                 <h2 className='text-2xl font-bold'>Hola {authState?.user?.firstName}</h2>

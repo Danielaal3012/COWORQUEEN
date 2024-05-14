@@ -39,7 +39,7 @@ function RegisterUserForm() {
 
     try {
       removeSpaces();
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function RegisterUserForm() {
     }
   };
   return (
-    <div className="flex flex-col justify-center p-4 ">
+    <div className="flex flex-col w-full p-4">
       <h1 className="text-center">Registro</h1>
       <form className="flex flex-col px-1 my-4 gap-y-4" onSubmit={handleSubmit}>
         <div>

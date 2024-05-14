@@ -20,7 +20,7 @@ const AdminIncidentList = () => {
     const [incidents, setIncidents] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/incidents", {
+      fetch(`${import.meta.env.VITE_APP_HOST}/incidents`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: authState.token,
@@ -36,17 +36,18 @@ const AdminIncidentList = () => {
     }, []);
 
     return (
-      <div className="flex flex-col">
-
-        <Table>
-          <TableCaption>Lita de incidencias recientes</TableCaption>
+      <div className="flex flex-col w-full">
+        <h2>Incidencias</h2>
+        <section className="flex flex-col w-full mx-auto mt-8">
+        <Table className="w-full">
+          {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px] hidden md:table-cell">ID</TableHead>
-              <TableHead className="w-[150px] hidden md:table-cell">Estado</TableHead>
+              {/* <TableHead className="w-[100px] hidden md:table-cell">ID</TableHead> */}
+              <TableHead className="w-[100px] hidden md:table-cell text-center">Estado</TableHead>
               <TableHead>Descripción</TableHead>
-              <TableHead className="hidden md:table-cell">Habitación</TableHead>
-              <TableHead className="hidden md:table-cell">Equipo</TableHead>
+              <TableHead className="hidden md:table-cell w-[175px]">Habitación</TableHead>
+              <TableHead className="hidden md:table-cell w-[100px]">Equipo</TableHead>
               {/* <TableHead>Acciones</TableHead> */}
             </TableRow>
           </TableHeader>
@@ -54,18 +55,20 @@ const AdminIncidentList = () => {
 
           {incidents.map((incident) => (
                 <TableRow key={incident.incidentId}>
-                    <TableCell className="hidden md:table-cell">{incident.incidentId}</TableCell>
-                    <TableCell className="hidden md:table-cell">
+                    {/* <TableCell className="hidden md:table-cell">{incident.incidentId}</TableCell> */}
+                    <TableCell className="hidden text-center md:table-cell">
                       <Badge>{incident.status === 'pending' ? 'Pendiente' : 'Resuelta'}</Badge>
                     </TableCell>                    <TableCell>{incident.description}</TableCell>
                     <TableCell className="hidden md:table-cell">{incident.roomName}</TableCell>
                     <TableCell className="hidden md:table-cell">{incident.equipmentName}</TableCell>
+                    {/* Enlace al equipo */}
                     {/* <TableCell>acciones</TableCell> */}
               </TableRow>
             ))}
 
           </TableBody>
         </Table>
+        </section>
       </div>
     );
 }

@@ -37,8 +37,7 @@ const EditProfile = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const response = await fetch(
-      `http://localhost:3000/user/${authState.user.id}/media/add-avatar`,
+    const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/${authState.user.id}/media/add-avatar`,
       {
         method: "POST",
         headers: {
@@ -66,8 +65,7 @@ const EditProfile = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/user/update/profile/",
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/update/profile/`,
         {
           method: "PUT",
           headers: {
@@ -90,7 +88,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {user && (
         <div className="flex flex-col w-full p-4 ">
           <div className="flex flex-row items-center justify-between w-full ">

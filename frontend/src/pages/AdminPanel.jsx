@@ -8,6 +8,8 @@ import { AuthContext } from "../auth/auth-context";
 const AdminPanel = () => {
     const { authState } = useContext(AuthContext);
 
+    console.log(authState.token)
+
     return (
         <div className="flex flex-col">
             <section className="m-4">

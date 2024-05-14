@@ -6,7 +6,6 @@ import { Label } from "@/components/UI/label";
 
 function CreateChangePasswordForm() {
   const [formData, setFormData] = useState({
-    email: "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -28,7 +27,7 @@ function CreateChangePasswordForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/change-password", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/change-password`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -55,17 +54,6 @@ function CreateChangePasswordForm() {
       onSubmit={handleSubmit}
       className="flex flex-col p-4 mx-auto mt-4 rounded-md gap-y-4"
     >
-      <div>
-        <Label>Correo electrónico</Label>
-        <Input
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full"
-        />
-      </div>
       <div>
         <Label>Contraseña anterior</Label>
         <Input
@@ -115,8 +103,8 @@ function CreateChangePasswordForm() {
 
 export function ChangePassword() {
   return (
-    <div>
-      <h2 className="mb-4 text-2xl font-bold text-center">
+    <div className="w-full">
+      <h2 className="mb-4">
         Cambiar contraseña
       </h2>
       <div>

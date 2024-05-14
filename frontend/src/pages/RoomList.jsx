@@ -9,7 +9,7 @@ const RoomList = () => {
   const token = authState.token;
 
   useEffect(() => {
-    fetch("http://localhost:3000/rooms", {
+    fetch(`${import.meta.env.VITE_APP_HOST}/rooms`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token,

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <section className="flex flex-col items-center justify-center mt-8 gap-y-4">
+    <div className="flex flex-coljustify-center">
+      <section className="flex flex-col mt-8 gap-y-4">
         {/* <Button asChild>
           <Link to="/register">Registro</Link>
         </Button> */}
@@ -17,7 +17,7 @@ function Home() {
           <Link to="/reset-password">Restablecer contraseña</Link>
         </Button> */}
 
-        <Button asChild>
+        {/* <Button asChild>
           <Link to="/create-room">Crear habitación</Link>
         </Button>
 
@@ -27,7 +27,7 @@ function Home() {
 
         <Button asChild>
           <Link to="/admin">Panel de administración</Link>
-        </Button>
+        </Button> */}
         
       </section>
     </div>
