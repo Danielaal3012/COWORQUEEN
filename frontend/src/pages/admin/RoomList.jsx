@@ -38,15 +38,16 @@ const AdminRoomList = () => {
     console.log(rooms)
 
     return (
-      <div className="flex flex-col">
-
-        <Table className="w-fit">
-          <TableCaption>Lita de incidencias recientes</TableCaption>
+      <div className="flex flex-col w-full">
+        <h2>Espacios</h2>
+        <section className="flex flex-col w-full mx-auto mt-8">
+        <Table className="w-full">
+          {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow>
               {/* <TableHead className="w-[350px]">ID</TableHead> */}
-              <TableHead className="w-[200px]">Nombre</TableHead>
-              <TableHead className="w-[450px]">Descripción</TableHead>
+              <TableHead className="w-[175px]">Nombre</TableHead>
+              <TableHead>Descripción</TableHead>
               <TableHead className="w-[100px]">Capacidad</TableHead>
               <TableHead className="w-[100px] text-center">Tipo</TableHead>
               {/* <TableHead>Acciones</TableHead> */}
@@ -71,6 +72,8 @@ const AdminRoomList = () => {
 
           </TableBody>
         </Table>
+        </section>
+
       </div>
     );
 }

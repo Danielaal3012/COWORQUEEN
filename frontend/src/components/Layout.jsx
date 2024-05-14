@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
     return (
       <div className="relative flex flex-col w-full bg-transparent h-dvh">
         <nav className="flex items-center justify-between w-full h-14 bg-secondary/75">
-          <section className="w-1/5 px-4 bg-slate-200">
+          <section className="w-1/5 px-4 ">
             <Link to="/">
               <img src={Logo} alt="Logo" className="h-10" />
             </Link>
@@ -35,11 +35,11 @@ const Layout = ({ children }) => {
               </section>
         </nav>
 
-        <div className="flex flex-row h-full py-4 gap-x-4">
-          <div className="flex flex-col w-1/5 h-full bg-slate-200">
-            menu lateral admin
+        <div className="flex flex-row w-full h-full py-4">
+          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200">
+            menu lateral solo admin
           </div>
-          <div className="flex flex-row w-4/5 h-full p-4 mr-4 rounded-lg bg-secondary/15">
+          <div className="flex flex-row w-full h-full p-4 mx-4 rounded-lg bg-secondary/15">
             {children}
           </div>
 
