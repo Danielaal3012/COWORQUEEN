@@ -46,19 +46,18 @@ function ReviewUseForm() {
         return;
       }
       const reservationData = await reservationResponseUser.json();
+
+      
       if (!reservationData || !reservationData.length) {
           toast.error("No se encontraron reservas asociadas a este usuario");
           return;
         }
-        
-        console.log(reservationData);
-console.log(reservationResponseUser);
         const reservationId = reservationData[0].id; // Suponiendo que solo hay una reserva por usuario
-        console.log();
         const reviewFormData = {
             ...formData,
             reservationId: reservationId,
         };
+
       const response = await fetch("http://localhost:3000/review/add", {
         method: 'POST',
         headers: {

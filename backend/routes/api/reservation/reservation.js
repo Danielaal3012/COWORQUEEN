@@ -23,7 +23,6 @@ reservationRouter.get(
       const { error } = viewUserReservationsSchema.validate({
         userId,
       });
-      console.log(userId);
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
