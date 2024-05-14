@@ -20,7 +20,7 @@ const AdminIncidentList = () => {
     const [incidents, setIncidents] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/incidents", {
+      fetch(`${import.meta.env.VITE_APP_HOST}/incidents`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: authState.token,
