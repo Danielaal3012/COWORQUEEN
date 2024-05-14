@@ -6,9 +6,9 @@ import {
   categoryIncidentsRouter,
   listIncidentsRouter,
 } from "./api/incident/incident.js";
-import { reservationRouter } from "./api/reservation/reservation.js";
 import { reviewRouter } from "./api/review/review.js";
 import { searchsRouter } from "./api/searchs/searchs.js";
+import { reservationRouter } from "./api/reservation/reservation.js";
 import { mediaRouter } from "./api/media/media.js";
 // import { equipmentRouter } from "./api/admin/equipment.js";
 

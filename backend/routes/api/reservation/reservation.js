@@ -49,6 +49,7 @@ reservationRouter.post(
   authenticate,
   async (req, res, next) => {
     try {
+      const userId = req.user.Id;
       const roomId = req.params.roomId;
       const { reservationDateBeg, reservationDateEnd } = req.body;
       const { error } = addReservationSchema.validate({

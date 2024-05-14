@@ -31,6 +31,7 @@ import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
+import ReviewUseForm from "./pages/Reviews.jsx";
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/room-list" element={<Layout><AdminRoomList /></Layout>} />
           <Route path="/room/:id" element={<Layout><ViewRoom /></Layout>} />
           <Route path="/edit-room/:id" element={<Layout><AdminEditRoom /></Layout>} />
+          <Route path="/review/add" element={<Layout><ReviewUseForm></ReviewUseForm></Layout>}/>
           <Route path="/profile" element={<Layout><ProtectedProfile /></Layout>} />
           <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
           <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
