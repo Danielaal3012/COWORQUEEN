@@ -71,9 +71,9 @@ reservationRouter.post(
       if (!room || room.length === 0) {
         throw createError(404, "Sala no encontrada");
       }
-
+      
       const { typeOf, capacity } = room[0];
-
+      
       let [existingReservations] = await pool.execute(
         `SELECT * FROM reservations
             WHERE roomId = ? AND
@@ -87,7 +87,18 @@ reservationRouter.post(
           reservationDateEnd,
         ]
       );
-
+      
+      const userReservationInSameSlot = existingReservations.some(
+        (reservation) => reservation.userId === userId
+      );
+      
+      if (userReservationInSameSlot) {
+        throw createError(
+          400,
+          "Ya tienes una reserva en la misma franja horaria"
+        );
+      }
+      
       if (typeOf === "Pública" && existingReservations.length >= capacity) {
         throw createError(
           404,
@@ -99,7 +110,7 @@ reservationRouter.post(
           "La sala ya está reservada para las fechas seleccionadas"
         );
       }
-
+      
       const reservationsId = crypto.randomUUID();
       await pool.execute(
         `INSERT INTO reservations (id, roomId, userId, reservationDateBeg, reservationDateEnd) VALUES (?,?,?,?,?)`,
