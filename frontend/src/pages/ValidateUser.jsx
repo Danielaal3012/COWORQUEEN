@@ -95,10 +95,10 @@ function CreateValidateUserForm() {
 
 export function ValidateUser() {
   return (
-    <>
+    <div className="flex flex-col w-full p-4">
       <h2 className="mt-2 text-center">Validación de usuario</h2>
       <CreateValidateUserForm />
-    </>
+    </div>
   );
 }
 

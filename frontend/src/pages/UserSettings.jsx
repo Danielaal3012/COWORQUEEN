@@ -9,7 +9,7 @@ const UserSettings = () => {
     const { authState } = useContext(AuthContext);
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
         <section className="m-4">
             
             modo oscuro

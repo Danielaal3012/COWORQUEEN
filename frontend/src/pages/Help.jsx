@@ -46,9 +46,9 @@ const Help = () => {
 
 
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col w-full'>
             <section className='flex flex-col m-4'>
-                <h3 className='text-xl font-bold'>Ayuda</h3>
+                <h2 className='text-xl font-bold'>Ayuda</h2>
                 <p className='mb-4'>¿Tuviste algún problema durante tu reserva?</p>
 
                 <Label>Últimas reservas</Label>

@@ -35,14 +35,14 @@ const Layout = ({ children }) => {
               </Avatar>
               </Link>
                : 
-               <Link to="/login"><FaUserCircle /></Link>
+               <Link to="/login"><FaUserCircle className="text-3xl" /></Link>
                }
               </section>
         </nav>
 
         <div className="flex flex-row w-full h-full py-4">
 
-{authState.user.role === "admin" && (
+{authState?.user?.role === "admin" && (
           <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4">
             {/* <Button variant="link" className="w-full text-lg text-black" asChild>
               <Link to="/">

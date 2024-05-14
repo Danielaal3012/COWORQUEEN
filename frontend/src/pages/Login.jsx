@@ -54,7 +54,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center p-4">
+    <div className="flex flex-col w-full p-4">
       <h1 className="mb-4 text-center">Iniciar sesión</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

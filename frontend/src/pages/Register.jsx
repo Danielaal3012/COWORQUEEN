@@ -60,7 +60,7 @@ function RegisterUserForm() {
     }
   };
   return (
-    <div className="flex flex-col justify-center p-4 ">
+    <div className="flex flex-col w-full p-4">
       <h1 className="text-center">Registro</h1>
       <form className="flex flex-col px-1 my-4 gap-y-4" onSubmit={handleSubmit}>
         <div>
