@@ -42,7 +42,7 @@ function CreateRoomForm() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/create-room", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/create-room`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ function CreateRoom() {
     const { authState } = useContext(AuthContext);
     const token = authState.token;
     try {
-      const response = await fetch("http://localhost:3000/create-room", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/create-room`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

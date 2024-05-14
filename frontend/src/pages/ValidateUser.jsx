@@ -27,7 +27,7 @@ function CreateValidateUserForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/validate", {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/validate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
