@@ -63,7 +63,6 @@ categoryIncidentsRouter.post(
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
-      // Comprobar si la reserva existe y fue hecha por el usuario
       const [reservation] = await dbPool.execute(
         `SELECT * FROM reservations WHERE id = ? AND userId = ?`,
         [reservationId, userId]
@@ -72,6 +71,12 @@ categoryIncidentsRouter.post(
       if (!reservation[0]) {
         return res.status(404).json({
           message: "Reserva no encontrada o no pertenece al usuario",
+        });
+      }
+
+      if (reservation[0].roomId !== roomId) {
+        return res.status(400).json({
+          message: "El roomId proporcionado no coincide con el roomId de la reserva",
         });
       }
 
