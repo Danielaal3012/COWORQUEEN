@@ -19,7 +19,7 @@ reservationRouter.get(
   authenticate,
   async (req, res, next) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.user.id;
       const { error } = viewUserReservationsSchema.validate({
         userId,
       });
