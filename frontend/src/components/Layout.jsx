@@ -25,6 +25,7 @@ const Layout = ({ children }) => {
             </Link>
             </section>
             <section className="flex items-center px-4">
+            {authState?.token ? 
               <Link to="/profile">
               <Avatar className="h-11 w-11">
                 <AvatarFallback>
@@ -33,6 +34,9 @@ const Layout = ({ children }) => {
                 <AvatarImage src={authState.user.avatar} alt="Avatar" />
               </Avatar>
               </Link>
+               : 
+               <Link to="/login"><FaUserCircle /></Link>
+               }
               </section>
         </nav>
 
@@ -40,7 +44,7 @@ const Layout = ({ children }) => {
 
 {authState.user.role === "admin" && (
           <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4">
-            <Button variant="link" className="w-full text-lg text-black" asChild>
+            {/* <Button variant="link" className="w-full text-lg text-black" asChild>
               <Link to="/">
                 Inicio
               </Link>
@@ -48,6 +52,36 @@ const Layout = ({ children }) => {
             <Button variant="link" className="w-full text-lg text-black" asChild>
               <Link to="/admin">
                 Panel de administración
+              </Link>
+            </Button> */}
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/users">
+                Usuarios
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/rooms">
+                Espacios
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/equipment">
+                Equipo
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/incidents">
+                Incidencias
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/reservations">
+                Reservas
+              </Link>
+            </Button>
+            <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Link to="/admin/reviews">
+                Reseñas
               </Link>
             </Button>
           </div>

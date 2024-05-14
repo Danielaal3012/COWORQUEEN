@@ -17,7 +17,7 @@ function Home() {
           <Link to="/reset-password">Restablecer contraseña</Link>
         </Button> */}
 
-        <Button asChild>
+        {/* <Button asChild>
           <Link to="/create-room">Crear habitación</Link>
         </Button>
 
@@ -27,7 +27,7 @@ function Home() {
 
         <Button asChild>
           <Link to="/admin">Panel de administración</Link>
-        </Button>
+        </Button> */}
         
       </section>
     </div>

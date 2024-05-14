@@ -14,6 +14,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/UI/table"
+  import { FaPlus } from "react-icons/fa";
 
 const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
@@ -39,7 +40,14 @@ const AdminRoomList = () => {
 
     return (
       <div className="flex flex-col w-full">
-        <h2>Espacios</h2>
+        <div className="flex justify-between px-4 md:px-0">
+          <h2>Espacios</h2>
+          <Button variant="outline" size="icon">
+            <Link to="/create-room">
+              <FaPlus />
+            </Link>
+          </Button>
+        </div>
         <section className="flex flex-col w-full mx-auto mt-8">
         <Table className="w-full">
           {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
@@ -47,9 +55,9 @@ const AdminRoomList = () => {
             <TableRow>
               {/* <TableHead className="w-[350px]">ID</TableHead> */}
               <TableHead className="w-[175px]">Nombre</TableHead>
-              <TableHead>Descripción</TableHead>
-              <TableHead className="w-[100px]">Capacidad</TableHead>
-              <TableHead className="w-[100px] text-center">Tipo</TableHead>
+              <TableHead className="hidden md:table-cell">Descripción</TableHead>
+              <TableHead className="w-[100px] hidden md:table-cell">Capacidad</TableHead>
+              <TableHead className="w-[100px] text-center ">Tipo</TableHead>
               {/* <TableHead>Acciones</TableHead> */}
             </TableRow>
           </TableHeader>
@@ -63,9 +71,9 @@ const AdminRoomList = () => {
                       {room.name}
                       </Link>
                       </TableCell>
-                    <TableCell>{room.description}</TableCell>
-                    <TableCell className="text-center">{room.capacity}</TableCell>
-                    <TableCell><Badge variant="outline" className="text-center bg-secondary">{room.typeOf}</Badge></TableCell>
+                    <TableCell className="hidden md:table-cell">{room.description}</TableCell>
+                    <TableCell className="hidden text-center md:table-cell">{room.capacity}</TableCell>
+                    <TableCell className="text-center"><Badge variant="outline" className="text-center bg-secondary">{room.typeOf}</Badge></TableCell>
                     {/* <TableCell>acciones</TableCell> */}
               </TableRow>
             ))}

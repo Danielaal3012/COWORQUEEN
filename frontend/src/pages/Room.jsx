@@ -168,8 +168,8 @@ function CreateRoom() {
   };
 
   return (
-    <div className="flex flex-col justify-center p-4 ">
-      <h2 className="text-center">Crear nueva habitación</h2>
+    <div className="flex flex-col w-full px-4 md:px-0">
+      <h2>Crear nuevo espacio</h2>
       <CreateRoomForm onSubmit={handleCreateRoom} />
     </div>
   );
