@@ -32,15 +32,16 @@ function ReviewUseForm() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/review/add", formData, {
+      const response = await fetch("http://localhost:3000/review/add", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-           Authorization: authState.token,
+          Authorization: authState.token,
         },
+        body: JSON.stringify(formData),
       });
 
-      if (response.status!== 201) {
+      if (!response.ok) {
         toast.error("Error en los datos introducidos");
       } else {
         toast.success("Review hecha exitosamente");
