@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
         <nav className="flex items-center justify-between w-full h-14 bg-secondary/75">
           <section className="w-1/5 px-4 ">
             <Link to="/">
-              <img src={Logo} alt="Logo" className="h-10" />
+              <img src={Logo} alt="Logo" className="h-10 min-h-10 min-w-[220px]" />
             </Link>
             </section>
             <section className="flex items-center px-4">
