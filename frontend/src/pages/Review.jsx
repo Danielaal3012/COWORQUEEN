@@ -32,12 +32,17 @@ function ReviewUseForm() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/review/add", formData, {
+      const response = await fetch("http://localhost:3000/review/add",{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
            Authorization: authState.token,
         },
+        body: JSON.stringify({
+          roomId: room.id,
+          reservationId: reservation.id,
+          // Otros campos necesarios
+        }),
       });
 
       if (response.status!== 201) {
