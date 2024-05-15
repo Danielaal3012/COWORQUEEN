@@ -130,7 +130,6 @@ reviewRouter.post('/review/add/:reservationId',
  async (req, res, next) => {
 const { description, rate} = req.body;
 const {reservationId} = req.params;
-
 const { error } = addReviewSchema.validate({
     description,
     rate,
@@ -155,12 +154,12 @@ const { error } = addReviewSchema.validate({
       });
     }
 
+    const roomId = reservation[0].roomId;
+
     const [existingReview] = await pool.execute(
       "SELECT * FROM reviews WHERE reservationId =?",
       [reservationId]
     );
-
-    if (existingReview.length > 0) {
 
     if (existingReview.length > 0) {
       throw createError(400, "La review ya existe");
@@ -168,19 +167,13 @@ const { error } = addReviewSchema.validate({
 
     const reservationCheck = await validateReservationId(reservationId);
     if (!reservationCheck.reservationCheckin) {
-
-    const reservationCheck = await validateReservationId(reservationId);
-    if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
 
-
     await pool.execute(
-      "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
       "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
       [crypto.randomUUID(), rate, description, reservationId]
     );
-
 
     res.status(201).json({
       message: "Review creada correctamente",
