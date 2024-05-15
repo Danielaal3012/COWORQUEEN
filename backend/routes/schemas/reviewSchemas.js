@@ -5,8 +5,8 @@ export const viewReviewSchema = Joi.object({
 });
 
 export const addReviewSchema = Joi.object({
-  rate: Joi.number().integer().min(0).max(5).required(),
   description: Joi.string().optional(),
+  rate: Joi.number().integer().min(0).max(5).required(),
   reservationId: Joi.string().required(),
 });
 

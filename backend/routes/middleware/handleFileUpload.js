@@ -23,7 +23,8 @@ const handleFileUpload = (req, res, next) => {
     }
   
     // Modificamos el nombre del archivo para evitar conflictos añadiendo la fecha actual antes del nombre original
-    const fileName = Date.now() + '-' + file.name;
+    //const fileName = Date.now() + '-' + file.name;
+    const fileName = crypto.randomUUID()
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const dirPath = path.join(__dirname, '..', '..', '..', 'frontend', 'public', 'uploads', 'avatar');

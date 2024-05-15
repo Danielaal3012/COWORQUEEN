@@ -19,13 +19,15 @@ reservationRouter.get(
   authenticate,
   async (req, res, next) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.user.id;
       const { error } = viewUserReservationsSchema.validate({
         userId,
       });
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
+      
+      
       const [reservations] = await pool.execute(
         "SELECT * FROM reservations WHERE userId = ?",
         [userId]
