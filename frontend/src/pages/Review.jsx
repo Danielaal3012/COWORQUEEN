@@ -41,8 +41,7 @@ function ReviewUseForm() {
       return;
     }
     try {
-
-      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/review/add`, {
+      const response = await fetch("http://localhost:3000/review/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +64,7 @@ function ReviewUseForm() {
       toast.error("Error al enviar la solicitud");
     }
   };
-console.log(formData); 
+
   return (
     <div className="flex flex-col w-full px-4 md:px-0">
       <h2>Agregar una revisión</h2>
@@ -81,7 +80,7 @@ console.log(formData);
             />
           </div>
 
-           <div className="flex items-center my-4 gap-x-4">
+          <div className="flex items-center my-4 gap-x-4">
             <Label>Calificación:</Label>
             <Rating
               initialRating={formData.rate}
@@ -90,7 +89,7 @@ console.log(formData);
               // fullSymbol="★★★★★"
               max={5}
             />
-          </div> 
+          </div>
 
           <Button type="submit" className="w-full">Enviar revisión</Button>
         </form>
