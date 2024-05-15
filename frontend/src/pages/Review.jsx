@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../auth/auth-context.jsx";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +10,15 @@ import Rating from "react-rating";
 
 function ReviewUseForm() {
   const { authState } = useContext(AuthContext);
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
     description: "",
     rate: "",
-    roomId: "",
-    reservationId: "",
+    reservationId: id,
   });
+
+  formData.rate = Number(formData.rate);
 
   const navigate = useNavigate();
 
@@ -41,20 +44,15 @@ function ReviewUseForm() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/review/add", {
+      const response = await fetch(`http://localhost:3000/review/add/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: authState.token,
         },
-        body: JSON.stringify({
-          description: formData.description,
-          rate: formData.rate,
-          roomId: room.id,
-          reservationId: reservation.id,
-        }),
+        body: JSON.stringify(formData),
       });
-      if (response.status !== 201) {
+      if (!response.ok) {
         toast.error("Error en los datos introducidos");
       } else {
         toast.success("Review hecha exitosamente");
