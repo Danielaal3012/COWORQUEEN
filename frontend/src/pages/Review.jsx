@@ -63,6 +63,8 @@ function ReviewUseForm() {
     }
   };
 
+  
+
   return (
     <div>
       <h1>Agregar una revisión</h1>
@@ -88,6 +90,8 @@ function ReviewUseForm() {
             max={5} 
           />
         </Label>
+        <br />
+        <Button type="submit">Enviar revisión</Button>
         <br />
         <Button type="submit">Enviar revisión</Button>
       </form>
