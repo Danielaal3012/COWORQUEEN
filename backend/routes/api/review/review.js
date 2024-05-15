@@ -5,6 +5,9 @@ import { validateReservationId } from "../../../validations/validateReservationI
 import { validateReviewId } from "../../../validations/validateReviewId.js";
 import {
   viewReviewSchema,
+  viewReviewByUserSchema,
+  viewReviewByRoomSchema,
+  viewReviewByReservationSchema,
   addReviewSchema,
   deleteReviewSchema,
   updateReviewSchema,
@@ -36,7 +39,7 @@ reviewRouter.get("/reviews", async (req, res, next) => {
 reviewRouter.get("/reviews/by-userId/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const { error } = viewReviewSchema.validate({ userId });
+    const { error } = viewReviewByUserSchema.validate({ userId });
     if (error) {
       throw createError(400, "Datos de entrada no válidos");
     }
@@ -59,7 +62,7 @@ reviewRouter.get("/reviews/by-userId/:userId", async (req, res, next) => {
 reviewRouter.get("/reviews/by-roomId/:roomId", async (req, res, next) => {
   try {
     const roomId = req.params.roomId;
-    const { error } = viewReviewSchema.validate({ roomId });
+    const { error } = viewReviewByRoomSchema.validate({ roomId });
     if (error) {
       throw createError(400, "Datos de entrada no válidos");
     }
@@ -84,7 +87,7 @@ reviewRouter.get(
   async (req, res, next) => {
     try {
       const reservationId = req.params.reservationId;
-      const { error } = viewReviewSchema.validate({ reservationId });
+      const { error } = viewReviewByReservationSchema.validate({ reservationId });
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
