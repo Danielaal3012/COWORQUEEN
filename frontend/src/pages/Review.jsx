@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from '../auth/auth-context.jsx'; 
 import { toast } from 'react-toastify'; 
 import { useNavigate } from 'react-router-dom';
@@ -9,12 +10,16 @@ import { Button } from '@/components/UI/button.jsx';
 
 function ReviewUseForm() {
   const { authState } = useContext(AuthContext);
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
     description: "",
     rate: "",
-    roomId: "",
-    reservationId: "",
+    reservationId: id,
   });
+
+  formData.rate = Number(formData.rate);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,12 +32,12 @@ function ReviewUseForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.description || !formData.rate) {
-      toast.error("Revisa los campos obligatorios");
+    if (!formData.rate) {
+      toast.error("Es necesario introducir una puntuación");
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/review/add", {
+      const response = await fetch(`http://localhost:3000/review/add/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +50,7 @@ function ReviewUseForm() {
         toast.error("Error en los datos introducidos");
       } else {
         toast.success("Review hecha exitosamente");
-        navigate("/rooms"); 
+        navigate("/profile"); 
       }
     } catch (error) {
       toast.error("Error al enviar la solicitud");

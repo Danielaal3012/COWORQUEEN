@@ -7,8 +7,7 @@ export const viewReviewSchema = Joi.object({
 export const addReviewSchema = Joi.object({
   description: Joi.string().optional(),
   rate: Joi.number().integer().min(0).max(5).required(),
-  roomId: Joi.string().required(),
-  reservationId:Joi.string().required(),
+  reservationId: Joi.string().required(),
 });
 
 export const deleteReviewSchema = Joi.object({

@@ -122,15 +122,15 @@ reviewRouter.get("/review/:reviewId", async (req, res, next) => {
 });
 
 // Agregar review
-reviewRouter.post('/review/add/:roomId/:reservationId',
+reviewRouter.post('/review/add/:reservationId',
  authenticate, 
  async (req, res, next) => {
 const { description, rate} = req.body;
-const {roomId , reservationId} = req.params;
+const {reservationId} = req.params;
+
 const { error } = addReviewSchema.validate({
     description,
     rate,
-    roomId,
     reservationId,
   });
 
@@ -138,7 +138,7 @@ const { error } = addReviewSchema.validate({
     throw createError(400, "Datos de entrada no válidos");
   }
 
-  const userId = req.user.id; // Asume que req.user.id contiene el ID del usuario autenticado
+  const userId = req.user.id;
 
   try {
     const [reservation] = await pool.execute(
@@ -152,12 +152,6 @@ const { error } = addReviewSchema.validate({
       });
     }
 
-    if (reservation[0].roomId!== roomId) {
-      return res.status(400).json({
-        message: "El roomId proporcionado no coincide con el roomId de la reserva",
-      });
-    }
-
     const [existingReview] = await pool.execute(
       "SELECT * FROM reviews WHERE reservationId =?",
       [reservationId]
@@ -167,7 +161,7 @@ const { error } = addReviewSchema.validate({
       throw createError(400, "La review ya existe");
     }
 
-    const reservationCheck = await validateReservationId(reservationId); // Asume que esta función valida si la reserva ha sido utilizada
+    const reservationCheck = await validateReservationId(reservationId);
     if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
