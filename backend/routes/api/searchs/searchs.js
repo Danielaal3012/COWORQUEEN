@@ -10,8 +10,9 @@ const pool = getPool();
 
 export const searchsRouter = Router();
 
+// get  - /rooms?search=Palabra&type=private&orderType=DESC&order=capacity (req.query)
 // Búsqueda de rooms por tipo
-searchsRouter.post("/rooms/types", async (req, res, next) => {
+searchsRouter.get("/rooms/types", async (req, res, next) => {
   try {
     const { typeOf } = req.body;
     const { error } = searchRoomTypeOfSchema.validate({
