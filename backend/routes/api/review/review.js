@@ -122,32 +122,56 @@ reviewRouter.get("/review/:reviewId", async (req, res, next) => {
 });
 
 // Agregar review
-reviewRouter.post("/review/add", authenticate, async (req, res, next) => {
+reviewRouter.post('/review/add/:reservationId',
+ authenticate, 
+ async (req, res, next) => {
+const { description, rate} = req.body;
+const {reservationId} = req.params;
+const { error } = addReviewSchema.validate({
+    description,
+    rate,
+    reservationId,
+  });
+
+  if (error) {
+    throw createError(400, "Datos de entrada no válidos");
+  }
+
+  const userId = req.user.id;
+
   try {
-    const { rate, description, reservationId } = req.body;
-    const { error } = addReviewSchema.validate({
-      rate,
-      description,
-      reservationId,
-    });
-    if (error) {
-      throw createError(400, "Datos de entrada no válidos");
+    const [reservation] = await pool.execute(
+      `SELECT * FROM reservations WHERE id =? AND userId =?`,
+      [reservationId, userId]
+    );
+
+    if (!reservation[0]) {
+      return res.status(404).json({
+        message: "Reserva no encontrada o no pertenece al usuario",
+      });
     }
-    const [[review]] = await pool.execute(
-      "SELECT * FROM reviews WHERE reservationId = ?",
+
+    const roomId = reservation[0].roomId;
+
+    const [existingReview] = await pool.execute(
+      "SELECT * FROM reviews WHERE reservationId =?",
       [reservationId]
     );
-    if (review) {
+
+    if (existingReview.length > 0) {
       throw createError(400, "La review ya existe");
     }
-    const reservation = await validateReservationId(reservationId);
-    if (!reservation.reservationCheckin) {
+
+    const reservationCheck = await validateReservationId(reservationId);
+    if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
+
     await pool.execute(
-      "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?, ?, ?, ?)",
+      "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
       [crypto.randomUUID(), rate, description, reservationId]
     );
+
     res.status(201).json({
       message: "Review creada correctamente",
     });
