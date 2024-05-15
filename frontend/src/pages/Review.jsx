@@ -41,12 +41,16 @@ function ReviewUseForm() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: authState.token,
+           Authorization: authState.token,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          roomId: room.id,
+          reservationId: reservation.id,
+          // Otros campos necesarios
+        }),
       });
 
-      if (!response.ok) {
+      if (response.status!== 201) {
         toast.error("Error en los datos introducidos");
       } else {
         toast.success("Review hecha exitosamente");
