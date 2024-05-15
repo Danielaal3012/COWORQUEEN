@@ -122,32 +122,61 @@ reviewRouter.get("/review/:reviewId", async (req, res, next) => {
 });
 
 // Agregar review
-reviewRouter.post("/review/add", authenticate, async (req, res, next) => {
+reviewRouter.post('/review/add/:roomId/:reservationId',
+ authenticate, 
+ async (req, res, next) => {
+const { description, rate} = req.body;
+const {roomId , reservationId} = req.params;
+const { error } = addReviewSchema.validate({
+    description,
+    rate,
+    roomId,
+    reservationId,
+  });
+
+  if (error) {
+    throw createError(400, "Datos de entrada no válidos");
+  }
+
+  const userId = req.user.id; // Asume que req.user.id contiene el ID del usuario autenticado
+
   try {
-    const { rate, description, reservationId } = req.body;
-    const { error } = addReviewSchema.validate({
-      rate,
-      description,
-      reservationId,
-    });
-    if (error) {
-      throw createError(400, "Datos de entrada no válidos");
+    const [reservation] = await pool.execute(
+      `SELECT * FROM reservations WHERE id =? AND userId =?`,
+      [reservationId, userId]
+    );
+
+    if (!reservation[0]) {
+      return res.status(404).json({
+        message: "Reserva no encontrada o no pertenece al usuario",
+      });
     }
-    const [[review]] = await pool.execute(
-      "SELECT * FROM reviews WHERE reservationId = ?",
+
+    if (reservation[0].roomId!== roomId) {
+      return res.status(400).json({
+        message: "El roomId proporcionado no coincide con el roomId de la reserva",
+      });
+    }
+
+    const [existingReview] = await pool.execute(
+      "SELECT * FROM reviews WHERE reservationId =?",
       [reservationId]
     );
-    if (review) {
+
+    if (existingReview.length > 0) {
       throw createError(400, "La review ya existe");
     }
-    const reservation = await validateReservationId(reservationId);
-    if (!reservation.reservationCheckin) {
+
+    const reservationCheck = await validateReservationId(reservationId); // Asume que esta función valida si la reserva ha sido utilizada
+    if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
+
     await pool.execute(
-      "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?, ?, ?, ?)",
+      "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
       [crypto.randomUUID(), rate, description, reservationId]
     );
+
     res.status(201).json({
       message: "Review creada correctamente",
     });
