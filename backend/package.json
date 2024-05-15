@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.5",
     "nodemailer": "^6.9.13",
+    "react-rating": "^2.0.5",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
