@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaEye, FaBookmark, FaUserCircle } from "react-icons/fa";
+import { FaHome, FaEye, FaBookmark, FaUserCircle, FaArrowRight } from "react-icons/fa";
 import Logo from "../assets/images/Logo.png";
 import coworqueen from "../assets/images/coworqueen.svg";
 import { AuthContext } from "../auth/auth-context";
@@ -14,6 +14,8 @@ const Layout = ({ children }) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const location = useLocation();
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
+  const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" +  "/" + authState.user.avatar : null;
 
   if (isDesktop) {
     return (
@@ -28,10 +30,10 @@ const Layout = ({ children }) => {
             {authState?.token ? 
               <Link to="/profile">
               <Avatar className="h-11 w-11">
+                <AvatarImage src={avatar} alt="Avatar" />
                 <AvatarFallback>
                   <FaUserCircle />
                 </AvatarFallback>
-                <AvatarImage src={authState.user.avatar} alt="Avatar" />
               </Avatar>
               </Link>
                : 
@@ -43,7 +45,7 @@ const Layout = ({ children }) => {
         <div className="flex flex-row w-full h-full py-4">
 
 {authState?.user?.role === "admin" && (
-          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4">
+          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4 py-4">
             {/* <Button variant="link" className="w-full text-lg text-black" asChild>
               <Link to="/">
                 Inicio
@@ -54,6 +56,14 @@ const Layout = ({ children }) => {
                 Panel de administración
               </Link>
             </Button> */}
+            <Button variant="outline" asChild className="flex justify-between">
+              <Link to="/">
+                <div className="flex items-center text-lg gap-x-2">
+                <FaHome className="text-2xl" />Inicio
+                </div>
+                <FaArrowRight />
+              </Link>
+            </Button>
             <Button variant="link" className="w-full text-lg text-black" asChild>
               <Link to="/admin/users">
                 Usuarios

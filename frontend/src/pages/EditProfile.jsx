@@ -17,6 +17,8 @@ const EditProfile = () => {
   const { authState, updateUser, updateAvatar } = useContext(AuthContext);
   const [editing, setEditing] = useState(false);
   const navigate = useNavigate();
+  const host = import.meta.env.VITE_APP_HOST;
+  const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" +  "/" + authState.user.avatar : null;
 
   useEffect(() => {
     if (authState && authState.user) {
@@ -37,7 +39,7 @@ const EditProfile = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/${authState.user.id}/media/add-avatar`,
+    const response = await fetch(`${host}/user/${authState.user.id}/media/add-avatar`,
       {
         method: "POST",
         headers: {
@@ -65,7 +67,7 @@ const EditProfile = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/update/profile/`,
+      const response = await fetch(`${host}/user/update/profile/`,
         {
           method: "PUT",
           headers: {
@@ -93,7 +95,8 @@ const EditProfile = () => {
         <div className="flex flex-col w-full p-4 ">
           <div className="flex flex-row items-center justify-between w-full ">
             <Avatar className="w-[96px] h-[96px] aspect-square">
-            <AvatarImage src={previewUrl ? previewUrl : authState?.user?.avatar} />              <AvatarFallback className="text-4xl bg-secondary/75">
+            <AvatarImage src={previewUrl ? previewUrl : avatar} />
+                          <AvatarFallback className="text-4xl bg-secondary/75">
                 {authState?.user?.firstName?.split("")[0]}
               </AvatarFallback>
             </Avatar>

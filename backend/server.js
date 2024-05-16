@@ -1,5 +1,4 @@
 import express from "express";
-
 import "dotenv/config.js";
 import errorHandler from "./routes/middleware/errorHandler.js";
 import handleCors from "./routes/middleware/handleCors.js";

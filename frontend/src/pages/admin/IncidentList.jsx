@@ -14,6 +14,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/UI/table"
+  import { FaPlus } from "react-icons/fa";
 
 const AdminIncidentList = () => {
     const { authState } = useContext(AuthContext);
@@ -37,7 +38,14 @@ const AdminIncidentList = () => {
 
     return (
       <div className="flex flex-col w-full">
-        <h2>Incidencias</h2>
+         <div className="flex justify-between px-4 md:px-0">
+          <h2>Incidencias</h2>
+          <Button variant="outline" size="icon">
+            <Link to="/create-incident">
+              <FaPlus />
+            </Link>
+          </Button>
+        </div>
         <section className="flex flex-col w-full mx-auto mt-8">
         <Table className="w-full">
           {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}

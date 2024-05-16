@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar"
 const Mobile = ({ children }) => {
   const location = useLocation();
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
+  const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" +  "/" + authState.user.avatar : null;
 
   return (
     <div className="relative w-full bg-transparent h-dvh">
@@ -41,7 +43,7 @@ const Mobile = ({ children }) => {
           {authState?.token ? 
           <Link to="/profile">
           <Avatar>
-              <AvatarImage src={authState?.user?.avatar}  />
+              <AvatarImage src={avatar}  />
               <AvatarFallback>
                 {authState?.user?.firstName?.split('')[0]}
                 </AvatarFallback> 

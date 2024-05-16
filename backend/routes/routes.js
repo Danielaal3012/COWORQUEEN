@@ -10,19 +10,17 @@ import { reservationRouter } from "./api/reservation/reservation.js";
 import { reviewRouter } from "./api/review/review.js";
 import { searchsRouter } from "./api/searchs/searchs.js";
 import { mediaRouter } from "./api/media/media.js";
-// import { equipmentRouter } from "./api/admin/equipment.js";
 
 const router = express.Router();
 
 router.use(userRouter);
 router.use(mediaRouter);
-router.use(equipmentAdminRouter);
-// router.use(equipmentRouter);
 router.use(roomRouter);
 router.use(categoryIncidentsRouter);
 router.use(listIncidentsRouter);
 router.use(reservationRouter);
 router.use(reviewRouter);
 router.use(searchsRouter);
+//router.use(equipmentAdminRouter); // Hay un problema con la autenticación en este router
 
 export default router;

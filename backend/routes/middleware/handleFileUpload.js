@@ -24,10 +24,12 @@ const handleFileUpload = (req, res, next) => {
   
     // Modificamos el nombre del archivo para evitar conflictos añadiendo la fecha actual antes del nombre original
     //const fileName = Date.now() + '-' + file.name;
-    const fileName = crypto.randomUUID()
+    const originalFileName = file.name;
+    const extension = path.extname(originalFileName);
+    const fileName = crypto.randomUUID() + extension;
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const dirPath = path.join(__dirname, '..', '..', '..', 'frontend', 'public', 'uploads', 'avatar');
+    const dirPath = path.join(__dirname, '..', '..', '..', 'frontend', 'public', 'uploads');
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath, { recursive: true });
     }

@@ -12,10 +12,10 @@ const Room = () => {
     const [room, setRoom] = useState([]);
     const { id } = useParams();
     const roomId = id;
-
+    const host = import.meta.env.VITE_APP_HOST;
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_APP_HOST}/room/${id}`, {
+        fetch(`${host}/room/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: authState.token,
@@ -32,6 +32,8 @@ const Room = () => {
 
     console.log(room)
 
+    const cover = room.image ? host+'/uploads/rooms/'+roomId+'/'+room.image : '';
+
     return (
         <div className="flex flex-col w-full">
         <h2>Sala {room.name}</h2>
@@ -42,6 +44,7 @@ const Room = () => {
                         <li>
                             <span className="font-bold">ID:</span> {room.id}
                         </li>
+                        <img src={cover} alt="room" />
                         <li>
                             <span className="font-bold">Nombre:</span> {room.name}
                         </li>
