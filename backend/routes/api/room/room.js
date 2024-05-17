@@ -81,7 +81,7 @@ roomRouter.put("/room/:id", authenticate, isAdmin, async (req, res, next) => {
 roomRouter.get("/rooms", authenticate, async (req, res, next) => {
   try {
     const [rooms] = await dbPool.execute(
-      "SELECT rooms.id, rooms.name, rooms.description, rooms.capacity, rooms.typeOf FROM rooms"
+      "SELECT rooms.id, rooms.name, rooms.description, rooms.capacity, rooms.typeOf, rooms.image FROM rooms"
     );
     if (!rooms) {
       throw createError(404, "Espacios no encontrados");
