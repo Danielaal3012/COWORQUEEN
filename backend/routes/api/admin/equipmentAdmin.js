@@ -116,3 +116,28 @@ equipmentAdminRouter.delete(
     }
   }
 );
+
+// Listar equipos presentes en un espacio por id de espacio
+equipmentAdminRouter.get(
+  "/rooms/:roomId/equipment",
+  async (req, res, next) => {
+    try {
+      const roomId = req.params.roomId;
+      // Consultamos la tabla intermedia equipmentRoom
+      const [equipment] = await dbPool.execute(
+        `SELECT equipment.id, equipment.name, equipment.description, equipment.inventory
+            FROM equipment
+            JOIN equipmentRooms
+            ON equipment.id = equipmentRooms.equipmentId
+            WHERE equipmentRooms.roomId = ?`,
+        [roomId]
+      );
+
+      res.status(200).json({
+        equipment,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
