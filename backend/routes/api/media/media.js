@@ -159,28 +159,71 @@ mediaRouter.post(
 
 // Añadir imagen a incidencia
 mediaRouter.post(
-  "/incidence/:id/media/add-media",
+  "/incident/:id/media/add-media",
   authenticate,
   handleFileUpload,
   async (req, res, next) => {
     try {
       const { id: incidentId } = req.params;
-      const { API_HOST } = process.env;
       const mediaId = crypto.randomUUID();
       const { fileName } = req.body;
 
-      const url = `${API_HOST}/uploads/media/${fileName}`;
+      const [incident] = await dbPool.execute(
+        `SELECT id FROM incidents WHERE id = ?`,
+        [incidentId]
+      );
+
+      if (!incident[0]) {
+        throw createError("La incidencia no existe", 404);
+      }
+
+      if (incident[0].image) {
+        const imageUrl = incident[0].image;
+        const imageFileName = basename(imageUrl);
+        const imagePath = resolve(
+          cwd(),
+          "..",
+          "frontend",
+          "public",
+          "uploads",
+          "incidents",
+          incidentId,
+          imageFileName
+        );
+        unlinkSync(imagePath);
+      }
+
+      const uploadedFilePath = req.body.filePath;
+      const imageFileName = basename(fileName);
+      const imagePath = resolve(
+        cwd(),
+        "..",
+        "frontend",
+        "public",
+        "uploads",
+        "incidents",
+        incidentId,
+        imageFileName
+      );
+
+      const imageDir = dirname(imagePath);
+      await fs.mkdir(imageDir, { recursive: true });
+      await fs.rename(uploadedFilePath, imagePath);
 
       await dbPool.execute(
-        `INSERT INTO media(id, url, incidenceId) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE url = ?, id = ?`,
-        [mediaId, url, incidentId, url, mediaId]
+        `INSERT INTO media(id, url, incidentId) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE url = ?, id = ?`,
+        [mediaId, fileName, incidentId, fileName, mediaId]
       );
 
       // la tabla incidents no tiene una columna media
+      await dbPool.execute(`UPDATE incidents SET image = ? WHERE id = ?`, [
+        fileName,
+        incidentId,
+      ]);
 
       res.status(201).json({
         message: `Se ha añadido el archivo correctamente`,
-        url: url,
+        file: fileName,
       });
     } catch (err) {
       next(err);

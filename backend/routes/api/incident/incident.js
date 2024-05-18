@@ -150,7 +150,7 @@ categoryIncidentsRouter.get(
       }
       const incidentId = req.params.incidentId;
       const [incident] = await dbPool.execute(
-        `SELECT incidents.id, incidents.description, users.userName, rooms.name, equipment.name, inciden
+        `SELECT incidents.id, incidents.description, incidents.status, users.userName, rooms.id AS roomId, rooms.name AS roomName, equipment.id AS equipmentId, equipment.name AS equipmentName, incidents.createdAt, incidents.updatedAt
       FROM incidents
       JOIN users
         ON users.id = incidents.userId

@@ -146,6 +146,7 @@ export async function dbSchema(db) {
     userId CHAR(36) NOT NULL,
     roomId CHAR(36) NOT NULL,
     equipmentId CHAR(36) NOT NULL,
+    image VARCHAR(200),
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME,
     deletedAt DATETIME,

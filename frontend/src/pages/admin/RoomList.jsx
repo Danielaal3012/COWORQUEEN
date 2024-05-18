@@ -15,6 +15,14 @@ import {
     TableRow,
   } from "@/components/UI/table"
   import { FaPlus } from "react-icons/fa";
+  import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/UI/carousel"
+  
 
 const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
@@ -95,6 +103,40 @@ const AdminRoomList = () => {
             </TableBody>
           </Table>
         </section>
+
+        {/* <Carousel className="w-1/2 bg-red-500">
+  <CarouselContent>
+  {rooms.map((room) => (
+            <div className="flex flex-col" >
+            <CarouselItem key={room.id} className="relative w-[300px] max-w-[300px] h-[200px] overflow-hidden rounded-md hover:opacity-80">
+              <img
+                src={host + "/uploads/rooms/" + room.id + "/" + room.image}
+                alt={room.name}
+                className="w-full"
+              />
+              <div className="absolute w-full bg-white bg-opacity-50" />
+                <div className="absolute bottom-0 flex items-center justify-between w-full px-2 py-1 ">
+                <h3 className="font-bold">{room.name}</h3>
+                <Badge
+                      variant="outline"
+                      className="text-center bg-primary"
+                    >
+                      {room.typeOf}
+                    </Badge>
+                </div>
+                <div className="absolute top-0 right-0 overflow-hidden text-center bg-white rounded-bl-xl min-w-11">
+                  <p className="p-2">{room.capacity}</p>
+                </div>
+
+            </CarouselItem>
+              <p className="hidden">{room.description}</p>
+              </div>
+          ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel> */}
+
 
         <section className="flex flex-wrap gap-4 my-8">
           {rooms.map((room) => (
