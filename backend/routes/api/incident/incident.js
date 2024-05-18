@@ -303,12 +303,13 @@ categoryIncidentsRouter.put(
 );
 
 // Modificar incidencia como Admin
-categoryIncidentsRouter.put(
+categoryIncidentsRouter.patch(
   "/incidents/:incidentId",
   authenticate,
   isAdmin,
   async (req, res, next) => {
     const incidentId = req.params.incidentId;
+    const { status } = req.body;
 
     try {
       const [incident] = await dbPool.execute(
@@ -318,17 +319,17 @@ categoryIncidentsRouter.put(
         [incidentId]
       );
 
-      if (incident.length === 0) {
+      if (!incident || incident.length === 0) {
         throw createError(404, "Incidencia no encontrada");
       }
 
-      const { description, equipmentId } = req.body;
+      const currentDate = new Date();
 
       const updateIncident = await dbPool.execute(
         `UPDATE incidents
-      SET description=?, equipmentId=?
-      WHERE id=?`,
-        [description, equipmentId, incidentId]
+        SET status=?, updatedAt=?
+        WHERE id=?`,
+        [status, currentDate, incidentId]
       );
 
       if (!updateIncident) {
@@ -337,12 +338,14 @@ categoryIncidentsRouter.put(
 
       res.status(200).json({
         message: "Incidencia modificada con éxito",
+        updatedAt: currentDate,
       });
     } catch (err) {
       next(err);
     }
   }
 );
+
 
 // Eliminar incidencia creada por un usuario
 categoryIncidentsRouter.delete(
