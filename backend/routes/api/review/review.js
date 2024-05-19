@@ -19,7 +19,7 @@ const pool = getPool();
 export const reviewRouter = Router();
 
 // Ver reviews
-reviewRouter.get("/reviews", async (req, res, next) => {
+reviewRouter.get("/reviews/list", async (req, res, next) => {
   try {
     const [reviews] = await pool.execute(
       "SELECT reviews.id, reviews.rate , reviews.description, reviews.reservationId FROM reviews"
@@ -84,6 +84,7 @@ reviewRouter.get("/reviews/by-roomId/:roomId", async (req, res, next) => {
 // Listado de reviews por reserva
 reviewRouter.get(
   "/reviews/by-reservationId/:reservationId",
+  authenticate,
   async (req, res, next) => {
     try {
       const reservationId = req.params.reservationId;
@@ -107,25 +108,8 @@ reviewRouter.get(
   }
 );
 
-// Ver review por id
-reviewRouter.get("/review/:reviewId", async (req, res, next) => {
-  try {
-    const reviewId = req.params.reviewId;
-    const { error } = viewReviewSchema.validate({ reviewId });
-    if (error) {
-      throw createError(400, "Datos de entrada no válidos");
-    }
-    const review = await validateReviewId(reviewId);
-    res.status(200).json({
-      message: review,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Agregar review
-reviewRouter.post('/review/add/:reservationId',
+//Crear review
+reviewRouter.post('/review/create/:reservationId',
  authenticate, 
  async (req, res, next) => {
 const { description, rate} = req.body;
@@ -185,7 +169,7 @@ const { error } = addReviewSchema.validate({
 
 // Borrar review
 reviewRouter.delete(
-  "/review/:reviewId",
+  "/review/delete/:reviewId",
   authenticate,
   async (req, res, next) => {
     try {
@@ -207,7 +191,7 @@ reviewRouter.delete(
 
 // Editar review
 reviewRouter.patch(
-  "/review/:reviewId",
+  "/review/edit/:reviewId",
   authenticate,
   async (req, res, next) => {
     try {
@@ -237,4 +221,36 @@ reviewRouter.patch(
       next(err);
     }
   }
+);
+
+
+// Peticion para obtener el id de las reviews de una Reservaciòn
+
+reviewRouter.get('/review/reservation/:reservationId', 
+authenticate,
+validateReviewId, 
+async (req, res,next) => {
+
+  try {
+    const reservationId = req.params;
+
+    if (!reservationId) {
+      return res.status(400).send('Falta el parámetro reservationId');
+    }
+
+    const [result] = await pool.execute(
+      "SELECT id FROM reviews WHERE reservationId=? ", 
+      [reservationId]
+    );
+
+    if (result.length === 0) {
+      throw createError(404, "Review noooooo encontrada");
+    }
+    res.status(200).json({
+      id:result[0].id
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 );

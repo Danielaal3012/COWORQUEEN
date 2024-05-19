@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const viewReviewSchema = Joi.object({
-  reviewId: Joi.string().required(),
+  reservationId: Joi.string().required(),
 });
 
 export const viewReviewByRoomSchema = Joi.object({
