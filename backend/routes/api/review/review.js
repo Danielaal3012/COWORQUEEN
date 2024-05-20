@@ -153,14 +153,15 @@ const { error } = addReviewSchema.validate({
     if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
-
+    const reviewId = crypto.randomUUID()
     await pool.execute(
       "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
-      [crypto.randomUUID(), rate, description, reservationId]
+      [reviewId, rate, description, reservationId]
     );
 
     res.status(201).json({
-      message: "Review creada correctamente",
+    message: "Review creada correctamente",
+    id: reviewId,
     });
   } catch (err) {
     next(err);
@@ -228,7 +229,7 @@ reviewRouter.patch(
 
 reviewRouter.get('/review/reservation/:reservationId', 
 authenticate,
-validateReviewId, 
+//validateReviewId, 
 async (req, res,next) => {
 
   try {
@@ -239,15 +240,12 @@ async (req, res,next) => {
     }
 
     const [result] = await pool.execute(
-      "SELECT id FROM reviews WHERE reservationId=? ", 
+      "SELECT * FROM reviews WHERE reservationId=? ", 
       [reservationId]
     );
-
-    if (result.length === 0) {
-      throw createError(404, "Review noooooo encontrada");
-    }
+    
     res.status(200).json({
-      id:result[0].id
+      result
     });
   } catch (err) {
     next(err);

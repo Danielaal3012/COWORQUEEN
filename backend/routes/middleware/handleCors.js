@@ -18,7 +18,12 @@ const handleCors = (req, res, next) => {
     methods: process.env.MODE === 'PRODUCTION' ? ['GET', 'POST'] : ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
   };
 
-  cors(corsOptions)(req, res, next);
+  try {
+    cors(corsOptions)(req, res, next);
+    
+  } catch (error) {
+    next(error)
+  }
 };
 
 export default handleCors;

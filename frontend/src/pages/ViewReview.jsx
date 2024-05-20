@@ -1,37 +1,55 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AuthContext } from "../auth/auth-context.jsx";
 import { toast } from "react-toastify";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Rating from "react-rating";
 import { Button } from "@/components/UI/button.jsx";
 
-function ViewReview({ reviewId, reservationId}) {
+function ViewReview({reservationId, reviewId}) {
   const location = useLocation(); // Usa useLocation para obtener la ubicación actual
   const { authState } = useContext(AuthContext);
   const [review, setReview] = useState({});
 
-  const fetchReviewId = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/review/reservation/${reservationId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authState.token,
-        },
-      });
-      const data = await response.json();
-      setReview(data);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al cargar la reseña.");
-    }
-  };
   
-  useLayoutEffect(() => {
-    if (reviewId ) {
-      fetchReviewId();
-    }
-  }, [reviewId ]);
+// useEffect(() => {
+//   const fetchReviewId = async () => {
+//     try {
+//       const response = await fetch(`http://localhost:3000/review/reservation/${reservationId}`, {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: authState.token,
+//         },
+//       });
+//       const data = await response.json();
+//       console.log(data);
+//       setReview(data.message);
+//     } catch (error) {
+//       console.error(error);
+//       toast.error("Error al cargar la reseña.");
+//     }
+//   };
+//       fetchReviewId();
+    
+//   }, [reviewId ]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/review/reservation/${reservationId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: authState.token,
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+            setReview(data);
+        })
+        .catch((error) =>
+            console.error("Error al obtener los datos de la sala:", error)
+        );
+}, [reviewId]);
+console.log(review);
   
   return (
     <div className="flex flex-col w-full px-4 md:px-0">
