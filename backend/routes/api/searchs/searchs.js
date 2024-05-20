@@ -40,20 +40,31 @@ searchsRouter.post("/rooms/types", async (req, res, next) => {
 // Búsqueda para listar equipos
 searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
   try {
-    const search = req.query.search || "";
-    const offset = req.query.offset || 0;
+    const { search, offset, limit, direction } = req.query;
+
     const { error } = searchEquipmentSchema.validate({
       search,
       offset,
+      limit,
+      direction,
     });
     if (error) {
       throw createError(400, "Datos de entrada no válidos");
     }
+
+    const validateDirection = ["ASC", "DESC"];
+    const orderDirection = validateDirection.includes(direction)
+      ? direction
+      : "ASC";
+
+    const validateLimit = [10, 25, 50, 100];
+    const limitSet = validateLimit.includes(limit) ? limit : 10;
+
     const [equipment] = await pool.execute(
-      `SELECT name FROM equipment
+      `SELECT id, name, description FROM equipment
         WHERE name LIKE ? OR description LIKE ?
-        ORDER BY name DESC
-        LIMIT 10 OFFSET ${offset}`,
+        ORDER BY name ${orderDirection}
+        LIMIT ${limitSet} OFFSET ${offset}`,
       [`%${search}%`, `%${search}%`]
     );
     res.status(200).json({

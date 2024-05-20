@@ -1,15 +1,11 @@
 import "dotenv/config.js";
-import express, { Router } from "express";
+import { Router } from "express";
 import { getPool } from "../../../database/getPool.js";
-import { createError } from "../../../utils/error.js";
 import authenticate from "../../middleware/authenticateTokenUser.js";
-import path from "node:path";
 import process from "node:process";
 import fileUpload from "express-fileupload";
-import { addMediaAvatarSchema } from "../../schemas/mediaSchema.js";
 import handleFileUpload from "../../middleware/handleFileUpload.js";
 import isAdmin from "../../middleware/isAdmin.js";
-import serveStatic from "../../middleware/serveStatic.js";
 import { basename, resolve } from 'path';
 import { unlinkSync } from 'fs';
 import { cwd } from 'process';
