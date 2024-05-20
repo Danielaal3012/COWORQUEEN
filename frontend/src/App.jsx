@@ -31,6 +31,9 @@ import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
+import { EquipmentList } from "./pages/EquipmentList.jsx";
+import { AddEquipment } from "./pages/AddEquipment.jsx";
+import { EquipmentItem } from "./pages/EquipmentItem.jsx";
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -47,36 +50,213 @@ const AdminIncidents = Admin(AdminIncidentList);
 const AdminRooms = Admin(AdminRoomList);
 const AdminRoom = Admin(Room);
 
-
 const App = () => {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/register" element={<Layout><Register /></Layout>} />
-          <Route path="/login" element={<Layout><Login /></Layout>} />
-          <Route path="/validate" element={<Layout><ValidateUser /></Layout>} />
-          <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>} />
-          <Route path="/change-password" element={<Layout><ChangePassword /></Layout>} />
-          <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
-          <Route path="/create-room" element={<Layout><AdminCreateRoom /></Layout>} />
-          <Route path="/room-list" element={<Layout><AdminRoomList /></Layout>} />
-          <Route path="/room/:id" element={<Layout><ViewRoom /></Layout>} />
-          <Route path="/edit-room/:id" element={<Layout><AdminEditRoom /></Layout>} />
-          <Route path="/profile" element={<Layout><ProtectedProfile /></Layout>} />
-          <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
-          <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
-          <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
-          <Route path="/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
-          <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Layout>
+                <Register />
+              </Layout>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Layout>
+                <Login />
+              </Layout>
+            }
+          />
+          <Route
+            path="/validate"
+            element={
+              <Layout>
+                <ValidateUser />
+              </Layout>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <Layout>
+                <ResetPassword />
+              </Layout>
+            }
+          />
+          <Route
+            path="/change-password"
+            element={
+              <Layout>
+                <ChangePassword />
+              </Layout>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <Layout>
+                <ForgotPassword />
+              </Layout>
+            }
+          />
+          <Route
+            path="/create-room"
+            element={
+              <Layout>
+                <AdminCreateRoom />
+              </Layout>
+            }
+          />
+          <Route
+            path="/room-list"
+            element={
+              <Layout>
+                <AdminRoomList />
+              </Layout>
+            }
+          />
+          <Route
+            path="/room/:id"
+            element={
+              <Layout>
+                <ViewRoom />
+              </Layout>
+            }
+          />
+          <Route
+            path="/edit-room/:id"
+            element={
+              <Layout>
+                <AdminEditRoom />
+              </Layout>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <Layout>
+                <ProtectedProfile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <Layout>
+                <ProtectedEditProfile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/user-settings"
+            element={
+              <Layout>
+                <ProtectedUserSettings />
+              </Layout>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <Layout>
+                <ProtectedHelp />
+              </Layout>
+            }
+          />
+          <Route
+            path="/create-incident"
+            element={
+              <Layout>
+                <ProtectedCreateIncident />
+              </Layout>
+            }
+          />
+          <Route
+            path="/incident/:id"
+            element={
+              <Layout>
+                <ProtectedViewIncident />
+              </Layout>
+            }
+          />
 
-          <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
-          <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />
-          <Route path="/admin/rooms" element={<Layout><AdminRooms /></Layout>} />
-          <Route path="/admin/room/:id" element={<Layout><AdminRoom /></Layout>} />
-          
-          <Route path="*" element={<Layout><NotFound /></Layout>} />
+          <Route
+            path="/admin"
+            element={
+              <Layout>
+                <AdminAdminPanel />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/incidents"
+            element={
+              <Layout>
+                <AdminIncidents />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/rooms"
+            element={
+              <Layout>
+                <AdminRooms />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/room/:id"
+            element={
+              <Layout>
+                <AdminRoom />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/equipment"
+            element={
+              <Layout>
+                <EquipmentList />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/equipment/add"
+            element={
+              <Layout>
+                <AddEquipment />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/equipment/:id"
+            element={
+              <Layout>
+                <EquipmentItem />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="*"
+            element={
+              <Layout>
+                <NotFound />
+              </Layout>
+            }
+          />
         </Routes>
       </Router>
       <ToastContainer position="top-center" theme="colored" autoClose={4500} />
