@@ -2,7 +2,7 @@ import { Router, json } from "express";
 import { getPool } from "../../../database/getPool.js";
 import {
   searchRoomTypeOfSchema,
-  searchEquipmentSchema,
+  searchFiltersSchema,
 } from "../../schemas/searchSchemas.js";
 import { createError } from "../../../utils/error.js";
 
@@ -42,7 +42,7 @@ searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
   try {
     const { search, offset, limit, direction } = req.query;
 
-    const { error } = searchEquipmentSchema.validate({
+    const { error } = searchFiltersSchema.validate({
       search,
       offset,
       limit,

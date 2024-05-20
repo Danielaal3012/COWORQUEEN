@@ -34,6 +34,8 @@ import Admin from "./components/Admin.jsx";
 import { EquipmentList } from "./pages/EquipmentList.jsx";
 import { AddEquipment } from "./pages/AddEquipment.jsx";
 import { EquipmentItem } from "./pages/EquipmentItem.jsx";
+import { UsersListAdmin } from "./pages/UsersListAdmin.jsx";
+import { UserAdmin } from "./pages/UserAdmin.jsx";
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -191,7 +193,6 @@ const App = () => {
               </Layout>
             }
           />
-
           <Route
             path="/admin"
             element={
@@ -248,7 +249,23 @@ const App = () => {
               </Layout>
             }
           />
-
+          <Route
+            path="/admin/users"
+            element={
+              <Layout>
+                <UsersListAdmin />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/users/:id"
+            element={
+              <Layout>
+                <UserAdmin />
+              </Layout>
+            }
+          />
+          UserAdmin
           <Route
             path="*"
             element={

@@ -23,19 +23,25 @@ import { Label } from "@/components/UI/label.jsx";
 import { Button } from "@/components/UI/button.jsx";
 import { Pagination } from "@/components/Pagination.jsx";
 
-export const EquipmentList = () => {
+export function UsersListAdmin() {
   const { authState } = useContext(AuthContext);
-  const [equipmentList, setEquipmentList] = useState([]);
-  const [equipmentQueries, setEquipmentQueries] = useState({
+  const [usersList, setUsersList] = useState([]);
+  const [usersQueries, setUsersQueries] = useState({
     search: "",
     offset: 0,
     limit: 10,
     direction: "ASC",
   });
-  const { search, offset, limit, direction } = equipmentQueries;
+  const { search, offset, limit, direction } = usersQueries;
+
+  function FechaVisual({ date }) {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return <div>{new Date(date).toLocaleDateString("es-ES", options)}</div>;
+  }
+
   useEffect(() => {
     fetch(
-      `http://localhost:3000/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
+      `http://localhost:3000/admin/users?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
         method: "get",
         headers: {
@@ -46,42 +52,40 @@ export const EquipmentList = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        setEquipmentList(data.message);
+        setUsersList(data.message);
       })
       .catch((error) =>
         toast.error("Error al obtener los datos del equipamiento:", error)
       );
-  }, [equipmentQueries]);
+  }, [usersQueries]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEquipmentQueries({
-      ...equipmentQueries,
+    setUsersQueries({
+      ...usersQueries,
       [name]: value,
     });
   };
-
-  console.log("equipment list: ", equipmentList);
-
   return (
     <div className="flex flex-col">
-      <div className="flex">
+      <div className="flex gap-1.5">
         <Input
+          className="w-[400px]"
           type="search"
           name="search"
-          placeholder="Busca un equipamiento"
+          placeholder="Busca un usuario"
           onChange={handleChange}
         />
-        <Label>Artículos por página</Label>
+        <Label className="w-[150px]">Usuarios por página</Label>
         <Select
           onValueChange={(value) =>
-            setEquipmentQueries((prevState) => ({
+            setUsersQueries((prevState) => ({
               ...prevState,
               limit: value,
             }))
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-[75px]">
             <SelectValue placeholder="10" />
           </SelectTrigger>
           <SelectContent>
@@ -94,13 +98,13 @@ export const EquipmentList = () => {
         <Label>Orden</Label>
         <Select
           onValueChange={(value) =>
-            setEquipmentQueries((prevState) => ({
+            setUsersQueries((prevState) => ({
               ...prevState,
               direction: value,
             }))
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Ascendente" />
           </SelectTrigger>
           <SelectContent>
@@ -108,34 +112,45 @@ export const EquipmentList = () => {
             <SelectItem value="DESC">Descendente</SelectItem>
           </SelectContent>
         </Select>
-        <Button asChild>
-          <Link to="/admin/equipment/add">Añadir</Link>
-        </Button>
       </div>
 
       <Table className="w-fit">
-        <TableCaption>Lita del equipamiento</TableCaption>
+        <TableCaption>Lita de usuarios</TableCaption>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[200px]">Nombre de usuario</TableHead>
             <TableHead className="w-[200px]">Nombre</TableHead>
-            <TableHead className="w-[450px]">Descripción</TableHead>
+            <TableHead className="w-[200px]">Apellidos</TableHead>
+            <TableHead className="w-[200px]">email</TableHead>
+            <TableHead className="w-[50px]">Verificado</TableHead>
+            <TableHead className="w-[50px]">Rol</TableHead>
+            <TableHead className="w-[200px]">Creado</TableHead>
+            <TableHead className="w-[200px]">Última modificación</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {equipmentList && equipmentList.length > 0 ? (
-            equipmentList.map((equipment) => (
-              <TableRow key={equipment.id}>
+          {usersList && usersList.length > 0 ? (
+            usersList.map((user) => (
+              <TableRow key={user.id}>
                 <TableCell className="font-bold">
-                  <Link to={`/admin/equipment/${equipment.id}`}>
-                    {equipment.name}
-                  </Link>
+                  <Link to={`/admin/users/${user.id}`}>{user.username}</Link>
                 </TableCell>
-                <TableCell>{equipment.description}</TableCell>
+                <TableCell>{user.firstName ? user.firstName : "---"}</TableCell>
+                <TableCell>{user.lastName ? user.lastName : "---"}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.verified ? "Sí" : "No"}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>
+                  <FechaVisual fecha={user.createdAt} />
+                </TableCell>
+                <TableCell>
+                  <FechaVisual fecha={user.updatedAt} />
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell>No hay artículos</TableCell>
+              <TableCell>No hay usuarios</TableCell>
             </TableRow>
           )}
         </TableBody>
@@ -155,4 +170,4 @@ export const EquipmentList = () => {
       /> */}
     </div>
   );
-};
+}
