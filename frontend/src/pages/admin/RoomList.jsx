@@ -38,6 +38,7 @@ const AdminRoomList = () => {
         })
             .then((res) => res.json())
             .then((data) => {
+                
                 setRooms(data.message);
             })
             .catch((error) =>
@@ -46,8 +47,6 @@ const AdminRoomList = () => {
     }, []);
 
     console.log(rooms)
-
-
 
     return (
       <div className="flex flex-col w-full">

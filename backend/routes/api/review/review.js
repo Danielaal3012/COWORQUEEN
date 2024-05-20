@@ -238,3 +238,26 @@ reviewRouter.patch(
     }
   }
 );
+
+// Verificar si el usuario tiene una reserva que ya pasó la fecha y no ha hecho review
+
+reviewRouter.get("/review/check", authenticate, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const [reservations] = await pool.execute(
+      "SELECT * FROM reservations WHERE userId = ? AND checkin < CURRENT_DATE() AND id NOT IN (SELECT reservationId FROM reviews)",
+      [userId]
+    );
+    if (reservations.length === 0) {
+      return res.status(404).json({
+        message: "No hay reservas para hacer review",
+      });
+    }
+    res.status(200).json({
+      message: "Puede hacer review",
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+);

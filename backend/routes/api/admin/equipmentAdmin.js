@@ -15,8 +15,8 @@ const dbPool = getPool();
 
 export const equipmentAdminRouter = Router();
 
-equipmentAdminRouter.use(authenticate);
-equipmentAdminRouter.use(isAdmin);
+// equipmentAdminRouter.use(authenticate);
+// equipmentAdminRouter.use(isAdmin);
 
 // agregar equipos solo admin
 equipmentAdminRouter.post("/equipment/add", async (req, res, next) => {
@@ -80,8 +80,10 @@ equipmentAdminRouter.patch(
         message: `Producto ${name} se actualizo correctamente`,
       });
 
-      if (!updateEquipment)
+      if (!updateEquipment) {
+
         throw createError(401, "No se ha podido modificar el producto");
+      }
     } catch (err) {
       next(err);
     }
@@ -141,3 +143,30 @@ equipmentAdminRouter.get(
     }
   }
 );
+
+// Listar equipo por su id
+equipmentAdminRouter.get("/equipment/:equipmentId", async (req, res, next) => {
+  try {
+    const equipmentId = req.params.equipmentId;
+    const { error } = validateEquipmentId(equipmentId);
+
+    if (error) {
+      throw createError(400, "Datos de entrada no válidos");
+    }
+
+    const equipment = await dbPool.execute(
+      `SELECT * FROM equipment WHERE id=?`,
+      [equipmentId]
+    );
+
+    if (!equipment) {
+      throw createError(404, "No se ha encontrado el producto");
+    }
+
+    res.status(200).json(
+      equipment,
+    );
+  } catch (err) {
+    next(err);
+  }
+});

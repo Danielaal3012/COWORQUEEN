@@ -21,6 +21,6 @@ router.use(listIncidentsRouter);
 router.use(reservationRouter);
 router.use(reviewRouter);
 router.use(searchsRouter);
-//router.use(equipmentAdminRouter); // Hay un problema con la autenticación en este router
+router.use(equipmentAdminRouter); // Hay un problema con la autenticación en este router
 
 export default router;
