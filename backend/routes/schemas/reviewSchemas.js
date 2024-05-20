@@ -16,6 +16,10 @@ export const viewReviewByUserSchema = Joi.object({
   userId: Joi.string().required(),
 });
 
+export const viewReviewByReviewIdSchema = Joi.object({
+  reviewId: Joi.string().required(),
+});
+
 export const addReviewSchema = Joi.object({
   description: Joi.string().optional(),
   rate: Joi.number().integer().min(0).max(5).required(),

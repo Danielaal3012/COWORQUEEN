@@ -8,7 +8,6 @@ import Rating from "react-rating";
 import { useParams } from "react-router-dom";
 import ViewReview from "./ViewReview.jsx";
 
-
 function CreateReview() {
   const { authState } = useContext(AuthContext);
   const { reservationId } = useParams();
@@ -18,7 +17,7 @@ function CreateReview() {
     reservationId: reservationId,
     userId: authState.user.id,
   });
-  const [isReviewId, setIsReviewId] = useState();
+  const [isReviewId, setIsReviewId] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({...prevData, [name]: value }));
@@ -45,7 +44,6 @@ function CreateReview() {
         },
         body: JSON.stringify(formData),
       });
-      console.log(response);
       if (!response.ok) {
         toast.error(message);
       } else {
@@ -58,43 +56,40 @@ function CreateReview() {
     }
   };
 
+if (isReviewId === null) {
   return (
-      {!isReviewId ? (
-      <div className="flex flex-col w-full px-4 md:px-0">
-        <h2>Agregar una revisión</h2>
-        <div className="flex flex-col w-full gap-y-4">
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col my-4 w-fulljustify-normal gap-x-4">
-              <Label>Descripción:</Label>
-              <Textarea
-                type="text"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                />
-            </div>
-  
-            <div className="flex items-center my-4 gap-x-4">
-              <Label>Calificación:</Label>
-              <Rating
-                initialRating={formData.rate}
-                onChange={handleRateChange}
-                max={5}
-                />
-            </div>
-  
-            <Button type="submit" className="w-full">Enviar revisión</Button>
-          </form>
-          <ViewReview reservationId={reservationId} reviewId={isReviewId} />      
-          </div>
+    <div className="flex flex-col w-full px-4 md:px-0">
+    <h2>Agregar una revisión</h2>
+    <div className="flex flex-col w-full gap-y-4">
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col my-4 w-fulljustify-normal gap-x-4">
+          <Label>Descripción:</Label>
+          <Textarea
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            />
+        </div>
+
+        <div className="flex items-center my-4 gap-x-4">
+          <Label>Calificación:</Label>
+          <Rating
+            initialRating={formData.rate}
+            onChange={handleRateChange}
+            max={5}
+            />
+        </div>
+
+        <Button type="submit" className="w-full">Enviar revisión</Button>
+      </form>
       </div>
-  )
- : null }
-  ))
-  }
-
-
-
+  </div>
+  );
+} else {
+  return (
+<ViewReview reservationId={reservationId} reviewId={isReviewId} />
+  );
+}}
 
 export default CreateReview;
-

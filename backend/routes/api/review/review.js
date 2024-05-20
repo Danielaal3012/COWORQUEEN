@@ -11,6 +11,7 @@ import {
   addReviewSchema,
   deleteReviewSchema,
   updateReviewSchema,
+  viewReviewByReviewIdSchema,
 } from "../../schemas/reviewSchemas.js";
 import { createError } from "../../../utils/error.js";
 
@@ -225,30 +226,25 @@ reviewRouter.patch(
 );
 
 
-// Peticion para obtener el id de las reviews de una Reservaciòn
-
-reviewRouter.get('/review/reservation/:reservationId', 
-authenticate,
-//validateReviewId, 
-async (req, res,next) => {
-
+// Obtener detalles de una review por su id
+reviewRouter.get("/review/:reviewId", async (req, res, next) => {
   try {
-    const reservationId = req.params;
-
-    if (!reservationId) {
-      return res.status(400).send('Falta el parámetro reservationId');
+    const reviewId = req.params.reviewId;
+    const { error } = viewReviewByReviewIdSchema.validate({ reviewId });
+    if (error) {
+      throw createError(400, "Datos de entrada no válidos");
     }
-
-    const [result] = await pool.execute(
-      "SELECT * FROM reviews WHERE reservationId=? ", 
-      [reservationId]
+    const [review] = await pool.execute(
+      "SELECT * FROM reviews WHERE id = ?",
+      [reviewId]
     );
-    
+    if (!review[0]) {
+      throw createError(404, "Review no encontrada");
+    }
     res.status(200).json({
-      result
+      data: review[0],
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
-}
-);
+});

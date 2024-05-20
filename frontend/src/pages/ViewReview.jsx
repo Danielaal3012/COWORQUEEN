@@ -1,40 +1,15 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/auth-context.jsx";
-import { toast } from "react-toastify";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Rating from "react-rating";
 import { Button } from "@/components/UI/button.jsx";
 
-function ViewReview({reservationId, reviewId}) {
-  const location = useLocation(); // Usa useLocation para obtener la ubicación actual
+function ViewReview({reviewId}) {
   const { authState } = useContext(AuthContext);
   const [review, setReview] = useState({});
 
-  
-// useEffect(() => {
-//   const fetchReviewId = async () => {
-//     try {
-//       const response = await fetch(`http://localhost:3000/review/reservation/${reservationId}`, {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: authState.token,
-//         },
-//       });
-//       const data = await response.json();
-//       console.log(data);
-//       setReview(data.message);
-//     } catch (error) {
-//       console.error(error);
-//       toast.error("Error al cargar la reseña.");
-//     }
-//   };
-//       fetchReviewId();
-    
-//   }, [reviewId ]);
-
   useEffect(() => {
-    fetch(`http://localhost:3000/review/reservation/${reservationId}`, {
+    fetch(`http://localhost:3000/review/${reviewId}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: authState.token,
@@ -42,13 +17,13 @@ function ViewReview({reservationId, reviewId}) {
     })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-            setReview(data);
+            setReview(data.data);
         })
         .catch((error) =>
             console.error("Error al obtener los datos de la sala:", error)
         );
 }, [reviewId]);
+
 console.log(review);
   
   return (
@@ -56,10 +31,7 @@ console.log(review);
       <h2> Review </h2>
       <div className="flex flex-col w-full gap-y-4">
         <form>
-          <div className="flex flex-col my-4 w-full justify-normal gap-x-4">
-            <p>Username : {review.username || "No hay username disponible"}</p>
-          </div>
-          <div className="flex flex-col my-4 w-full justify-normal gap-x-4">
+          <div className="flex flex-col w-full my-4 justify-normal gap-x-4">
 
             <p>Description: {review.description || "No hay descripcion disponible"}</p>
           </div>
@@ -79,5 +51,4 @@ console.log(review);
   );
   } 
   
-
 export default ViewReview;
