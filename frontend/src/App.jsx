@@ -24,6 +24,8 @@ import Help from "./pages/Help.jsx";
 import CreateIncident from "./pages/CreateIncident.jsx";
 import ViewIncident from "./pages/ViewIncident.jsx";
 
+import CreateReservation from "./pages/reservations/CreateReservation.jsx";
+
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminIncidentList from "./pages/admin/IncidentList.jsx";
 import AdminRoomList from "./pages/admin/RoomList.jsx";
@@ -39,6 +41,7 @@ const ProtectedHelp = Protected(Help);
 const ProtectedUserSettings = Protected(UserSettings);
 const ProtectedCreateIncident = Protected(CreateIncident);
 const ProtectedViewIncident = Protected(ViewIncident);
+const ProtectedCreateReservation = Protected(CreateReservation);
 
 const AdminAdminPanel = Admin(AdminPanel);
 const AdminCreateRoom = Admin(CreateRoom);
@@ -72,6 +75,9 @@ const App = () => {
           <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
           <Route path="/review/add/:id" element={<Layout><ReviewUseForm /></Layout>} />
+
+          <Route path="/room/:id/reserve" element={<Layout><ProtectedCreateReservation /></Layout>} />
+
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
           <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />
           <Route path="/admin/rooms" element={<Layout><AdminRooms /></Layout>} />

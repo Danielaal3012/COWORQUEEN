@@ -46,7 +46,7 @@ reservationRouter.get(
 
 // Creación de reserva
 reservationRouter.post(
-  "/reservation/add/:roomId",
+  "/reservation/:roomId",
   authenticate,
   async (req, res, next) => {
     try {
