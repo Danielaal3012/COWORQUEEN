@@ -39,7 +39,7 @@ function EditReview({}) {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/review/edit/${reviewId}`, {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/review/edit/${reviewId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ function EditReview({}) {
   const handleDelete = async () => {
     try {
       
-      const response = await fetch(`http://localhost:3000/review/delete/${reviewId}`, {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/review/delete/${reviewId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

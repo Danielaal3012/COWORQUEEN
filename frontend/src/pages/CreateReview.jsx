@@ -36,7 +36,7 @@ function CreateReview() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/review/create/${reservationId}`, {
+      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/review/create/${reservationId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

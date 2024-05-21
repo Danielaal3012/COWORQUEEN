@@ -13,7 +13,7 @@ function ViewReview({reviewId}) {
 
 
   useEffect(() => {
-    fetch(`http://localhost:3000/review/${reviewId}`, {
+    fetch(`${import.meta.env.VITE_APP_HOST}/review/${reviewId}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: authState.token,
