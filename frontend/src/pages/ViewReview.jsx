@@ -40,11 +40,12 @@ console.log(review);
             <Rating
               initialRating={review.rate || 0} 
               max={5}
+              readonly={true}
             />
             {review.rate && <span>{review.rate.toFixed(1)}</span>}
           </div>
   
-          <Button> <Link to={`/edit-review/${reviewId}`}>Editar</Link></Button>
+          <Button> <Link to={`/review/edit/${reviewId}`}>Editar</Link></Button>
         </form>
       </div>
     </div>
