@@ -24,7 +24,7 @@ function ViewReview({reviewId}) {
             setReview(data.data);
         })
         .catch((error) =>
-            console.error("Error al obtener los datos de la sala:", error)
+            toast.error("Error al obtener los datos de la reserva:", error)
         );
 }, [reviewId]);
 
