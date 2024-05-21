@@ -20,7 +20,7 @@ function RegisterUserForm() {
       newData[key] = formData[key].trim();
     }
     setFormData(newData);
-  }
+  };
 
   const navigate = useNavigate();
 
@@ -70,7 +70,6 @@ function RegisterUserForm() {
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
-            required
           />
         </div>
 
@@ -81,7 +80,6 @@ function RegisterUserForm() {
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            required
           />
         </div>
 

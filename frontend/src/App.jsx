@@ -25,6 +25,14 @@ import CreateIncident from "./pages/CreateIncident.jsx";
 import ViewIncident from "./pages/ViewIncident.jsx";
 
 import CreateReservation from "./pages/reservations/CreateReservation.jsx";
+import ReviewsContainer from './routes/ReviewsContainer'
+
+
+import { EquipmentList } from "./pages/EquipmentList.jsx";
+import { AddEquipment } from "./pages/AddEquipment.jsx";
+import { EquipmentItem } from "./pages/EquipmentItem.jsx";
+import { UsersListAdmin } from "./pages/UsersListAdmin.jsx";
+import { UserAdmin } from "./pages/UserAdmin.jsx";
 
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminIncidentList from "./pages/admin/IncidentList.jsx";
@@ -33,8 +41,6 @@ import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
-
-import ReviewsContainer from './routes/ReviewsContainer'
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -52,13 +58,12 @@ const AdminIncidents = Admin(AdminIncidentList);
 const AdminRooms = Admin(AdminRoomList);
 const AdminRoom = Admin(Room);
 
-
 const App = () => {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/register" element={<Layout><Register /></Layout>} />
           <Route path="/login" element={<Layout><Login /></Layout>} />
           <Route path="/validate" element={<Layout><ValidateUser /></Layout>} />
@@ -73,12 +78,51 @@ const App = () => {
           <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
           <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
           <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
-          <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
+          <Route path="/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
-          
           <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
-          <Route path="/room/:id/reserve" element={<Layout><ProtectedCreateReservation /></Layout>} />
 
+
+          <Route
+            path="/admin/equipment"
+            element={
+              <Layout>
+                <EquipmentList />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/equipment/add"
+            element={
+              <Layout>
+                <AddEquipment />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/equipment/:id"
+            element={
+              <Layout>
+                <EquipmentItem />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <Layout>
+                <UsersListAdmin />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/users/:id"
+            element={
+              <Layout>
+                <UserAdmin />
+              </Layout>
+            }
+          />
 
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
           <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />

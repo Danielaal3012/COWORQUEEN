@@ -46,7 +46,7 @@ const AdminRoomList = () => {
             );
     }, []);
 
-    console.log(rooms)
+  console.log(rooms);
 
     return (
       <div className="flex flex-col w-full">

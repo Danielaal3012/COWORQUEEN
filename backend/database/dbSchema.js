@@ -103,7 +103,6 @@ export async function dbSchema(db) {
 	  id CHAR(36) NOT NULL PRIMARY KEY,
     name VARCHAR(16) UNIQUE NOT NULL,
 	  description TEXT NOT NULL,
-    inventory TINYINT UNSIGNED NOT NULL,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME,
     deletedAt DATETIME
