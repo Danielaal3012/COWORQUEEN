@@ -11,6 +11,7 @@ import {
   addReviewSchema,
   deleteReviewSchema,
   updateReviewSchema,
+  viewReviewByReviewIdSchema,
 } from "../../schemas/reviewSchemas.js";
 import { createError } from "../../../utils/error.js";
 
@@ -19,7 +20,7 @@ const pool = getPool();
 export const reviewRouter = Router();
 
 // Ver reviews
-reviewRouter.get("/reviews", async (req, res, next) => {
+reviewRouter.get("/reviews/list", async (req, res, next) => {
   try {
     const [reviews] = await pool.execute(
       "SELECT reviews.id, reviews.rate , reviews.description, reviews.reservationId FROM reviews"
@@ -84,6 +85,7 @@ reviewRouter.get("/reviews/by-roomId/:roomId", async (req, res, next) => {
 // Listado de reviews por reserva
 reviewRouter.get(
   "/reviews/by-reservationId/:reservationId",
+  authenticate,
   async (req, res, next) => {
     try {
       const reservationId = req.params.reservationId;
@@ -107,25 +109,8 @@ reviewRouter.get(
   }
 );
 
-// Ver review por id
-reviewRouter.get("/review/:reviewId", async (req, res, next) => {
-  try {
-    const reviewId = req.params.reviewId;
-    const { error } = viewReviewSchema.validate({ reviewId });
-    if (error) {
-      throw createError(400, "Datos de entrada no válidos");
-    }
-    const review = await validateReviewId(reviewId);
-    res.status(200).json({
-      message: review,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Agregar review
-reviewRouter.post('/review/add/:reservationId',
+//Crear review
+reviewRouter.post('/review/create/:reservationId',
  authenticate, 
  async (req, res, next) => {
 const { description, rate} = req.body;
@@ -169,14 +154,15 @@ const { error } = addReviewSchema.validate({
     if (!reservationCheck.reservationCheckin) {
       throw createError(400, "Reserva no utilizada");
     }
-
+    const reviewId = crypto.randomUUID()
     await pool.execute(
       "INSERT INTO reviews(id, rate, description, reservationId) VALUES (?,?,?,?)",
-      [crypto.randomUUID(), rate, description, reservationId]
+      [reviewId, rate, description, reservationId]
     );
 
     res.status(201).json({
-      message: "Review creada correctamente",
+    message: "Review creada correctamente",
+    id: reviewId,
     });
   } catch (err) {
     next(err);
@@ -185,7 +171,7 @@ const { error } = addReviewSchema.validate({
 
 // Borrar review
 reviewRouter.delete(
-  "/review/:reviewId",
+  "/review/delete/:reviewId",
   authenticate,
   async (req, res, next) => {
     try {
@@ -207,7 +193,7 @@ reviewRouter.delete(
 
 // Editar review
 reviewRouter.patch(
-  "/review/:reviewId",
+  "/review/edit/:reviewId",
   authenticate,
   async (req, res, next) => {
     try {
@@ -238,6 +224,30 @@ reviewRouter.patch(
     }
   }
 );
+
+
+// Obtener detalles de una review por su id
+reviewRouter.get("/review/:reviewId", async (req, res, next) => {
+  try {
+    const reviewId = req.params.reviewId;
+    const { error } = viewReviewByReviewIdSchema.validate({ reviewId });
+    if (error) {
+      throw createError(400, "Datos de entrada no válidos");
+    }
+    const [review] = await pool.execute(
+      "SELECT * FROM reviews WHERE id = ?",
+      [reviewId]
+    );
+    if (!review[0]) {
+      throw createError(404, "Review no encontrada");
+    }
+    res.status(200).json({
+      data: review[0],
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Verificar si el usuario tiene una reserva que ya pasó la fecha y no ha hecho review
 

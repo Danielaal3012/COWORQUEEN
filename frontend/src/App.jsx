@@ -33,7 +33,8 @@ import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
-import ReviewUseForm from "./pages/Review.jsx";
+
+import ReviewsContainer from './routes/ReviewsContainer'
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -57,7 +58,7 @@ const App = () => {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Layout><Register /></Layout>} />
           <Route path="/login" element={<Layout><Login /></Layout>} />
           <Route path="/validate" element={<Layout><ValidateUser /></Layout>} />
@@ -74,9 +75,10 @@ const App = () => {
           <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
           <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
-          <Route path="/review/add/:id" element={<Layout><ReviewUseForm /></Layout>} />
-
+          
+          <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
           <Route path="/room/:id/reserve" element={<Layout><ProtectedCreateReservation /></Layout>} />
+
 
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
           <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />
