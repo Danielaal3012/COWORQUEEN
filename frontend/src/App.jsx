@@ -83,14 +83,7 @@ const App = () => {
           <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
 
 
-          <Route
-            path="/admin/equipment"
-            element={
-              <Layout>
-                <EquipmentList />
-              </Layout>
-            }
-          />
+          <Route path="/admin/equipment" element={<Layout><EquipmentList /></Layout>}/>
           <Route
             path="/admin/equipment/add"
             element={
