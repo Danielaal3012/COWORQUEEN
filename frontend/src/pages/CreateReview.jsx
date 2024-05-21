@@ -52,7 +52,7 @@ function CreateReview() {
       toast.success("Reseña creada exitosamente")
       }
     } catch (error) {
-      toast.error("Ocurrió un error, intenta de nuevo.");
+      toast.error("La review de esta reserva ya existe");
     }
   };
 

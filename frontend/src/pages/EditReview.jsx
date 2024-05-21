@@ -6,11 +6,13 @@ import { useParams } from "react-router-dom";
 import { Label } from "@/components/UI/label.jsx";
 import { Textarea } from "@/components/UI/textarea.jsx";
 import Rating from "react-rating";
+import { useNavigate } from 'react-router-dom';
 
 function EditReview({}) {
   const { authState } = useContext(AuthContext);
   const [review, setReview] = useState({});
   const { reviewId } = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     reviewId: reviewId,
@@ -32,6 +34,10 @@ function EditReview({}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.description ||!formData.rate) {
+      toast.error("Revisa los campos obligatorios");
+      return;
+    }
     try {
       const response = await fetch(`http://localhost:3000/review/edit/${reviewId}`, {
         method: "PATCH",
@@ -46,10 +52,32 @@ function EditReview({}) {
       } else {
         toast.success("Reseña actualizada exitosamente");
       }
+      navigate(`/reviews/`);
     } catch (error) {
       toast.error("Ocurrió un error, intenta de nuevo.");
     }
   };
+  
+  const handleDelete = async () => {
+    try {
+      
+      const response = await fetch(`http://localhost:3000/review/delete/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authState.token,
+        },
+      });
+      if (!response.ok) {
+        toast.error("Error al eliminar la reseña");
+      } else {
+        toast.success("Reseña eliminada exitosamente");
+      }
+    } catch (error) {
+      toast.error("Ocurrió un error, intenta de nuevo.");
+    }
+  };
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -72,6 +100,8 @@ function EditReview({}) {
               />
           </div>
       <Button type="submit">Actualizar Reseña</Button>
+      <Button type="button" onClick={handleDelete}>Borrar</Button> {/* Botón para borrar */}
+
     </form>
   );
 }

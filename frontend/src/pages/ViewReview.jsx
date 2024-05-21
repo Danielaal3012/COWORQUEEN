@@ -3,10 +3,14 @@ import { AuthContext } from "../auth/auth-context.jsx";
 import { Link } from "react-router-dom";
 import Rating from "react-rating";
 import { Button } from "@/components/UI/button.jsx";
+import { toast } from "react-toastify";
+
+
 
 function ViewReview({reviewId}) {
   const { authState } = useContext(AuthContext);
   const [review, setReview] = useState({});
+
 
   useEffect(() => {
     fetch(`http://localhost:3000/review/${reviewId}`, {
@@ -23,6 +27,7 @@ function ViewReview({reviewId}) {
             console.error("Error al obtener los datos de la sala:", error)
         );
 }, [reviewId]);
+
 
 console.log(review);
   
@@ -44,7 +49,6 @@ console.log(review);
             />
             {review.rate && <span>{review.rate.toFixed(1)}</span>}
           </div>
-  
           <Button> <Link to={`/review/edit/${reviewId}`}>Editar</Link></Button>
         </form>
       </div>
