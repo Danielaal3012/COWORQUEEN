@@ -1,37 +1,12 @@
-import { Button } from "@/components/UI/button";
-import { Link } from "react-router-dom";
+import React from 'react';
 
-function Home() {
+const HomePage = () => {
   return (
-    <div className="flex flex-coljustify-center">
-      <section className="flex flex-col mt-8 gap-y-4">
-        {/* <Button asChild>
-          <Link to="/register">Registro</Link>
-        </Button> */}
-
-        {/* <Button asChild>
-          <Link to="/validate">Validar usuario</Link>
-        </Button> */}
-
-        {/* <Button asChild>
-          <Link to="/reset-password">Restablecer contraseña</Link>
-        </Button> */}
-
-        {/* <Button asChild>
-          <Link to="/create-room">Crear habitación</Link>
-        </Button>
-
-        <Button asChild>
-          <Link to="/room-list">Lista de habitaciones</Link>
-        </Button>
-
-        <Button asChild>
-          <Link to="/admin">Panel de administración</Link>
-        </Button> */}
-        
-      </section>
+    <div>
+      <h1>Bienvenido a nuestra aplicación</h1>
+      <p>Aquí puedes encontrar información sobre nuestro producto o servicio.</p>
     </div>
   );
-}
+};
 
-export default Home;
+export default HomePage;
