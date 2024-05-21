@@ -1,5 +1,4 @@
 import CreateReview from "@/pages/CreateReview.jsx";
-import DeleteReview from "@/pages/DeleteReview.jsx";
 import EditReview from "@/pages/EditReview.jsx";
 import ViewReview from "@/pages/ViewReview.jsx";
 import { Route, Routes } from "react-router-dom";
@@ -11,7 +10,6 @@ export default function ReviewsContainer() {
         <Route path="/:reviewId" element={<ViewReview/>} />
         <Route path="/create/:reservationId" element={<CreateReview />} />
         <Route path="/edit/:reviewId" element={<EditReview/>} />
-        <Route path="/delete/:reviewId" element={<DeleteReview/>} />
 
         <Route path=":reviewId/reservation/:reservationId" element={<ViewReview />} />
       </Routes>
