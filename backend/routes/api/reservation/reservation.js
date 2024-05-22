@@ -128,29 +128,27 @@ reservationRouter.post(
 
 // Cancelación reserva
 reservationRouter.delete(
-  "/rooms/:roomId/reservations/:reservationId",
+  "/reservation/:reservationId",
   async (req, res, next) => {
     try {
-      const roomId = req.params.roomId;
       const reservationId = req.params.reservationId;
       const { error } = deleteReservationSchema.validate({
-        roomId,
         reservationId,
       });
+      
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
-      const [reservation] = await pool.execute(
-        `SELECT * FROM reservations WHERE id = ? AND roomId = ?`,
-        [reservationId, roomId]
+
+      const [result] = await pool.execute(
+        `DELETE FROM reservations WHERE id = ? AND reservationCheckin = 0`,
+        [reservationId]
       );
-      if (reservation.length === 0) {
-        throw createError(404, "Reserva no encontrada");
+
+      if (result.affectedRows === 0) {
+        throw createError(404, "Reserva no encontrada o check-in no realizado");
       }
-      await pool.execute(
-        `DELETE FROM reservations WHERE id = ? AND roomId = ?`,
-        [reservationId, roomId]
-      );
+
       res.status(200).json({
         message: "Reserva cancelada con éxito",
       });
@@ -167,7 +165,7 @@ reservationRouter.get(
   async (req, res, next) => {
     try {
       const reservationId = req.params.reservationId;
-      const [reservation] = await pool.execute(
+      const [[reservation]] = await pool.execute(
         `SELECT * FROM reservations WHERE id = ?`,
         [reservationId]
       );

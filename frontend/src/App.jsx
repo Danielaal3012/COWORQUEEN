@@ -34,6 +34,9 @@ import { EquipmentItem } from "./pages/EquipmentItem.jsx";
 import { UsersListAdmin } from "./pages/UsersListAdmin.jsx";
 import { UserAdmin } from "./pages/UserAdmin.jsx";
 
+
+import ViewReservation from "./pages/reservations/Reservation.jsx";
+
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminIncidentList from "./pages/admin/IncidentList.jsx";
 import AdminRoomList from "./pages/admin/RoomList.jsx";
@@ -49,6 +52,7 @@ const ProtectedUserSettings = Protected(UserSettings);
 const ProtectedCreateIncident = Protected(CreateIncident);
 const ProtectedViewIncident = Protected(ViewIncident);
 const ProtectedCreateReservation = Protected(CreateReservation);
+const ProtectedViewReservation = Protected(ViewReservation);
 
 const AdminAdminPanel = Admin(AdminPanel);
 const AdminCreateRoom = Admin(CreateRoom);
@@ -81,6 +85,8 @@ const App = () => {
           <Route path="/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
           <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
+          <Route path="/create-reservation" element={<Layout><ProtectedCreateReservation /></Layout>} />
+          <Route path="/reservation/:id" element={<Layout><ProtectedViewReservation /></Layout>} />
 
 
           <Route path="/admin/equipment" element={<Layout><EquipmentList /></Layout>}/>

@@ -68,7 +68,7 @@ export function UsersListAdmin() {
   };
   return (
     <div className="flex flex-col">
-      <div className="flex gap-1.5">
+      <div className="flex gap-1.5 items-center">
         <Input
           className="w-[400px]"
           type="search"
