@@ -70,7 +70,7 @@ const ViewReservation = () => {
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <Button variant="outline">Cancelar reserva</Button>
-                    </AlertDialogTrigger>
+                </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>

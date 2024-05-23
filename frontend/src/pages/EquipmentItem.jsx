@@ -98,14 +98,14 @@ export function EquipmentItem() {
 
   const showConfirmationNotification = () => {
     toast(
-      <div className="flex flex-col gap-3 my-5 ml-5">
+      <div className="flex flex-col w-full gap-3 my-5 ml-5">
         <p>
           <b>¿Deseas eliminar el artículo?</b>
         </p>
 
         <p className="text-sm">Esta acción será permanente</p>
 
-        <div className="flex justify-end gap-2 px-4 md:px-0 mt-5">
+        <div className="flex justify-end gap-2 px-4 mt-5 md:px-0">
           <Button onClick={() => toast.dismiss()}>Rechazar</Button>
           <Button
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -122,7 +122,7 @@ export function EquipmentItem() {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {equipmentData && (
         <div className="flex flex-col w-full p-4 ">
           <div className="flex justify-between px-4 md:px-0">

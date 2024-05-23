@@ -18,11 +18,8 @@ const CreateIncident = () => {
     const { id } = useParams();
     const reservationId = id;
     const host = import.meta.env.VITE_APP_HOST;
-
     const [reservation, setReservation] = useState(null)
-
     const [equipment, setEquipment] = useState([]);
-
     const [incident, setIncident] = useState({
         roomId: '',
         userId: authState.user.id,
@@ -33,7 +30,7 @@ const CreateIncident = () => {
     useEffect(() => {
         const fetchReservation = async () => {
             try {
-                const response = await fetch(`${host}/reservations/by-reservationId/${reservationId}`, {
+                const response = await fetch(`${host}/reservations/by-reservationId/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: authState.token
@@ -54,39 +51,11 @@ const CreateIncident = () => {
                  }));
 
             } catch (error) {
-                console.error('Error loading reservation:', error);
+                console.error('Error al cargar la reserva:', error);
             }
         }
         fetchReservation();
-    }, [reservationId, authState.token]);
-
-
-    //  useEffect(() => {
-    //      const fetchEquipment = async () => {
-    //          try {
-    //              const response = await fetch(`${host}/rooms/${reservation.roomId}/equipment`, {
-    //                  method: 'GET',
-    //                  headers: {
-    //                      'Content-Type': 'application/json',
-    //                      Authorization: authState.token
-    //                  }
-    //              });
-
-    //              if (!response.ok) {
-    //                  throw new Error('No se han podido cargar los equipos');
-    //              }
-
-    //              console.log(response)
-
-    //              const data = await response.json();
-    //              setEquipment(data.equipment);
-            
-    //          } catch (error) {
-    //              console.error('Error loading equipment:', error);
-    //      }
-    //      }
-    //  fetchEquipment();
-    //  }, [reservation])
+    }, [id, authState.token]);
 
      useEffect(() => {
       fetch(`${host}/rooms/${reservation?.roomId}/equipment`, {
@@ -142,7 +111,7 @@ const CreateIncident = () => {
     }
 
    
-    console.log(reservation.roomId)
+    console.log(reservation?.roomId)
 
     return (
       <>
