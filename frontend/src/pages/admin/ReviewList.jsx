@@ -19,7 +19,7 @@ const AdminReviewList = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_APP_HOST}/reviews`, {
+    fetch(`${host}/reviews`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: authState.token,

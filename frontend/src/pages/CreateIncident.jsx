@@ -34,7 +34,6 @@ const CreateIncident = () => {
         const fetchReservation = async () => {
             try {
                 const response = await fetch(`${host}/reservations/by-reservationId/${reservationId}`, {
-                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: authState.token
@@ -47,7 +46,8 @@ const CreateIncident = () => {
 
                 const data = await response.json();
                 console.log(data);
-                setReservation(data.reservation[0]);
+                setReservation(data.reservation);
+               
                  setIncident(prevIncident => ({
                      ...prevIncident,
                      roomId: reservation?.roomId
@@ -61,32 +61,48 @@ const CreateIncident = () => {
     }, [reservationId, authState.token]);
 
 
-     useEffect(() => {
-         const fetchEquipment = async () => {
-             try {
-                 const response = await fetch(`${host}/rooms/${reservation.roomId}/equipment`, {
-                     method: 'GET',
-                     headers: {
-                         'Content-Type': 'application/json',
-                         Authorization: authState.token
-                     }
-                 });
+    //  useEffect(() => {
+    //      const fetchEquipment = async () => {
+    //          try {
+    //              const response = await fetch(`${host}/rooms/${reservation.roomId}/equipment`, {
+    //                  method: 'GET',
+    //                  headers: {
+    //                      'Content-Type': 'application/json',
+    //                      Authorization: authState.token
+    //                  }
+    //              });
 
-                 if (!response.ok) {
-                     throw new Error('No se han podido cargar los equipos');
-                 }
+    //              if (!response.ok) {
+    //                  throw new Error('No se han podido cargar los equipos');
+    //              }
 
-                 const data = await response.json();
-                 setEquipment(data.equipment);
+    //              console.log(response)
+
+    //              const data = await response.json();
+    //              setEquipment(data.equipment);
             
-             } catch (error) {
-                 console.error('Error loading equipment:', error);
-         }
-         }
-     fetchEquipment();
-     }, [reservation])
+    //          } catch (error) {
+    //              console.error('Error loading equipment:', error);
+    //      }
+    //      }
+    //  fetchEquipment();
+    //  }, [reservation])
 
-     console.log(equipment)
+     useEffect(() => {
+      fetch(`${host}/rooms/${reservation?.roomId}/equipment`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authState.token,
+        },
+      })
+        .then((res) => res.json())
+        .then((body) => {
+          setEquipment(body.equipment);
+        })
+        .catch((error) =>
+          console.error("Error al obtener los datos de las reseñas:", error)
+        );
+    }, [reservation]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -105,7 +121,7 @@ const CreateIncident = () => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_APP_HOST}/:roomId/incidents/add`, {
+            const response = await fetch(`${host}/${reservation.roomId}/incidents/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -125,7 +141,8 @@ const CreateIncident = () => {
         }
     }
 
-    console.log(incident)
+   
+    console.log(reservation.roomId)
 
     return (
       <>
@@ -136,7 +153,7 @@ const CreateIncident = () => {
               <Label>Descripción</Label>
               <Textarea
                 name="description"
-                value={incident.description}
+                value={incident?.description}
                 onChange={handleChange}
                 placeholder="Describe el problema durante tu reserva"
                 required
@@ -153,7 +170,7 @@ const CreateIncident = () => {
                   <SelectValue placeholder="Selecciona el equipo" />
                 </SelectTrigger>
                 <SelectContent>
-                    {equipment.map((equip) => (
+                    {equipment?.map((equip) => (
                         <SelectItem key={equip.id} value={equip.id}>
                             {equip.name}
                         </SelectItem>

@@ -117,3 +117,33 @@ roomRouter.get(
     }
   }
 );
+
+// Listado del equipo de un espacio
+roomRouter.get(
+  "/rooms/:roomId/equipment",
+  authenticate,
+  async (req, res, next) => {
+    try {
+      const roomId = req.params.roomId;
+      // const { error } = viewRoomSchema.validate({ roomId });
+      // if (error) {
+      //   throw createError(400, "Datos de entrada no válidos");
+      // }
+
+      // Consultamos la tabla intermediaria equipmentRooms para obtener todo el equipo de una sala
+      const [equipment] = await dbPool.execute(
+        `SELECT equipment.id, equipment.name, equipment.description FROM equipmentRooms JOIN equipment ON equipmentRooms.equipmentId = equipment.id WHERE equipmentRooms.roomId = ?`,
+        [roomId]
+      );
+
+      if (!equipment) {
+        throw createError(404, "Equipo no encontrado");
+      }
+      res.status(200).json({
+        equipment,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
