@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "@/auth/auth-context";
 import { Calendar } from "@/components/UI/calendar";
@@ -19,16 +19,27 @@ const CreateReservation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [reservationData, setReservationData] = useState({
-    roomId: id,
-    reservationDateBeg: "",
-    reservationDateEnd: "",
-  });
-
   const currentDate = new Date();
+  const [room, setRoom] = useState(null);
   const [date, setDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+
+  useEffect(() => {
+    fetch(`${host}/room/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authState.token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setRoom(data.message);
+      })
+      .catch((error) =>
+        console.error("Error al obtener los datos del espacio:", error)
+      );
+  }, [id]);
 
   const handleDateSelect = (selectedDate) => {
     if (selectedDate) {
@@ -49,14 +60,17 @@ const CreateReservation = () => {
     setEndTime(selectedTime);
   };
 
-
   let hours = Array.from({ length: 15 }, (_, i) => i + 8);
 
   if (currentDate.getDate() === date?.getDate()) {
      hours = hours.filter(hour => hour > currentDate.getHours())
   }
 
+  //revisar despues de las 22h no muestra selects
+
   // Efecto para cargar las franjas horarias disponibles de un roomId en una reserva, en caso de estar lleno, deshabilitar el día/hora del calendario y darle las demás opciones al usuario
+
+  //cancelar segun el tipo de sala
 
   const formatDateTime = (date, time) => {
     const year = date.getFullYear();
@@ -70,7 +84,7 @@ const CreateReservation = () => {
     e.preventDefault();
 
     const formattedReservationData = {
-      ...reservationData,
+      roomId: id,
       reservationDateBeg: formatDateTime(date, startTime),
       reservationDateEnd: formatDateTime(date, endTime),
     }
@@ -98,8 +112,11 @@ const CreateReservation = () => {
     }
   }
 
+  console.log()
+
   return (
-    <>
+    <div className="relative flex flex-col justify-center p-4 lg:justify-normal">
+      <h2>{room?.name}</h2>
       <Calendar
         mode="single"
         locale={es}
@@ -107,8 +124,10 @@ const CreateReservation = () => {
         fromDate={new Date()}
         toMonth={new Date(currentDate.getFullYear(), currentDate.getMonth() + 3)}
         onSelect={handleDateSelect}
-        className="border rounded-md h-fit"
+        className="mx-auto my-4 border rounded-md h-fit w-fit"
       />
+
+<section className="flex flex-row justify-between my-4 lg:flex-col">
 
       <Select onValueChange={handleStartTimeSelect} disabled={date === null}>
         <SelectTrigger className="w-[175px]">
@@ -148,8 +167,9 @@ const CreateReservation = () => {
             })}
         </SelectContent>
       </Select>
-      <Button onClick={handleSubmit}>Reservar</Button>
-    </>
+      </section>
+      <Button onClick={handleSubmit} className="sticky mx-auto bottom-4 w-fit">Confirmar</Button>
+    </div>
   );
 };
 

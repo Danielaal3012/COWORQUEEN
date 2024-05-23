@@ -39,6 +39,7 @@ import { UserAdmin } from "./pages/UserAdmin.jsx";
 import AdminReservationList from "./pages/admin/ReservationList.jsx";
 
 import ViewReservation from "./pages/reservations/Reservation.jsx";
+import MyReservations from "./pages/reservations/MyReservations.jsx";
 
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminIncidentList from "./pages/admin/IncidentList.jsx";
@@ -56,6 +57,7 @@ const ProtectedCreateIncident = Protected(CreateIncident);
 const ProtectedViewIncident = Protected(ViewIncident);
 const ProtectedCreateReservation = Protected(CreateReservation);
 const ProtectedViewReservation = Protected(ViewReservation);
+const ProtectedMyReservations = Protected(MyReservations);
 
 const AdminAdminPanel = Admin(AdminPanel);
 const AdminCreateRoom = Admin(CreateRoom);
@@ -85,12 +87,16 @@ const App = () => {
           <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
           <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
           <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
+          <Route path="/reservations" element={<Layout><ProtectedMyReservations /></Layout>} />
           <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
 
           <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
 
-          <Route path="/create-reservation" element={<Layout><ProtectedCreateReservation /></Layout>} />
+         
+         <Route path="/create-reservation" element={<Layout><ProtectedCreateReservation /></Layout>} />
+         <Route path="/room/:id/reserve" element={<Layout><ProtectedCreateReservation /></Layout>} />
+
           <Route path="/reservation/:id" element={<Layout><ProtectedViewReservation /></Layout>} />
 
 

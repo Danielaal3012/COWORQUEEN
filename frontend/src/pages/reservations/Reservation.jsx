@@ -69,7 +69,7 @@ const ViewReservation = () => {
             <div className="flex items-center gap-x-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button variant="outline">Cancelar reserva</Button>
+                  <Button variant="outline">Cancelar reserva</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -82,12 +82,10 @@ const ViewReservation = () => {
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                     <AlertDialogAction
-                      asChild
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={handleReservationCancel}
                     >
-                      <Button onClick={handleReservationCancel}>
-                        Sí, estoy seguro
-                      </Button>
+                      Sí, estoy seguro
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
