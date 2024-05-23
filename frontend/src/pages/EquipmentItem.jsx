@@ -33,24 +33,20 @@ export function EquipmentItem() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${host}/admin/equipment/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authState.token,
-          },
-        });
-        const data = await res.json();
-        setEquipmentData(data.message);
-      } catch (error) {
-        toast.error("No se ha podido cargar el equipo", error);
-      }
-    };
-
-    fetchData();
+    fetch(`${host}/admin/equipment/${id}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authState.token,
+      },
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        setEquipmentData(body.data);
+      })
+      .catch((error) => toast.error("No se ha podido cargar el equipo", error));
   }, []);
-
+  console.log({ equipmentData });
   async function handleSaveChanges(e) {
     e.preventDefault();
 
@@ -101,15 +97,24 @@ export function EquipmentItem() {
   };
 
   const showConfirmationNotification = () => {
-    toast.info(
-      <>
-        <p>¿Deseas eliminar el artículo?</p>
+    toast(
+      <div className="flex flex-col gap-3 my-5 ml-5">
+        <p>
+          <b>¿Deseas eliminar el artículo?</b>
+        </p>
 
-        <div className="flex justify-between px-4 md:px-0">
-          <Button onClick={() => handleIncidentDeletion()}>Aceptar</Button>
+        <p className="text-sm">Esta acción será permanente</p>
+
+        <div className="flex justify-end gap-2 px-4 md:px-0 mt-5">
           <Button onClick={() => toast.dismiss()}>Rechazar</Button>
+          <Button
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={() => handleIncidentDeletion()}
+          >
+            Sí, estoy seguro
+          </Button>
         </div>
-      </>,
+      </div>,
       {
         autoClose: false,
       }

@@ -81,7 +81,6 @@ equipmentAdminRouter.patch(
       });
 
       if (!updateEquipment) {
-
         throw createError(401, "No se ha podido modificar el producto");
       }
     } catch (err) {
@@ -130,17 +129,18 @@ equipmentAdminRouter.get(
     try {
       const equipmentId = req.params.equipmentId;
       const { error } = validateEquipmentId(equipmentId);
-
+      console.log(error);
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
 
       const [[equipment]] = await dbPool.execute(
-        `SELECT * FROM equipment WHERE id=?`,
+        `SELECT * FROM equipment WHERE id = ?`,
         [equipmentId]
       );
+      console.log(equipment);
 
-      res.status(200).json({ message: equipment });
+      res.status(200).json({ data: equipment });
     } catch (err) {
       next(err);
     }

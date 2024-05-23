@@ -45,9 +45,7 @@ export function UserAdmin() {
       .then((body) => {
         setUserDetail(body.data);
       })
-      .catch((error) =>
-        toast.error("Error al obtener los datos del equipamiento:", error)
-      );
+      .catch(() => toast.error("Error al obtener los datos del usuario"));
   }, []);
 
   const onChangeCheck = () => {
@@ -113,13 +111,22 @@ export function UserAdmin() {
   };
 
   const showConfirmationNotification = () => {
-    toast.warn(
-      <div className="flex flex-col gap-3">
-        <p>¿Deseas eliminar el usuario?</p>
+    toast(
+      <div className="flex flex-col gap-3 my-5 ml-5">
+        <p>
+          <b>¿Deseas eliminar el usuario?</b>
+        </p>
 
-        <div className="flex justify-between px-4 md:px-0">
-          <Button onClick={() => handleIncidentDeletion()}>Aceptar</Button>
+        <p className="text-sm">Esta acción será permanente</p>
+
+        <div className="flex justify-end gap-2 px-4 md:px-0 mt-5">
           <Button onClick={() => toast.dismiss()}>Rechazar</Button>
+          <Button
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={() => handleIncidentDeletion()}
+          >
+            Sí, estoy seguro
+          </Button>
         </div>
       </div>,
       {
