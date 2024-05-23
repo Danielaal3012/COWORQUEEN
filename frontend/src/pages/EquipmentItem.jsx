@@ -1,170 +1,228 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../auth/auth-context";
 import { Input } from "@/components/UI/Input";
 import { Button } from "@/components/UI/button.jsx";
-import { Textarea } from "@/components/UI/textarea.jsx";
-import { toast } from "react-toastify";
-import { Link, useParams } from "react-router-dom";
 import { Label } from "@/components/UI/label.jsx";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/UI/table";
+import { Textarea } from "@/components/UI/textarea.jsx";
+import { useContext, useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../auth/auth-context";
 
-export async function EquipmentItem() {
+export function EquipmentItem() {
+  const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
-  const [equipmentData, setEquipmentData] = useState([]);
+  const [equipmentData, setEquipmentData] = useState({
+    id: "",
+    name: "",
+    description: "",
+    createdAt: "",
+    updatedAt: "",
+    deletedAt: "",
+  });
+  const [editing, setEditing] = useState(false);
   const { id } = useParams();
-  console.log(id);
+  const host = import.meta.env.VITE_APP_HOST;
 
-  function FechaVisual({ date }) {
-    const opciones = { day: "numeric", month: "long", year: "numeric" };
-    return <div>{new Date(date).toLocaleDateString("es-ES", opciones)}</div>;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEquipmentData({
+      ...equipmentData,
+      [name]: value,
+    });
+  };
+
+  useEffect(() => {
+    fetch(`${host}/admin/equipment/${id}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authState.token,
+      },
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        setEquipmentData(body.data);
+      })
+      .catch((error) => toast.error("No se ha podido cargar el equipo", error));
+  }, []);
+  console.log({ equipmentData });
+  async function handleSaveChanges(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${host}/equipment/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authState.token,
+        },
+        body: JSON.stringify({
+          name: equipmentData.name,
+          description: equipmentData.description,
+        }),
+      });
+      if (!response.ok) {
+        toast.error("Error al actualizar el artículo");
+      } else {
+        console.log(response);
+        toast.success("Artículo modificado correctamente");
+        setEditing(false);
+      }
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
   }
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setEquipmentData({
-  //     ...equipmentData,
-  //     [name]: value,
-  //   });
-  // };
-  console.log(equipmentData);
-
-  useEffect(async () => {
-    try {
-      console.log(equipmentData);
-      const response = await fetch(
-        `http://localhost:3000/admin/equipment/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            AuthContext: authState.token,
-          },
+  const handleIncidentDeletion = () => {
+    fetch(`${host}/admin/equipment/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authState.token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          return toast.error(data.error.message);
+        } else {
+          navigate("/admin/equipment");
+          toast.success("Artículo eliminado correctamente");
         }
+      })
+      .catch((error) =>
+        console.error("Error al eliminar la incidencia:", error)
       );
+  };
 
-      if (!response.ok) throw new Error("No se ha podido cargar el usuario");
+  const showConfirmationNotification = () => {
+    toast(
+      <div className="flex flex-col gap-3 my-5 ml-5">
+        <p>
+          <b>¿Deseas eliminar el artículo?</b>
+        </p>
 
-      const data = await response.json();
-      setEquipmentData(data);
-    } catch (error) {
-      console.error("No se ha podido cargar el usuario");
-    }
-  }, []);
+        <p className="text-sm">Esta acción será permanente</p>
 
-  // async function submitUpdate(e) {
-  //   e.preventDefault();
+        <div className="flex justify-end gap-2 px-4 md:px-0 mt-5">
+          <Button onClick={() => toast.dismiss()}>Rechazar</Button>
+          <Button
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={() => handleIncidentDeletion()}
+          >
+            Sí, estoy seguro
+          </Button>
+        </div>
+      </div>,
+      {
+        autoClose: false,
+      }
+    );
+  };
 
-  //   const updateData = await fetch(`http://localhost:3000/equipment/${id}`, {
-  //     method: "patch",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token,
-  //     },
-  //     body: JSON.stringify({
-  //       name: equipmentData.name,
-  //       description: equipmentData.description,
-  //     }),
-  //   });
-  //   const { ok, error } = updateData;
-
-  //   if (!ok) {
-  //     toast.error(error);
-  //   } else {
-  //     toast.success("Artículo modificado correctamente");
-  //   }
-  // }
   return (
-    <div className="flex flex-col">
-      <Table className="w-fit">
-        <TableCaption>Lita de usuarios</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Nombre de usuario</TableHead>
-            <TableHead className="w-[200px]">Nombre</TableHead>
-            <TableHead className="w-[200px]">Apellidos</TableHead>
-            <TableHead className="w-[200px]">email</TableHead>
-            <TableHead className="w-[50px]">Verificado</TableHead>
-            <TableHead className="w-[50px]">Rol</TableHead>
-            <TableHead className="w-[200px]">Creado</TableHead>
-            <TableHead className="w-[200px]">Última modificación</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {equipmentData && equipmentData.length > 0 ? (
-            equipmentData.map((equipmentInfo) => (
-              <TableRow key={equipmentInfo.id}>
-                <TableCell>{equipmentInfo.name}</TableCell>
-                <TableCell>{equipmentInfo.description}</TableCell>
-                <TableCell>
-                  <FechaVisual fecha={equipmentInfo.createdAt} />
-                </TableCell>
-                <TableCell>
-                  <FechaVisual fecha={equipmentInfo.updatedAt} />
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell>No hay usuarios</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
-      {/* <Pagination
-        totalRecords={equipmentList.length}
-        limit={limit}
-        onPageChange={(pageNumber) => {
-          const newOffset = (pageNumber - 1) * limit;
-
-          setEquipmentQueries((prevState) => ({
-            ...prevState,
-            offset: newOffset,
-          }));
-        }}
-      /> */}
+    <div>
+      {equipmentData && (
+        <div className="flex flex-col w-full p-4 ">
+          <div className="flex justify-between px-4 md:px-0">
+            <h2>Artículo: {equipmentData.id}</h2>
+            {authState.user.role === "admin" && (
+              <div className="flex items-center gap-x-2">
+                <Button asChild>
+                  <Link to="/admin/equipment">Volver</Link>
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={showConfirmationNotification}
+                >
+                  <FaTrash />
+                </Button>
+                <ToastContainer position="top-center" theme="colored" />
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col w-full mt-8 gap-y-4">
+            <div className="flex flex-row items-center">
+              <Label className="w-1/3">Nombre del artículo</Label>
+              <Input
+                name="username"
+                placeholder="Nombre del artículo"
+                className="w-2/3"
+                value={equipmentData.name}
+                onChange={handleChange}
+                disabled={!editing}
+              />
+            </div>
+            <div className="flex flex-row items-center">
+              <Label className="w-1/3">Descripción</Label>
+              <Textarea
+                type="text"
+                name="description"
+                placeholder="Descripción del artículo"
+                className="w-2/3"
+                value={equipmentData.description}
+                onChange={handleChange}
+                disabled={!editing}
+              />
+            </div>
+            <div className="flex flex-row items-center">
+              <Label className="w-1/3">Fecha de creación</Label>
+              <Input
+                name="firstName"
+                placeholder="Fecha de creación"
+                className="w-2/3"
+                value={new Date(equipmentData.createdAt).toLocaleDateString(
+                  "es-ES",
+                  { day: "numeric", month: "numeric", year: "numeric" }
+                )}
+                disabled
+              />
+            </div>
+            {equipmentData.updatedAt ? (
+              <div className="flex flex-row items-center">
+                <Label className="w-1/3">Fecha de modificación</Label>
+                <Input
+                  name="lastName"
+                  placeholder="Fecha de modificación"
+                  className="w-2/3"
+                  value={new Date(equipmentData.updatedAt).toLocaleDateString(
+                    "es-ES",
+                    { day: "numeric", month: "numeric", year: "numeric" }
+                  )}
+                  disabled
+                />
+              </div>
+            ) : null}
+            {editing ? (
+              <div className="flex flex-row gap-x-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setEditing(false);
+                  }}
+                  className="flex justify-center w-1/2 mx-auto mt-4 text-center"
+                >
+                  Cancelar
+                </Button>{" "}
+                <Button
+                  onClick={handleSaveChanges}
+                  className="flex justify-center w-1/2 mx-auto mt-4 text-center"
+                >
+                  Guardar cambios
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center mt-4 gap-y-2 ">
+                <Button onClick={() => setEditing(true)} className="w-full ">
+                  Editar artículo
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
-
-    // <form
-    //   // onSubmit={submitUpdate}
-    //   className="flex flex-col p-4 mx-auto mt-4 rounded-md gap-y-4"
-    // >
-    //   {/* <Button asChild>
-    //     <Link to="/admin/equipment">Volver</Link>
-    //   </Button> */}
-    //   <div>
-    //     <Label>Nombre del artículo</Label>
-    //     <Input
-    //       type="text"
-    //       name="name"
-    //       placeholder='Ej: "Destornillador"'
-    //       value={equipmentData.name}
-    //       onChange={handleChange}
-    //       required
-    //     />
-    //   </div>
-    //   <div>
-    //     <Label>Descripción del artículo</Label>
-    //     <Textarea
-    //       type="text"
-    //       name="description"
-    //       placeholder='Descripción del artículo"'
-    //       value={equipmentData.description}
-    //       onChange={handleChange}
-    //       required
-    //     />
-    //   </div>
-    //   <Button type="submit" className="w-full">
-    //     Añadir artículo
-    //   </Button>
-    // </form>
   );
 }

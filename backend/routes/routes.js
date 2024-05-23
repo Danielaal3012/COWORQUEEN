@@ -24,5 +24,6 @@ router.use(reservationRouter);
 router.use(reviewRouter);
 router.use(searchsRouter);
 router.use(adminUsers);
+router.use(equipmentAdminRouter);
 
 export default router;
