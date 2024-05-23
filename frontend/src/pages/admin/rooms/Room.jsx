@@ -45,7 +45,10 @@ const Room = () => {
                         <li>
                             <span className="font-bold">ID:</span> {room.id}
                         </li>
-                        <img src={cover} alt="room" className="w-[300px] h-auto" />
+                        {room.image && (
+                            <img src={cover} alt="room" className="w-[300px] h-auto" />
+                        )
+                            }
                         <li>
                             <span className="font-bold">Nombre:</span> {room.name}
                         </li>
