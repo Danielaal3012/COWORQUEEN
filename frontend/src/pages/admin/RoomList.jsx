@@ -15,19 +15,12 @@ import {
     TableRow,
   } from "@/components/UI/table"
   import { FaPlus } from "react-icons/fa";
-  import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/UI/carousel"
-  
 
 const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
     const [rooms, setRooms] = useState([]);
     const host = import.meta.env.VITE_APP_HOST;
+    console.log(host);
 
     useEffect(() => {
       fetch(`${host}/rooms`, {
@@ -76,7 +69,7 @@ const AdminRoomList = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rooms.map((room) => (
+              { rooms.map((room) => (
                 <TableRow key={room.id}>
                   {/* <TableCell className="hidden md:table-cell">{room.id}</TableCell> */}
                   <TableCell className="font-bold">

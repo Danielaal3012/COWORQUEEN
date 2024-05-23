@@ -17,9 +17,10 @@ import { FaPlus } from "react-icons/fa";
 const AdminReviewList = () => {
   const { authState } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
+  const host = import.meta.env.VITE_APP_HOST;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_APP_HOST}/reviews`, {
+    fetch(`${host}/reviews`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: authState.token,
