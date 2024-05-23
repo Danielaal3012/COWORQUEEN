@@ -26,6 +26,7 @@ import { Pagination } from "@/components/Pagination.jsx";
 export function UsersListAdmin() {
   const { authState } = useContext(AuthContext);
   const [usersList, setUsersList] = useState([]);
+  const [usersTotal, setUsersTotal] = useState();
   const [usersQueries, setUsersQueries] = useState({
     search: "",
     offset: 0,
@@ -51,8 +52,9 @@ export function UsersListAdmin() {
       }
     )
       .then((res) => res.json())
-      .then((data) => {
-        setUsersList(data.message);
+      .then((body) => {
+        setUsersList(body.data);
+        setUsersTotal(body.totalResults);
       })
       .catch((error) =>
         toast.error("Error al obtener los datos del equipamiento:", error)
@@ -156,9 +158,10 @@ export function UsersListAdmin() {
         </TableBody>
       </Table>
 
-      {/* <Pagination
-        totalRecords={equipmentList.length}
+      <Pagination
+        totalRecords={usersTotal}
         limit={limit}
+        offset={offset}
         onPageChange={(pageNumber) => {
           const newOffset = (pageNumber - 1) * limit;
 
@@ -167,7 +170,7 @@ export function UsersListAdmin() {
             offset: newOffset,
           }));
         }}
-      /> */}
+      />
     </div>
   );
 }

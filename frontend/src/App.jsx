@@ -276,7 +276,7 @@ const App = () => {
           />
         </Routes>
       </Router>
-      <ToastContainer position="top-center" theme="colored" autoClose={4500} />
+      <ToastContainer position="top-center" autoClose={4500} />
     </>
   );
 };

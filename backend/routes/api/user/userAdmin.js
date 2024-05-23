@@ -36,7 +36,7 @@ adminUsers.get(
         : "ASC";
 
       const validateLimit = [10, 25, 50, 100];
-      const limitSet = validateLimit.includes(limit) ? limit : 10;
+      const limitSet = validateLimit.includes(+limit) ? limit : 10;
 
       const [users] = await dbPool.execute(
         `SELECT * FROM users
@@ -45,12 +45,20 @@ adminUsers.get(
             LIMIT ${limitSet} OFFSET ${offset}`,
         [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
       );
+
+      const [[{ usersTotal }]] = await dbPool.execute(
+        `SELECT COUNT(*) usersTotal FROM users
+            WHERE username LIKE ? OR firstName LIKE ? OR lastName LIKE ? OR email LIKE ?`,
+        [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+      );
+
       if (!users) {
         throw createError(400, "Impiosible cargar la lista de usuarios");
       }
 
       res.status(200).json({
-        message: users,
+        data: users,
+        totalResulsts: usersTotal,
       });
     } catch (err) {
       next(err);
@@ -58,25 +66,7 @@ adminUsers.get(
   }
 );
 
-// Ver el perfil de usuario seleccionado
-// userRouter.get("/user/profile", authenticate, async (req, res, next) => {
-//   try {
-//     const user = await getUser(req.headers.authorization);
-//     res.status(200).json({
-//       profile: {
-//         firstName: user.firstName,
-//         lastName: user.lastName,
-//         username: user.username,
-//         email: user.email,
-//         avatar: user.avatar,
-//       },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// Modificar el propio perfil de usuario
+// Ver el propio perfil de usuario
 adminUsers.get(
   "/admin/users/:userId",
   authenticate,
@@ -84,19 +74,69 @@ adminUsers.get(
   async (req, res, next) => {
     try {
       const userId = req.params.userId;
-      console.log(userId);
-      const [userData] = await dbPool.execute(
+      const [[userData]] = await dbPool.execute(
         "SELECT * FROM users WHERE id = ?",
         [userId]
       );
-      console.log(userData);
       if (!userData) {
         throw createError(400, "Usuario no encontrado");
       }
 
       res.status(200).json({
-        message: userData,
+        data: userData,
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// Asignación de admin a un usuario
+adminUsers.patch(
+  "/admin/users/role/:userId",
+  authenticate,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+      const { role } = req.body;
+
+      const userUpdate = await dbPool.execute(
+        "UPDATE users SET role = ?, updatedAt=CURRENT_TIME() WHERE id = ?",
+        [role, userId]
+      );
+
+      if (!userUpdate)
+        throw createError(
+          500,
+          `No se ha podido asignar el rol de ${role} al usuario`
+        );
+
+      res.status(200).json({ success: `Rol del usuario asignado a: ${role}` });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// Eliminación de un usuario
+adminUsers.delete(
+  "/admin/users/delete/:userId",
+  authenticate,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+
+      const userDelete = await dbPool.execute(
+        "DELETE FROM users WHERE id = ?",
+        [userId]
+      );
+
+      if (!userDelete)
+        throw createError(500, `No se ha podido eliminar el usuario`);
+
+      res.status(200).json({ success: `El usuario se eliminó correctamente` });
     } catch (err) {
       next(err);
     }

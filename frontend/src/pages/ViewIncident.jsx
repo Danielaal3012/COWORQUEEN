@@ -1,61 +1,159 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/UI/Input";
 import { Label } from "@/components/UI/label";
 import { Button } from "@/components/UI/button";
+import { Badge } from "@/components/UI/badge";
 import { AuthContext } from "../auth/auth-context";
 import { toast } from "react-toastify";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
 const ViewIncident = () => {
-    const { authState } = useContext(AuthContext);
-    const token = authState.token;
-    const [incidentData, setIncidentData] = useState({});
-    const { id } = useParams();
-    const incidentId = id;
+  const { authState } = useContext(AuthContext);
+  const token = authState.token;
+  const [incidentData, setIncidentData] = useState({});
+  const { id } = useParams();
+  const host = import.meta.env.VITE_APP_HOST;
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/incidents/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setIncidentData(data);
-          })
-          .catch((error) =>
-            console.error("Error al obtener los datos de la incidencia:", error)
-          );
-      }, [incidentId]);
+  useEffect(() => {
+    fetch(`${host}/incidents/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIncidentData(data);
+      })
+      .catch((error) =>
+        console.error("Error al obtener los datos de la incidencia:", error)
+      );
+  }, [id]);
 
-      console.log(incidentData)
+  const handleIncidentResolve = () => {
+    fetch(`${host}/incidents/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ status: "resolved" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          return toast.error(data.error.message);
+        } else {
+          toast.success("Incidencia resuelta correctamente");
+          setIncidentData({
+            ...incidentData,
+            status: "resolved",
+            updatedAt: data.updatedAt,
+          });
+        }
+      })
+      .catch((error) =>
+        console.error("Error al resolver la incidencia:", error)
+      );
+  };
 
-    return (
-        <div className="flex flex-col justify-center w-full p-4">
-            {incidentData && incidentData && (
-                <div>
-                    <h2 className="mb-8 text-xl font-bold">
-                        Incidencia {incidentData.id}
-                    </h2>
-                    <ul className="flex flex-col gap-y-4">
-                        <li>
-                            <span className="font-bold">ID:</span> {incidentData.id}
-                        </li>
-                        <li>
-                            <span className="font-bold">Descripción:</span> {incidentData.description}
-                        </li>
-                        <li>
-                            <span className="font-bold">Estado:</span> {incidentData.status}
-                        </li>
-                        <li>
-                            <span className="font-bold">Fecha de creación:</span> {incidentData.createdAt}
-                        </li>
-                    </ul>
-                </div>
+  const handleIncidentDeletion = () => {
+    fetch(`${host}/incidents/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          return toast.error(data.error.message);
+        } else {
+          navigate("/admin/incidents");
+          toast.success("Incidencia eliminada correctamente");
+        }
+      })
+      .catch((error) =>
+        console.error("Error al eliminar la incidencia:", error)
+      );
+  };
+
+  console.log(incidentData);
+
+  if (!incidentData || incidentData.error) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col w-full">
+      {incidentData && incidentData && (
+        <div>
+          <div className="flex justify-between px-4 md:px-0">
+            <h2>Incidencia</h2>
+            {authState.user.role === "admin" && (
+              <div className="flex items-center gap-x-2">
+                <Button onClick={handleIncidentResolve}>
+                  Marcar incidencia como resuelta
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={handleIncidentDeletion}
+                >
+                  <FaTrash />
+                </Button>
+              </div>
             )}
+          </div>
+          {/* <h2 className="mb-8 text-xl font-bold">Incidencia</h2>
+            {incidentData.status === "pending" && (
+                <Button
+                    variant="destructive"
+                    onClick={handleIncidentResolve}
+                >
+                    Marcar como resuelta
+                </Button>
+                )}
+                 */}
+          <ul className="flex flex-col gap-y-4">
+            <li>
+              <span className="font-bold">Descripción:</span>{" "}
+              {incidentData.description}
+            </li>
+            <li>
+              <span className="font-bold">Estado:</span>{" "}
+              <Badge>
+                {incidentData.status === "pending" ? "Pendiente" : "Resuelta"}
+              </Badge>
+            </li>
+            <li>
+              <span className="font-bold">Fecha de creación:</span>{" "}
+              {incidentData.createdAt}
+            </li>
+            <li>
+              <span className="font-bold">Fecha de resolución:</span>{" "}
+              {incidentData.updatedAt}
+            </li>
+            <li>
+              <span className="font-bold">Sala:</span>{" "}
+              <Link to={`/rooms/${incidentData.roomId}`}>
+                {incidentData.roomName}
+              </Link>
+            </li>
+            <li>
+              <span className="font-bold">Equipo:</span>{" "}
+              <Link to={`/equipment/${incidentData.equipmentId}`}>
+                {incidentData.equipmentName}
+              </Link>
+            </li>
+          </ul>
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};
 
 export default ViewIncident;

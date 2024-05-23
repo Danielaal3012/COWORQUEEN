@@ -89,7 +89,7 @@ equipmentAdminRouter.patch(
 );
 // Borrar equipos
 equipmentAdminRouter.delete(
-  "/equipment/:equipmentId",
+  "/admin/equipment/delete/:equipmentId",
   authenticate,
   isAdmin,
   async (req, res, next) => {

@@ -26,6 +26,7 @@ import { Pagination } from "@/components/Pagination.jsx";
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
   const [equipmentList, setEquipmentList] = useState([]);
+  const [equipmentTotal, setEquipmentTotal] = useState();
   const [equipmentQueries, setEquipmentQueries] = useState({
     search: "",
     offset: 0,
@@ -34,6 +35,7 @@ export const EquipmentList = () => {
   });
   const { search, offset, limit, direction } = equipmentQueries;
   useEffect(() => {
+    console.log({ equipmentQueries });
     fetch(
       `http://localhost:3000/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
@@ -45,8 +47,9 @@ export const EquipmentList = () => {
       }
     )
       .then((res) => res.json())
-      .then((data) => {
-        setEquipmentList(data.message);
+      .then((body) => {
+        setEquipmentList(body.data);
+        setEquipmentTotal(body.totalResults);
       })
       .catch((error) =>
         toast.error("Error al obtener los datos del equipamiento:", error)
@@ -74,12 +77,13 @@ export const EquipmentList = () => {
         />
         <Label>Artículos por página</Label>
         <Select
-          onValueChange={(value) =>
+          onValueChange={(value) => {
+            console.log({ value });
             setEquipmentQueries((prevState) => ({
               ...prevState,
               limit: value,
-            }))
-          }
+            }));
+          }}
         >
           <SelectTrigger>
             <SelectValue placeholder="10" />
@@ -141,9 +145,10 @@ export const EquipmentList = () => {
         </TableBody>
       </Table>
 
-      {/* <Pagination
-        totalRecords={equipmentList.length}
+      <Pagination
+        totalRecords={equipmentTotal}
         limit={limit}
+        offset={offset}
         onPageChange={(pageNumber) => {
           const newOffset = (pageNumber - 1) * limit;
 
@@ -152,7 +157,7 @@ export const EquipmentList = () => {
             offset: newOffset,
           }));
         }}
-      /> */}
+      />
     </div>
   );
 };
