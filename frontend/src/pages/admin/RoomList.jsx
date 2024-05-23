@@ -68,7 +68,7 @@ const AdminRoomList = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rooms.lenght > 1 && rooms.map((room) => (
+              { rooms.map((room) => (
                 <TableRow key={room.id}>
                   {/* <TableCell className="hidden md:table-cell">{room.id}</TableCell> */}
                   <TableCell className="font-bold">
