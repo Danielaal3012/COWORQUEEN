@@ -67,8 +67,8 @@ export const EquipmentList = () => {
   console.log("equipment list: ", equipmentList);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex">
+    <div className="flex flex-col w-full">
+      <div className="flex items-center">
         <Input
           type="search"
           name="search"

@@ -20,13 +20,13 @@ const pool = getPool();
 export const reviewRouter = Router();
 
 // Ver reviews
-reviewRouter.get("/reviews/list", async (req, res, next) => {
+reviewRouter.get("/reviews", async (req, res, next) => {
   try {
     const [reviews] = await pool.execute(
       "SELECT reviews.id, reviews.rate , reviews.description, reviews.reservationId FROM reviews"
     );
     if (!reviews) {
-      throw createError(404, "Reviews no encontradas");
+      throw createError(404, "Reseñas no encontradas");
     }
     res.status(200).json({
       data: reviews,

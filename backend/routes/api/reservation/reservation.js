@@ -13,6 +13,24 @@ const pool = getPool();
 
 export const reservationRouter = Router();
 
+// Listado de todas las reservas
+reservationRouter.get("/reservations", authenticate, isAdmin, async (req, res, next) => {
+  try {
+    const [reservations] = await pool.execute("SELECT * FROM reservations");
+
+    if (!reservations) {
+      throw createError(404, "Reservas no encontradas");
+    }
+
+    res.status(200).json({
+      reservations,
+    });
+    
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Listado de reservas de un usuario
 reservationRouter.get(
   "/reservations/:userId",
