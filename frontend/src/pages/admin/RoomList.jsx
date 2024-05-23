@@ -15,14 +15,6 @@ import {
     TableRow,
   } from "@/components/UI/table"
   import { FaPlus } from "react-icons/fa";
-  import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/UI/carousel"
-  
 
 const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
@@ -76,7 +68,7 @@ const AdminRoomList = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rooms.map((room) => (
+              {rooms.lenght > 1 && rooms.map((room) => (
                 <TableRow key={room.id}>
                   {/* <TableCell className="hidden md:table-cell">{room.id}</TableCell> */}
                   <TableCell className="font-bold">
