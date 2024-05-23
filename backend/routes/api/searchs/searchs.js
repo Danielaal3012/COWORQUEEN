@@ -59,7 +59,7 @@ searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
       : "ASC";
 
     const validateLimit = [10, 25, 50, 100];
-    const limitSet = validateLimit.includes(limit) ? limit : 10;
+    const limitSet = validateLimit.includes(+limit) ? limit : 10;
 
     const [equipment] = await pool.execute(
       `SELECT id, name, description FROM equipment
@@ -68,8 +68,15 @@ searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
         LIMIT ${limitSet} OFFSET ${offset}`,
       [`%${search}%`, `%${search}%`]
     );
+
+    const [[{ equipmentTotal }]] = await pool.execute(
+      `SELECT COUNT(*) equipmentTotal FROM equipment
+        WHERE name LIKE ? OR description LIKE ?`,
+      [`%${search}%`, `%${search}%`]
+    );
     res.status(200).json({
-      message: equipment,
+      data: equipment,
+      totalResults: equipmentTotal,
     });
 
     if (!equipment)
