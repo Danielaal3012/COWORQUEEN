@@ -20,6 +20,7 @@ const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
     const [rooms, setRooms] = useState([]);
     const host = import.meta.env.VITE_APP_HOST;
+    console.log(host);
 
     useEffect(() => {
       fetch(`${host}/rooms`, {
