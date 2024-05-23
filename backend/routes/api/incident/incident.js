@@ -255,8 +255,6 @@ categoryIncidentsRouter.get(
   }
 );
 
-
-
 // Modificar incidencia como Admin
 categoryIncidentsRouter.patch(
   "/incidents/:incidentId",
