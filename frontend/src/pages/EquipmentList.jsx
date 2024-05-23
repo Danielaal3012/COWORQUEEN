@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "@/auth/auth-context";
 import {
   Table,
@@ -22,6 +22,7 @@ import { SelectValue } from "@radix-ui/react-select";
 import { Label } from "@/components/UI/label.jsx";
 import { Button } from "@/components/UI/button.jsx";
 import { Pagination } from "@/components/Pagination.jsx";
+import { useLocalStorage } from "@/useLocalStorage.js";
 
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
@@ -64,7 +65,16 @@ export const EquipmentList = () => {
     });
   };
 
-  console.log("equipment list: ", equipmentList);
+  const [urlSaved, setUrlSaved] = useLocalStorage("returnPage", "");
+
+  const location = useLocation();
+
+  function saveUrl(newUrl) {
+    setUrlSaved(newUrl);
+    console.log({ newUrl });
+  }
+
+  console.log({ urlSaved });
 
   return (
     <div className="flex flex-col w-full">
@@ -130,7 +140,10 @@ export const EquipmentList = () => {
             equipmentList.map((equipment) => (
               <TableRow key={equipment.id}>
                 <TableCell className="font-bold">
-                  <Link to={`/admin/equipment/${equipment.id}`}>
+                  <Link
+                    onClick={(e) => saveUrl(location.pathname)}
+                    to={`/admin/equipment/${equipment.id}`}
+                  >
                     {equipment.name}
                   </Link>
                 </TableCell>

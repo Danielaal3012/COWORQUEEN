@@ -1,19 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/UI/button";
 import { AuthContext } from "@/auth/auth-context";
+import { Dialog } from "@/components/Dialog.jsx";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/UI/alert-dialog";
 
 const ViewReservation = () => {
   const { authState } = useContext(AuthContext);
@@ -66,33 +55,14 @@ const ViewReservation = () => {
         <div>
           <div className="flex justify-between px-4 md:px-0">
             <h2>Reserva</h2>
-            <div className="flex items-center gap-x-2">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <Button variant="outline">Cancelar reserva</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta acción no se puede deshacer. Esto cancelará
-                      permanentemente tu reserva y deberás crear una nueva.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction
-                      asChild
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      <Button onClick={handleReservationCancel}>
-                        Sí, estoy seguro
-                      </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+            <Dialog
+              buttonVariant="outline"
+              buttonContent="Cancelar reserva"
+              title="¿Estás seguro?"
+              description="Esta acción no se puede deshacer. Esto cancelará permanentemente tu reserva y deberás crear una nueva."
+              handleButtonAction={handleReservationCancel}
+              sureText="Sí, estoy seguro"
+            />
           </div>
           <ul className="flex flex-col gap-y-4">
             <li>
