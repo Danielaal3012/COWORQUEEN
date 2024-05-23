@@ -117,7 +117,7 @@ export const EquipmentList = () => {
         </Button>
       </div>
 
-      <Table className="w-fit">
+      <Table className="w-full">
         <TableCaption>Lita del equipamiento</TableCaption>
         <TableHeader>
           <TableRow>

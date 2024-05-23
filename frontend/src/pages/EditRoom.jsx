@@ -17,6 +17,7 @@ import { Textarea } from "@/components/UI/textarea"
 function CreateEditRoomForm() {
   const { authState } = useContext(AuthContext);
   const token = authState.token;
+  const host = import.meta.env.VITE_APP_HOST;
 
   const [roomData, setRoomData] = useState({
     roomId: "",
@@ -30,7 +31,7 @@ function CreateEditRoomForm() {
   const roomId = id;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_APP_HOST}/room/${roomId}`, {
+    fetch(`${host}/room/${roomId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token,

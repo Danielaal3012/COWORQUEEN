@@ -36,9 +36,21 @@ const AdminReservationList = () => {
   }, []);
 
   const formatDate = (date) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(date).toLocaleDateString("es-ES", options);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     };
+    return new Date(date).toLocaleDateString("es-ES", options);
+  };
+
+  const formatEnd = (date) => {
+    const options = { hour: '2-digit', minute: '2-digit' };
+    return new Date(date).toLocaleTimeString('es-ES', options);
+  };
+
 
   console.log(reservations)
 
@@ -52,7 +64,7 @@ const AdminReservationList = () => {
           {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow> 
-              <TableHead className="w-[200px]">Descripción</TableHead>
+              <TableHead className="w-[200px]">Fecha</TableHead>
               <TableHead className="w-[100px] hidden md:table-cell text-center">
                 Espacio
               </TableHead>
@@ -68,7 +80,7 @@ const AdminReservationList = () => {
             {reservations.map((reservation) => (
               <TableRow key={reservation.id}>
                 <TableCell>
-                  {formatDate(reservation.reservationDateBeg)}
+                  {formatDate(reservation.reservationDateBeg)} - {formatEnd(reservation.reservationDateEnd)}
                 </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
                     <Link to={`/admin/room/${reservation.roomId}`}>Ver espacio</Link>

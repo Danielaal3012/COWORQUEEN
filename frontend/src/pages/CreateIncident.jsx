@@ -17,6 +17,7 @@ const CreateIncident = () => {
     const { authState } = useContext(AuthContext);
     const { id } = useParams();
     const reservationId = id;
+    const host = import.meta.env.VITE_APP_HOST;
 
     const [reservation, setReservation] = useState(null)
 
@@ -32,7 +33,7 @@ const CreateIncident = () => {
     useEffect(() => {
         const fetchReservation = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_APP_HOST}/reservations/by-reservationId/${reservationId}`, {
+                const response = await fetch(`${host}/reservations/by-reservationId/${reservationId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -61,10 +62,9 @@ const CreateIncident = () => {
 
 
      useEffect(() => {
-    //     // Fetch equipment
          const fetchEquipment = async () => {
              try {
-                 const response = await fetch(`${import.meta.env.VITE_APP_HOST}/rooms/${reservation.roomId}/equipment`, {
+                 const response = await fetch(`${host}/rooms/${reservation.roomId}/equipment`, {
                      method: 'GET',
                      headers: {
                          'Content-Type': 'application/json',
