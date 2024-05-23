@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
 
   if (isDesktop) {
     return (
-      <div className="relative flex flex-col w-full bg-transparent h-dvh">
+      <div className="relative flex flex-col w-full bg-transparent h-dvh ">
         <nav className="flex items-center justify-between w-full h-14 bg-secondary/75">
           <section className="w-1/5 px-4 ">
             <Link to="/">
@@ -46,16 +46,7 @@ const Layout = ({ children }) => {
 
 {authState?.user?.role === "admin" && (
           <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4 py-4">
-            {/* <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/">
-                Inicio
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin">
-                Panel de administración
-              </Link>
-            </Button> */}
+
             <Button variant="outline" asChild className="flex justify-between">
               <Link to="/">
                 <div className="flex items-center text-lg gap-x-2">
