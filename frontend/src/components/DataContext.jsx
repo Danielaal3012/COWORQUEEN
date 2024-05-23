@@ -1,18 +1,28 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const DataContext = createContext();
 
 export function DataProvider({ children }) {
-  const storedRooms = localStorage.getItem("rooms");
-  const rooms = storedRooms ? JSON.parse(storedRooms) : [];
-
-  const updateRooms = (rooms) => {
-    localStorage.setItem("rooms", JSON.stringify(rooms));
-  };
-
-  return (
-    <DataContext.Provider value={{ rooms, updateRooms }}>
-      {children}
-    </DataContext.Provider>
-  );
-}
+    const [rooms, setRooms] = useState(() => {
+      const storedRooms = localStorage.getItem("rooms");
+      return storedRooms ? JSON.parse(storedRooms) : [];
+    });
+  
+    const updateRooms = (newRooms) => {
+      setRooms(newRooms);
+      localStorage.setItem("rooms", JSON.stringify(newRooms));
+    };
+  
+    useEffect(() => {
+      const storedRooms = localStorage.getItem("rooms");
+      if (storedRooms) {
+        setRooms(JSON.parse(storedRooms));
+      }
+    }, []);
+  
+    return (
+      <DataContext.Provider value={{ rooms, updateRooms }}>
+        {children}
+      </DataContext.Provider>
+    );
+  }

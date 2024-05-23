@@ -12,7 +12,9 @@ const HomePage = () => {
 
   const host = import.meta.env.VITE_APP_HOST;
 
-  useEffect(() => {
+console.log(rooms)
+
+if (rooms.length === 0) {
     fetch(`${host}/rooms`, {
       headers: {
         "Content-Type": "application/json",
@@ -21,13 +23,27 @@ const HomePage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        //setRooms(data.message)
-        updateRooms(data.message) //añade el fetch al contexto
+        updateRooms(data.message)
         //se debe actualizar el contexto para que se actualice el estado de la app
       })
-  }, []);
+  }
 
- console.log(rooms)
+  // useEffect(() => {
+  //   fetch(`${host}/rooms`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: authState.token,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       //setRooms(data.message)
+  //       updateRooms(data.message) //añade el fetch al contexto
+        
+
+  //       //se debe actualizar el contexto para que se actualice el estado de la app
+  //     })
+  // }, []);
 
   return (
     <div className='w-full '>
@@ -39,7 +55,7 @@ const HomePage = () => {
      
       <section className="flex flex-wrap justify-center gap-4 my-4">
 
-          {rooms.map((room) => (
+          {rooms.length > 0 && rooms.map((room) => (
         
             <figure key={room.id} className="relative w-[45%] max-w-[45%] h-auto lg:w-[300px] lg:max-w-[300px] lg:h-[200px] overflow-hidden rounded-md hover:opacity-80">
                   <Link to={`/room/${room.id}`} >
