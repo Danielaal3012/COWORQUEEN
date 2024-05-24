@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "@/auth/auth-context";
 import { Button } from "@/components/UI/button";
 import { useNavigate } from 'react-router-dom';
 import { Skeleton } from "@/components/UI/skeleton";
+import { DataContext } from "@/components/DataContext";
 
 function ViewRoom() {
   const { authState } = useContext(AuthContext);
@@ -13,6 +15,11 @@ function ViewRoom() {
   const roomId = id;
   const host = import.meta.env.VITE_APP_HOST;
   const navigate = useNavigate();
+  let location = useLocation().pathname;
+  const { navigationData, updateNavigationData } = useContext(DataContext);
+
+  console.log(navigationData)
+
 
   useEffect(() => {
     fetch(`${host}/room/${id}`, {
@@ -36,6 +43,9 @@ function ViewRoom() {
 
   return (
     <div className="flex flex-col text-center ">
+
+      <Button onClick={() => updateNavigationData({path: location})} variant="link">Path</Button>
+
       {roomData && (
         <div className="relative px-4">
           <h2 className="mb-4 text-xl font-bold ">{roomData.name}</h2>
