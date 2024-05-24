@@ -1,15 +1,14 @@
+import { Dialog } from "@/components/Dialog.jsx";
 import { Input } from "@/components/UI/Input";
 import { Button } from "@/components/UI/button.jsx";
 import { Label } from "@/components/UI/label.jsx";
 import { Textarea } from "@/components/UI/textarea.jsx";
 import { useContext, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../auth/auth-context";
-import { Dialog } from "@/components/Dialog.jsx";
-import { useLocalStorage } from "@/useLocalStorage.js";
 
 export function EquipmentItem() {
   const navigate = useNavigate();
@@ -98,14 +97,8 @@ export function EquipmentItem() {
       );
   };
 
-  const [urlSaved, setUrlSaved] = useLocalStorage("returnPage", "");
-
-  // function saveUrl(newUrl) {
-  //   setUrlSaved(newUrl);
-  //   console.log({ newUrl });
-  // }
-
-  console.log({ urlSaved });
+  const returnUrl = localStorage.getItem("returnPage");
+  console.log({ returnUrl });
 
   return (
     <div className="w-full">
