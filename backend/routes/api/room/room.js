@@ -78,7 +78,7 @@ roomRouter.put("/room/:id", authenticate, isAdmin, async (req, res, next) => {
 });
 
 // Endpoint para obtener todos los espacios
-roomRouter.get("/rooms", authenticate, async (req, res, next) => {
+roomRouter.get("/rooms", async (req, res, next) => {
   try {
     const [rooms] = await dbPool.execute(
       "SELECT rooms.id, rooms.name, rooms.description, rooms.capacity, rooms.typeOf, rooms.image FROM rooms"
@@ -96,7 +96,7 @@ roomRouter.get("/rooms", authenticate, async (req, res, next) => {
 
 roomRouter.get(
   "/room/:roomId",
-  authenticate,
+  
   async (req, res, next) => {
     try {
       // Extraemos la id de la room de los parámetros de la petición

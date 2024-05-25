@@ -13,7 +13,7 @@ export function DataProvider({ children }) {
     const storedNavigationData = localStorage.getItem("navigationData");
     return storedNavigationData
       ? JSON.parse(storedNavigationData)
-      : { path: "", scroll: 0 };
+      : { path: "", savedPath: "", scroll: 0 };
   });
 
   const updateNavigationData = (newNavigationData) => {
@@ -36,16 +36,6 @@ export function DataProvider({ children }) {
       setNavigationData(JSON.parse(storedNavigationData));
     }
   }, []);
-
-//   useEffect(() => {
-//     updateNavigationData({
-//         ...navigationData,
-//         path: location.pathname,
-//         scroll: window.scrollY,
-//     });
-//     }, [location.pathname]);
-
-//     console.log("navigationData", navigationData);
 
   return (
     <DataContext.Provider
