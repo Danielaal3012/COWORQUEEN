@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaEye, FaBookmark, FaUserCircle, FaArrowRight } from "react-icons/fa";
-import Logo from "../assets/images/Logo.png";
-import coworqueen from "../assets/images/coworqueen.svg";
-import { AuthContext } from "../auth/auth-context";
-import { ScrollArea } from "./UI/scroll-area";
+import Mobile from "@/components/Mobile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
 import { Button } from "@/components/UI/button";
-import Mobile from "@/components/Mobile";
 import useMediaQuery from "@/utils/mediaquery";
+import { useContext, useEffect } from "react";
+import { FaArrowRight, FaHome, FaUserCircle } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../assets/images/Logo.png";
+import { AuthContext } from "../auth/auth-context";
+
+import { DataContext } from "@/components/DataContext";
 
 const Layout = ({ children }) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -16,6 +16,16 @@ const Layout = ({ children }) => {
   const { authState } = useContext(AuthContext);
   const host = import.meta.env.VITE_APP_HOST;
   const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" +  "/" + authState.user.avatar : null;
+
+  const { navigationData, updateNavigationData } = useContext(DataContext);
+
+  useEffect(() => {
+    updateNavigationData({
+      ...navigationData,
+      path: location.pathname,
+      scroll: window.scrollY,
+    });
+  }, [location.pathname]);
 
   if (isDesktop) {
     return (
