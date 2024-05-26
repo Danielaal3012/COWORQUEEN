@@ -25,6 +25,7 @@ const Room = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setRoom(data.message);
       })
       .catch((error) =>

@@ -61,6 +61,8 @@ function EditRoom() {
       );
   }, [id]);
 
+  console.log(roomData)
+
   useEffect(() => {
     fetch(`${host}/rooms/${id}/equipment`, {
       headers: {

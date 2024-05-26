@@ -48,10 +48,8 @@ const AdminIncidentList = () => {
       </div>
       <section className="flex flex-col w-full mx-auto mt-8">
         <Table className="w-full">
-          {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow>
-              {/* <TableHead className="w-[100px] hidden md:table-cell">ID</TableHead> */}
              
               <TableHead>Descripción</TableHead>
               <TableHead className="w-[100px] hidden md:table-cell text-center">
@@ -69,7 +67,6 @@ const AdminIncidentList = () => {
           <TableBody>
             {incidents.map((incident) => (
               <TableRow key={incident.incidentId}>
-                {/* <TableCell className="hidden md:table-cell">{incident.incidentId}</TableCell> */}
                 <TableCell>
                   <Link to={`/incident/${incident.incidentId}`}>
                   {incident.description}
