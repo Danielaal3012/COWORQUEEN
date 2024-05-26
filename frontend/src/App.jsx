@@ -110,13 +110,14 @@ const App = () => {
           <Route path="/create-room" element={<Layout><AdminCreateRoom /></Layout>} />
           <Route path="/room-list" element={<Layout><AdminRoomList /></Layout>} />
           <Route path="/room/:id" element={<Layout><ViewRoom /></Layout>} />
-          <Route path="/edit-room/:id" element={<Layout><AdminEditRoom /></Layout>} />
+
 
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
           <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />
 
           <Route path="/admin/rooms" element={<Layout><AdminRooms /></Layout>} />
           <Route path="/admin/room/:id" element={<Layout><AdminRoom /></Layout>} />
+          <Route path="/admin/room/:id/edit" element={<Layout><AdminEditRoom /></Layout>} />
 
           <Route path="/admin/reviews" element={<Layout><AdminReviews /></Layout>} />
 

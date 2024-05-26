@@ -147,3 +147,42 @@ roomRouter.get(
     }
   }
 );
+
+// Añadir equipo a un espacio
+roomRouter.post(
+  "/rooms/:roomId/equipment",
+  authenticate,
+  isAdmin,
+  async (req, res, next) => {
+    const { roomId } = req.params;
+    const { equipmentIds } = req.body;
+
+    
+
+    if (!Array.isArray(equipmentIds) || equipmentIds.length === 0) {
+      return res.status(400).json({ error: 'equipmentIds debe ser un array de IDs de equipos.' });
+    }
+
+    const values = equipmentIds.map(equipmentId => [
+      crypto.randomUUID(), 
+      equipmentId, 
+      roomId, 
+      new Date(), 
+      new Date()
+    ]);
+
+    const sql = `
+      INSERT INTO equipmentRooms (id, equipmentId, roomId, createdAt, updatedAt)
+      VALUES ?
+    `;
+
+    try {
+      const [result] = await dbPool.query(sql, [values]);
+
+      res.status(201).json({ message: 'Equipos añadidos a la sala con éxito.', result });
+    } catch (error) {
+      console.error('Error al añadir equipos a la sala:', error);
+      res.status(500).json({ error: 'Hubo un error al añadir los equipos a la sala.' });
+    }
+  }
+);

@@ -146,3 +146,20 @@ equipmentAdminRouter.get(
     }
   }
 );
+// Listar todos los equipos disponibles
+equipmentAdminRouter.get(
+  "/equipment",
+  authenticate,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const [equipment] = await dbPool.execute(
+        `SELECT * FROM equipment`
+      );
+
+      res.status(200).json({ data: equipment });
+    } catch (err) {
+      next(err);
+    }
+  }
+);

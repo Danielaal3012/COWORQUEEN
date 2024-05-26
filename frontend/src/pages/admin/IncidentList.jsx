@@ -41,7 +41,7 @@ const AdminIncidentList = () => {
       <div className="flex justify-between px-4 md:px-0">
         <h2>Incidencias</h2>
         <Button variant="outline" size="icon">
-          <Link to="/create-incident">
+          <Link to="/reservation/0/create-incident">
             <FaPlus />
           </Link>
         </Button>

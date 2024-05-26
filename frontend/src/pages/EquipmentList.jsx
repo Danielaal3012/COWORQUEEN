@@ -22,6 +22,7 @@ import { SelectValue } from "@radix-ui/react-select";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaPlus } from "react-icons/fa";
 
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
@@ -75,8 +76,13 @@ export const EquipmentList = () => {
 
   return (
     <div className="flex flex-col w-full">
-    <div className="flex justify-between px-4 mb-4 md:px-0">
-      <h2>Equipo</h2>
+      <div className="flex justify-between px-4 mb-4 md:px-0">
+        <h2>Equipo</h2>
+        <Button variant="outline" size="icon">
+          <Link to="/admin/equipment/add">
+            <FaPlus />
+          </Link>
+        </Button>
       </div>
       <div className="flex items-center justify-between gap-1.5 w-full mb-4">
         <Input
@@ -130,9 +136,9 @@ export const EquipmentList = () => {
         </Select>
         </div>
         
-        <Button asChild>
+        {/* <Button asChild>
           <Link to="/admin/equipment/add">Añadir</Link>
-        </Button>
+        </Button> */}
       </div>
 
       <Table className="w-full">
