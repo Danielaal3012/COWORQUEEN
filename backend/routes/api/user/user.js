@@ -10,6 +10,7 @@ import authenticate from "../../middleware/authenticateTokenUser.js";
 import {
   sendVerificationEmail,
   sendForgotPasswordEmail,
+  sendValidateEmail,
 } from "../../../utils/sendEmail.js";
 import {
   userSchema,
@@ -27,7 +28,7 @@ const pool = getPool();
 const { JWT_SECRET } = process.env;
 export const userRouter = Router();
 
-//Registro Usuario
+//Registro  y envio de codigo de verificación de Usuario
 userRouter.post("/register", async (req, res, next) => {
   try {
     const { error } = userSchema.validate(req.body);
@@ -55,7 +56,7 @@ userRouter.post("/register", async (req, res, next) => {
   }
 });
 
-//Verificar Usuario
+//Validacion de codigo/Usuario
 userRouter.post("/validate", async (req, res, next) => {
   try {
     const { code } = req.body;
@@ -73,15 +74,30 @@ userRouter.post("/validate", async (req, res, next) => {
     if (results.length === 0) {
       throw createError(400, "Código de verificación no válido");
     }
+    
+    const user = results[0]; // Obtenemos el primer usuario encontrado
+    
+    if (user.verified) {
+      throw createError(400, "El usuario ya ha sido validado previamente");
+    }
+    
+    // Actualizamos el usuario como verificado
     await pool.execute(
       "UPDATE users SET verified = TRUE WHERE verification_code = ?",
       [code]
     );
-    return res.status(200).json({ message: "Cuenta verificada" });
+
+    // Enviamos el correo electrónico de validación al usuario
+    await sendValidateEmail(user.email);
+
+    res.status(201).json({
+      message: "Validación Exitosa",
+    });
   } catch (error) {
     next(error);
   }
 });
+
 
 //Login Usuario
 userRouter.post("/login", async (req, res, next) => {
