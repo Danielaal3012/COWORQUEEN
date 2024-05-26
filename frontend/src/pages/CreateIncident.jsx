@@ -12,6 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/UI/select";
+import { toast } from 'react-toastify';
 
 const CreateIncident = () => {
     const { authState } = useContext(AuthContext);
@@ -100,7 +101,7 @@ const CreateIncident = () => {
             });
 
             if (!response.ok) {
-                throw new Error('No se ha podido crear la incidencia');
+                toast.Error('No se ha podido crear la incidencia');
             }
 
             toast.success("Incidencia creada correctamente");
