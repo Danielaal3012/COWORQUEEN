@@ -75,13 +75,19 @@ export const EquipmentList = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex items-center">
+    <div className="flex justify-between px-4 mb-4 md:px-0">
+      <h2>Equipo</h2>
+      </div>
+      <div className="flex items-center justify-between gap-1.5 w-full mb-4">
         <Input
           type="search"
           name="search"
-          placeholder="Busca un equipamiento"
+          className="w-1/2"
+          placeholder="Busca un equipo"
           onChange={handleChange}
         />
+                <div className="flex flex-row items-center gap-x-4">
+
         <Label>Artículos por página</Label>
         <Select
           onValueChange={(value) => {
@@ -102,6 +108,9 @@ export const EquipmentList = () => {
             <SelectItem value="100">100</SelectItem>
           </SelectContent>
         </Select>
+        </div>
+        <div className="flex flex-row items-center gap-x-4">
+
         <Label>Orden</Label>
         <Select
           onValueChange={(value) =>
@@ -119,13 +128,14 @@ export const EquipmentList = () => {
             <SelectItem value="DESC">Descendente</SelectItem>
           </SelectContent>
         </Select>
+        </div>
+        
         <Button asChild>
           <Link to="/admin/equipment/add">Añadir</Link>
         </Button>
       </div>
 
       <Table className="w-full">
-        <TableCaption>Lita del equipamiento</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
