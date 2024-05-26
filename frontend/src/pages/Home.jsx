@@ -17,11 +17,23 @@ const HomePage = () => {
         Authorization: authState.token,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          // throw new Error('Error al obtener las habitaciones');
+          console.error("Error al obtener las habitaciones");
+        }
+        return res.json();
+        console.log(res);
+      })
       .then((data) => {
         updateRooms(data.message);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
       });
   }
+
+  console.log(rooms)
 
   return (
     <div className="w-full ">
