@@ -14,7 +14,6 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/UI/select";
-import { toast } from 'react-toastify';
 
 const CreateIncident = () => {
   const { authState } = useContext(AuthContext);
