@@ -13,36 +13,6 @@ const dbPool = getPool();
 
 export const categoryIncidentsRouter = Router();
 
-//Agregar una incidencia como Admin
-categoryIncidentsRouter.post(
-  "/:userId/:roomId/incidents/add",
-  authenticate,
-  isAdmin,
-  async (req, res, next) => {
-    try {
-      const { error } = incidentSchema.validate(req.body);
-      if (error) {
-        throw createError(400, "Datos de entrada no válidos");
-      }
-      const { description, equipmentId } = req.body;
-      await dbPool.execute(
-        `INSERT INTO incidents (id, description, userId, roomId, equipmentId) VALUE (?, ?, ?, ?, ?)`,
-        [
-          crypto.randomUUID(),
-          description,
-          req.user.id,
-          req.params.roomId,
-          equipmentId,
-        ]
-      );
-      res.status(201).json({
-        message: "Incidencia transmitida con éxito",
-      });
-    } catch (err) {
-      next(err);
-    }
-  }
-);
 
 // Añadir incidencia
 categoryIncidentsRouter.post(
@@ -310,7 +280,6 @@ categoryIncidentsRouter.patch(
   }
 );
 
-
 // Eliminar incidencia creada por un usuario
 categoryIncidentsRouter.delete(
   "/incidents/:incidentId",
@@ -393,4 +362,3 @@ categoryIncidentsRouter.delete(
     }
   }
 );
-

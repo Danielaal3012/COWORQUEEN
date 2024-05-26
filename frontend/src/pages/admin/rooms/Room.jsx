@@ -7,6 +7,7 @@ import { Button } from "@/components/UI/button";
 import { Badge } from "@/components/UI/badge";
 import { AuthContext } from "@/auth/auth-context";
 import CreateReview from "@/pages/CreateReview.jsx";
+import { FaPencilAlt } from "react-icons/fa";
 
 const Room = () => {
     const { authState } = useContext(AuthContext);
@@ -37,14 +38,19 @@ const Room = () => {
 
     return (
         <div className="flex flex-col w-full">
-        <h2>Sala {room.name}</h2>
+                    <div className="flex justify-between px-4 md:px-0">
+          <h2>{room.name}</h2>
+          <Button variant="outline" size="icon">
+  <Link to={`/admin/room/${id}/edit`}>
+    <FaPencilAlt />
+  </Link>
+</Button>
+        </div>
             {room && room && (
                 <div>
 
                     <ul className="flex flex-col gap-y-4">
-                        <li>
-                            <span className="font-bold">ID:</span> {room.id}
-                        </li>
+
                         {room.image && (
                             <img src={cover} alt="room" className="w-[300px] h-auto" />
                         )
