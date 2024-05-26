@@ -7,6 +7,14 @@ import { FaArrowRight, FaHome, FaUserCircle } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/images/Logo.png";
 import { AuthContext } from "../auth/auth-context";
+import {
+  FaUsers,
+  FaBorderAll,
+  FaBox,
+  FaTriangleExclamation,
+  FaTicket,
+  FaStarHalfStroke,
+} from "react-icons/fa6";
 
 import { DataContext } from "@/components/DataContext";
 
@@ -15,7 +23,9 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const { authState } = useContext(AuthContext);
   const host = import.meta.env.VITE_APP_HOST;
-  const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" +  "/" + authState.user.avatar : null;
+  const avatar = authState?.user?.avatar
+    ? host + "/uploads/avatar/" + "/" + authState.user.avatar
+    : null;
 
   const { navigationData, updateNavigationData } = useContext(DataContext);
 
@@ -33,78 +43,99 @@ const Layout = ({ children }) => {
         <nav className="flex items-center justify-between w-full h-14 bg-secondary/75">
           <section className="w-1/5 px-4 ">
             <Link to="/">
-              <img src={Logo} alt="Logo" className="h-10 min-h-10 min-w-[220px]" />
+              <img
+                src={Logo}
+                alt="Logo"
+                className="h-10 min-h-10 min-w-[220px]"
+              />
             </Link>
-            </section>
-            <section className="flex items-center px-4">
-            {authState?.token ? 
+          </section>
+          <section className="flex items-center px-4">
+            {authState?.token ? (
               <Link to="/profile">
-              <Avatar className="h-11 w-11">
-                <AvatarImage src={avatar} alt="Avatar" />
-                <AvatarFallback>
-                  <FaUserCircle />
-                </AvatarFallback>
-              </Avatar>
+                <Avatar className="h-11 w-11">
+                  <AvatarImage src={avatar} alt="Avatar" />
+                  <AvatarFallback>
+                    <FaUserCircle />
+                  </AvatarFallback>
+                </Avatar>
               </Link>
-               : 
-               <Link to="/login"><FaUserCircle className="text-3xl" /></Link>
-               }
-              </section>
+            ) : (
+              <Link to="/login">
+                <FaUserCircle className="text-3xl" />
+              </Link>
+            )}
+          </section>
         </nav>
 
         <div className="flex flex-row w-full h-full py-4">
-
-{authState?.user?.role === "admin" && (
-          <div className="flex flex-col w-1/5 h-full px-4 min-w-[20%] bg-slate-200 rounded-r-lg gap-y-4 py-4">
-
-            <Button variant="outline" asChild className="flex justify-between">
-              <Link to="/">
-                <div className="flex items-center text-lg gap-x-2">
-                <FaHome className="text-2xl" />Inicio
-                </div>
-                <FaArrowRight />
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/users">
-                Usuarios
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/rooms">
-                Espacios
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/equipment">
-                Equipo
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/incidents">
-                Incidencias
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/reservations">
-                Reservas
-              </Link>
-            </Button>
-            <Button variant="link" className="w-full text-lg text-black" asChild>
-              <Link to="/admin/reviews">
-                Reseñas
-              </Link>
-            </Button>
-          </div>
+          {authState?.user?.role === "admin" && (
+            <div className="flex flex-col min-w-[200px] h-full px-4  bg-slate-200 rounded-r-lg gap-y-4 py-4">
+             
+              <Button variant="link" className="w-full text-lg text-black" asChild>
+                <Link to="/admin/users">
+                  <FaUsers />
+                  Usuarios
+                </Link>
+              </Button>
+              <Button
+                variant="link"
+                className="w-full text-lg text-black"
+                asChild
+              >
+                <Link to="/admin/rooms">
+                  <FaBorderAll />
+                  Espacios
+                </Link>
+              </Button>
+              <Button
+                variant="link"
+                className="w-full text-lg text-black"
+                asChild
+              >
+                <Link to="/admin/equipment">
+                  <FaBox />
+                  Equipo
+                </Link>
+              </Button>
+              <Button
+                variant="link"
+                className="w-full text-lg text-black"
+                asChild
+              >
+                <Link to="/admin/incidents">
+                  <FaTriangleExclamation />
+                  Incidencias
+                </Link>
+              </Button>
+              <Button
+                variant="link"
+                className="w-full text-lg text-black"
+                asChild
+              >
+                <Link to="/admin/reservations">
+                  <FaTicket />
+                  Reservas
+                </Link>
+              </Button>
+              <Button
+                variant="link"
+                className="w-full text-lg text-black"
+                asChild
+              >
+                <Link to="/admin/reviews">
+                  <FaStarHalfStroke />
+                  Reseñas
+                </Link>
+              </Button>
+            </div>
           )}
 
           <div className="flex flex-row w-full h-full p-4 mx-4 rounded-lg bg-secondary/15">
             {children}
           </div>
-
         </div>
-
-        </div>
+      </div>
     );
   } else {
     return <Mobile>{children}</Mobile>;

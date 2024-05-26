@@ -24,7 +24,7 @@ const Mobile = ({ children }) => {
             opacity: 0.35,
           }}
         /> */}
-        <ScrollArea className="relative pb-12 h-dvh">
+        <ScrollArea className="relative pb-12 ">
           <Link to="/">
             <img
               src={Logo}
