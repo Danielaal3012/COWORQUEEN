@@ -75,3 +75,22 @@ const htmlContent = template({verificationCode});
     throw createError(503, "Error al enviar el correo");
   }
 };
+
+/* email de recuperacion de contraseña  */
+export const sendChangePasswordEmail = async (email) => {
+const htmlRegistro = "C:/Users/danie/Documents/PROYECTO-COWORQUEEN-git/COWORQUEEN/backend/utils/emails/changePassword.html";  //correo de recuperacion contraseña 
+const htmlContent = fs.readFileSync(htmlRegistro, 'utf8');
+
+
+  const mailOptions = {
+    from: SMTP_USER,
+    to: email,
+    subject: "COWORQUEEN - Cambio de Contraseña",
+    html: htmlContent,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw createError(503, "Error al enviar el correo");
+  }
+};

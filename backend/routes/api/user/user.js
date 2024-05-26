@@ -11,6 +11,7 @@ import {
   sendVerificationEmail,
   sendForgotPasswordEmail,
   sendValidateEmail,
+  sendChangePasswordEmail,
 } from "../../../utils/sendEmail.js";
 import {
   userSchema,
@@ -245,6 +246,10 @@ userRouter.patch("/change-password", authenticate, async (req, res, next) => {
       user.id,
     ]);
     res.status(200).json({ message: "Contraseña actualizada exitosamente" });  
+ await sendChangePasswordEmail(email);
+    res.status(200).json({
+      message: "Se ha enviado un correo electrónico informativo (cambio de contraseña)",
+    });
   } catch (error) {
     next(error);
   }
@@ -273,7 +278,7 @@ userRouter.post("/forgot-password", async (req, res, next) => {
     );
     await sendForgotPasswordEmail(email, verificationCode);
     res.status(200).json({
-      message: "Se ha enviado un correo electrónico con un código de verificación",
+      message: "Se ha enviado un correo electrónico con un código de verificación para restablecer contraseña",
     });
   } catch (error) {
     next(error);
