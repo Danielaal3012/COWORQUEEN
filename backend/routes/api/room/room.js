@@ -77,14 +77,14 @@ roomRouter.put("/room/:id", authenticate, isAdmin, async (req, res, next) => {
   }
 });
 
-//Eliminar un espacio (admin) SIN PROBAR
+//Eliminar un espacio (admin)
 roomRouter.delete(
   "/room/:id",
   authenticate,
   isAdmin, async (req, res, next) => {
     try {
       const roomId = req.params.id;
-      const { error } = viewRoomSchema.validate({ roomId }); //posiblementa falle el schema
+      const { error } = viewRoomSchema.validate({ roomId });
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
@@ -139,7 +139,6 @@ roomRouter.get(
   "/room/:roomId",
   async (req, res, next) => {
     try {
-      // Extraemos la id de la room de los parámetros de la petición
       const roomId = req.params.roomId;
       const { error } = viewRoomSchema.validate({ roomId });
       
@@ -147,10 +146,8 @@ roomRouter.get(
         throw createError(400, "Datos de entrada no válidos");
       }
 
-      // Consultamos el espacio en la BD
       const room = await validateRoomId(roomId);
 
-      // Consulta para calcular el promedio de rate
       const [result] = await dbPool.execute(
         `
         SELECT AVG(reviews.rate) as averageRate
@@ -190,7 +187,6 @@ roomRouter.get(
       //   throw createError(400, "Datos de entrada no válidos");
       // }
 
-      // Consultamos la tabla intermediaria equipmentRooms para obtener todo el equipo de una sala
       const [equipment] = await dbPool.execute(
         `SELECT equipment.id, equipment.name, equipment.description FROM equipmentRooms JOIN equipment ON equipmentRooms.equipmentId = equipment.id WHERE equipmentRooms.roomId = ?`,
         [roomId]
