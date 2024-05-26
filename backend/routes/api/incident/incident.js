@@ -44,67 +44,79 @@ categoryIncidentsRouter.post(
   }
 );
 
-//Agregar una incidencia como usuario
+// Añadir incidencia
 categoryIncidentsRouter.post(
-  "/incidents/add/:roomId/:reservationId",
+  "/incidents/:reservationId",
   authenticate,
   async (req, res, next) => {
     const userId = req.user.id;
-    const roomId = req.params.roomId;
     const reservationId = req.params.reservationId;
 
-    if (req.user.id !== userId) {
-      return res.status(401).json({
-        message: "No tienes permisos para realizar esta acción",
-      });
+    // Log para depuración
+    console.log("User ID:", userId);
+    console.log("Reservation ID:", reservationId);
+
+    const { description, equipmentId, roomId } = req.body;
+
+    // Validar el cuerpo de la solicitud
+    const { error } = incidentSchema.validate(req.body);
+    if (error) {
+      console.log("Validation Error:", error.details[0].message);
+      return res.status(400).send(error.details[0].message);
     }
 
-    const { error } = incidentSchema.validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
     try {
-      const [reservation] = await dbPool.execute(
-        `SELECT * FROM reservations WHERE id = ? AND userId = ?`,
-        [reservationId, userId]
-      );
+      if (reservationId !== "0") {
+        // Verificar si la reserva existe y pertenece al usuario
+        const [reservation] = await dbPool.execute(
+          `SELECT * FROM reservations WHERE id = ? AND userId = ?`,
+          [reservationId, userId]
+        );
 
-      if (reservation[0].reservationCheckin === 0) {
-        return res.status(400).json({
-          message: "No puedes añadir una incidencia a una reserva no confirmada",
-        });
+        if (!reservation.length) {
+          console.log("Reservation not found or does not belong to the user");
+          return res.status(404).json({
+            message: "Reserva no encontrada o no pertenece al usuario",
+          });
+        }
+
+        if (reservation[0].reservationCheckin === 0) {
+          console.log("Reservation not confirmed");
+          return res.status(400).json({
+            message: "No puedes añadir una incidencia a una reserva no confirmada",
+          });
+        }
+
+        if (reservation[0].roomId !== roomId) {
+          console.log("Room ID mismatch");
+          return res.status(400).json({
+            message: "El roomId proporcionado no coincide con el roomId de la reserva",
+          });
+        }
       }
 
-      if (!reservation[0]) {
-        return res.status(404).json({
-          message: "Reserva no encontrada o no pertenece al usuario",
-        });
-      }
-
-      if (reservation[0].roomId !== roomId) {
-        return res.status(400).json({
-          message: "El roomId proporcionado no coincide con el roomId de la reserva",
-        });
-      }
-
-      const { description, equipmentId } = req.body;
-
-      const addIncident = await dbPool.execute(
-        `INSERT INTO incidents (id, description,userId, roomId, equipmentId) VALUE (?, ?, ?, ?, ?)`,
+      // Insertar la incidencia en la base de datos
+      const [addIncident] = await dbPool.execute(
+        `INSERT INTO incidents (id, description, userId, roomId, equipmentId) VALUES (?, ?, ?, ?, ?)`,
         [crypto.randomUUID(), description, userId, roomId, equipmentId]
       );
+
+      if (!addIncident.affectedRows) {
+        console.log("Incident insertion failed");
+        throw createError(401, "No se pudo añadir la incidencia");
+      }
 
       res.status(201).json({
         message: "Incidencia transmitida con éxito",
       });
-
-      if (!addIncident)
-        throw createError(401, "No se pudo añadir la incidencia");
+      
     } catch (err) {
-      err.status = 401;
+      console.error("Error caught:", err);
       next(err);
     }
   }
 );
+
 
 export const listIncidentsRouter = Router();
 
