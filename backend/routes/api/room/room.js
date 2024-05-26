@@ -157,9 +157,7 @@ roomRouter.post(
     const { roomId } = req.params;
     const { equipmentIds } = req.body;
 
-    
-
-    if (!Array.isArray(equipmentIds) || equipmentIds.length === 0) {
+    if (!Array.isArray(equipmentIds)) {
       return res.status(400).json({ error: 'equipmentIds debe ser un array de IDs de equipos.' });
     }
 
@@ -171,15 +169,32 @@ roomRouter.post(
       new Date()
     ]);
 
-    const sql = `
+    const deletePreviousRows = `
+      DELETE FROM equipmentRooms
+      WHERE roomId = ?
+    `;
+
+    const updateRows = `
       INSERT INTO equipmentRooms (id, equipmentId, roomId, createdAt, updatedAt)
       VALUES ?
     `;
 
     try {
-      const [result] = await dbPool.query(sql, [values]);
+      await dbPool.query(deletePreviousRows, [roomId]);
 
-      res.status(201).json({ message: 'Equipos añadidos a la sala con éxito.', result });
+      if (equipmentIds.length > 0) {
+        const values = equipmentIds.map(equipmentId => [
+          crypto.randomUUID(), 
+          equipmentId, 
+          roomId, 
+          new Date(), 
+          new Date()
+        ]);
+        const [result] = await dbPool.query(updateRows, [values]);
+        return res.status(201).json({ message: 'Equipos añadidos a la sala con éxito.', result });
+      } else {
+        return res.status(204).json({ message: 'Equipos eliminados de la sala, sin nuevos equipos añadidos.' });
+      }
     } catch (error) {
       console.error('Error al añadir equipos a la sala:', error);
       res.status(500).json({ error: 'Hubo un error al añadir los equipos a la sala.' });
