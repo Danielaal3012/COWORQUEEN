@@ -69,8 +69,12 @@ export function UsersListAdmin() {
     });
   };
   return (
-    <div className="flex flex-col">
-      <div className="flex gap-1.5 items-center">
+    <div className="flex flex-col w-full">
+    <div className="flex justify-between px-4 mb-4 md:px-0">
+      <h2>Usuarios</h2>
+      </div>
+      <div className="flex gap-1.5 items-center w-full justify-between mb-4">
+
         <Input
           className="w-[400px]"
           type="search"
@@ -78,6 +82,8 @@ export function UsersListAdmin() {
           placeholder="Busca un usuario"
           onChange={handleChange}
         />
+        <div className="flex flex-row items-center">
+
         <Label className="w-[150px]">Usuarios por página</Label>
         <Select
           onValueChange={(value) =>
@@ -87,6 +93,7 @@ export function UsersListAdmin() {
             }))
           }
         >
+
           <SelectTrigger className="w-[75px]">
             <SelectValue placeholder="10" />
           </SelectTrigger>
@@ -97,6 +104,10 @@ export function UsersListAdmin() {
             <SelectItem value="100">100</SelectItem>
           </SelectContent>
         </Select>
+          
+        </div>
+        <div className="flex flex-row items-center gap-x-4">
+
         <Label>Orden</Label>
         <Select
           onValueChange={(value) =>
@@ -114,16 +125,16 @@ export function UsersListAdmin() {
             <SelectItem value="DESC">Descendente</SelectItem>
           </SelectContent>
         </Select>
+        </div>
       </div>
 
       <Table className="w-fit">
-        <TableCaption>Lita de usuarios</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre de usuario</TableHead>
             <TableHead className="w-[200px]">Nombre</TableHead>
             <TableHead className="w-[200px]">Apellidos</TableHead>
-            <TableHead className="w-[200px]">email</TableHead>
+            <TableHead className="w-[200px]">Correo electrónico</TableHead>
             <TableHead className="w-[50px]">Verificado</TableHead>
             <TableHead className="w-[50px]">Rol</TableHead>
             <TableHead className="w-[200px]">Creado</TableHead>
