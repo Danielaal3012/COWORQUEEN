@@ -6,13 +6,12 @@ import { AuthContext } from "@/auth/auth-context";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
-import { FaPlus } from "react-icons/fa";
+import { formatDateTime, formatTime } from "@/utils/formatDate";
 
 const AdminReservationList = () => {
   const { authState } = useContext(AuthContext);
@@ -34,24 +33,6 @@ const AdminReservationList = () => {
         console.error("Error al obtener los datos de las reservas:", error)
       );
   }, []);
-
-  const formatDate = (date) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(date).toLocaleDateString("es-ES", options);
-  };
-
-  const formatEnd = (date) => {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(date).toLocaleTimeString('es-ES', options);
-  };
-
-  console.log(reservations)
 
   return (
     <div className="flex flex-col w-full">
@@ -81,7 +62,7 @@ const AdminReservationList = () => {
                 <TableCell>
                 <Button variant="link" className="text-text" asChild >
                   <Link to={`/reservation/${reservation.id}`}>
-                  {formatDate(reservation.reservationDateBeg)} - {formatEnd(reservation.reservationDateEnd)}
+                  {formatDateTime(reservation.reservationDateBeg)} - {formatTime(reservation.reservationDateEnd)}
                   </Link>
                   </Button>
                 </TableCell>

@@ -23,9 +23,11 @@ import { Label } from "@/components/UI/label.jsx";
 import { Button } from "@/components/UI/button.jsx";
 import { Pagination } from "@/components/Pagination.jsx";
 import { Badge } from "@/components/UI/badge";
+import { formatDate } from "@/utils/formatDate";
 
 export function UsersListAdmin() {
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
   const [usersList, setUsersList] = useState([]);
   const [usersTotal, setUsersTotal] = useState();
   const [usersQueries, setUsersQueries] = useState({
@@ -36,16 +38,10 @@ export function UsersListAdmin() {
   });
   const { search, offset, limit, direction } = usersQueries;
 
-  function FechaVisual({ date }) {
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return <div>{new Date(date).toLocaleDateString("es-ES", options)}</div>;
-  }
-
   useEffect(() => {
     fetch(
-      `http://localhost:3000/admin/users?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
+      `${host}/admin/users?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
-        method: "get",
         headers: {
           "Content-Type": "application/json",
           Authorization: authState.token,
@@ -125,7 +121,6 @@ export function UsersListAdmin() {
             </SelectContent>
           </Select>
         </div>
-
       </div>
 
       <Table className="w-full">
@@ -175,10 +170,10 @@ export function UsersListAdmin() {
                   )}
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <FechaVisual fecha={user.createdAt} />
+                  {formatDate(user.createdAt)}
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <FechaVisual fecha={user.updatedAt} />
+                  {formatDate(user.updatedAt)}
                 </TableCell>
               </TableRow>
             ))
