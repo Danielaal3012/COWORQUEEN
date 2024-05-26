@@ -10,7 +10,6 @@ const Help = () => {
     const [reservations, setReservations] = useState([]);
     const [previousIncidents, setPreviousIncidents] = useState([])
 
-
     useEffect (() => {
         const fetchUserReservations = async () => {
             try {

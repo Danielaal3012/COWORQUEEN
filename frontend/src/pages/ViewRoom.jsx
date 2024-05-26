@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "../auth/auth-context";
+import { AuthContext } from "@/auth/auth-context";
+import { Button } from "@/components/UI/button";
+import { useNavigate } from 'react-router-dom';
+import { Skeleton } from "@/components/UI/skeleton";
+import { DataContext } from "@/components/DataContext";
 
 function ViewRoom() {
   const { authState } = useContext(AuthContext);
@@ -8,48 +13,64 @@ function ViewRoom() {
   const [roomData, setRoomData] = useState({});
   const { id } = useParams();
   const roomId = id;
+  const host = import.meta.env.VITE_APP_HOST;
+  const navigate = useNavigate();
+  let location = useLocation().pathname;
+  const { navigationData, updateNavigationData } = useContext(DataContext);
+
+  console.log(navigationData)
+
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_APP_HOST}/room/${id}`, {
+    fetch(`${host}/room/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
     })
       .then((res) => res.json())
-      .then((data) => {
-        setRoomData(data);
+      .then((body) => {
+        setRoomData(body.message);
       })
       .catch((error) =>
         console.error("Error al obtener los datos de la habitación:", error)
       );
   }, [roomId]);
 
+  const cover = roomData.image
+    ? host + "/uploads/rooms/" + roomId + "/" + roomData.image
+    : "";
+
   return (
-    <div className="text-center">
-      {roomData && roomData.message && (
-        <div>
-          <h2 className="mb-8 text-xl font-bold">
-            Espacio {roomData.message.name}
-          </h2>
+    <div className="flex flex-col text-center ">
+
+      <Button onClick={() => updateNavigationData({path: location})} variant="link">Path</Button>
+
+      {roomData && (
+        <div className="relative px-4">
+          <h2 className="mb-4 text-xl font-bold ">{roomData.name}</h2>
           <ul className="flex flex-col gap-y-4">
-            <li>
-              <span className="font-bold">ID:</span> {roomData.message.id}
-            </li>
+            {roomData.image ? (
+              <img src={cover} alt="room" className="w-[300px] h-auto justify-center mx-auto flex" />
+            ) : (
+              <Skeleton className="w-[300px] h-[200px] justify-center mx-auto flex " />
+            )
+          }
+
             <li>
               <span className="font-bold">Descripción:</span>{" "}
-              {roomData.message.description}
+              {roomData.description}
             </li>
             <li>
-              <span className="font-bold">Capacidad:</span>{" "}
-              {roomData.message.capacity}
+              <span className="font-bold">Capacidad:</span> {roomData.capacity}
             </li>
             <li>
-              <span className="font-bold">Tipo:</span> {roomData.message.typeOf}
+              <span className="font-bold">Tipo:</span> {roomData.typeOf}
             </li>
           </ul>
         </div>
       )}
+      <Button className="sticky bottom-0 z-10 mx-auto" onClick={() => navigate(`/room/${id}/reserve`)}>Reservar</Button>
     </div>
   );
 }

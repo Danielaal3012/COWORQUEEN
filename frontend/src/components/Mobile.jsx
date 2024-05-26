@@ -39,7 +39,9 @@ const Mobile = ({ children }) => {
             <img src={coworqueen} height={24} width={24} alt="Coworqueen" className="h-6 aspect-auto" />
           </Link>
           <FaEye />
+          <Link to="/reservations">
           <FaBookmark />
+          </Link>
           {authState?.token ? 
           <Link to="/profile">
           <Avatar>
