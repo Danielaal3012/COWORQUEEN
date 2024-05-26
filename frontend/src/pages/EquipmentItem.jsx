@@ -1,3 +1,4 @@
+import { Dialog } from "@/components/Dialog.jsx";
 import { Input } from "@/components/UI/Input";
 import { Button } from "@/components/UI/button.jsx";
 import { Label } from "@/components/UI/label.jsx";
@@ -5,7 +6,7 @@ import { Textarea } from "@/components/UI/textarea.jsx";
 import { useContext, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../auth/auth-context";
 
@@ -74,7 +75,7 @@ export function EquipmentItem() {
     }
   }
 
-  const handleIncidentDeletion = () => {
+  const handleEquipmentDeletion = () => {
     fetch(`${host}/admin/equipment/delete/${id}`, {
       method: "DELETE",
       headers: {
@@ -96,30 +97,8 @@ export function EquipmentItem() {
       );
   };
 
-  const showConfirmationNotification = () => {
-    toast(
-      <div className="flex flex-col w-full gap-3 my-5 ml-5">
-        <p>
-          <b>¿Deseas eliminar el artículo?</b>
-        </p>
-
-        <p className="text-sm">Esta acción será permanente</p>
-
-        <div className="flex justify-end gap-2 px-4 mt-5 md:px-0">
-          <Button onClick={() => toast.dismiss()}>Rechazar</Button>
-          <Button
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            onClick={() => handleIncidentDeletion()}
-          >
-            Sí, estoy seguro
-          </Button>
-        </div>
-      </div>,
-      {
-        autoClose: false,
-      }
-    );
-  };
+  const returnUrl = localStorage.getItem("returnPage");
+  console.log({ returnUrl });
 
   return (
     <div className="w-full">
@@ -132,14 +111,13 @@ export function EquipmentItem() {
                 <Button asChild>
                   <Link to="/admin/equipment">Volver</Link>
                 </Button>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  onClick={showConfirmationNotification}
-                >
-                  <FaTrash />
-                </Button>
-                <ToastContainer position="top-center" theme="colored" />
+                <Dialog
+                  buttonContent={<FaTrash />}
+                  title="¿Deseas eliminar el artículo?"
+                  description="Esta acción será permanente"
+                  handleButtonAction={handleEquipmentDeletion}
+                  sureText="Sí, lo estoy"
+                />
               </div>
             )}
           </div>

@@ -1,6 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "@/auth/auth-context";
+import { Pagination } from "@/components/Pagination.jsx";
+import { Input } from "@/components/UI/Input.jsx";
+import { Button } from "@/components/UI/button.jsx";
+import { Label } from "@/components/UI/label.jsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/UI/select.jsx";
 import {
   Table,
   TableBody,
@@ -10,18 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
-import { toast } from "react-toastify";
-import { Input } from "@/components/UI/Input.jsx";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/UI/select.jsx";
 import { SelectValue } from "@radix-ui/react-select";
-import { Label } from "@/components/UI/label.jsx";
-import { Button } from "@/components/UI/button.jsx";
-import { Pagination } from "@/components/Pagination.jsx";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
@@ -35,7 +35,6 @@ export const EquipmentList = () => {
   });
   const { search, offset, limit, direction } = equipmentQueries;
   useEffect(() => {
-    console.log({ equipmentQueries });
     fetch(
       `http://localhost:3000/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
@@ -64,7 +63,15 @@ export const EquipmentList = () => {
     });
   };
 
-  console.log("equipment list: ", equipmentList);
+  const location = useLocation();
+  console.log(location.pathname);
+
+  const [newUrl, setNewUrl] = useState();
+
+  useEffect(() => {
+    localStorage.setItem("returnPage", newUrl);
+  }, [newUrl]);
+  console.log({ newUrl });
 
   return (
     <div className="flex flex-col w-full">
@@ -130,9 +137,11 @@ export const EquipmentList = () => {
             equipmentList.map((equipment) => (
               <TableRow key={equipment.id}>
                 <TableCell className="font-bold">
-                  <Link to={`/admin/equipment/${equipment.id}`}>
-                    {equipment.name}
-                  </Link>
+                  <Button onClick={() => setNewUrl(location.pathname)}>
+                    <Link to={`/admin/equipment/${equipment.id}`}>
+                      {equipment.name}
+                    </Link>
+                  </Button>
                 </TableCell>
                 <TableCell>{equipment.description}</TableCell>
               </TableRow>
