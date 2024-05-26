@@ -4,7 +4,8 @@ import { Input } from "@/components/UI/Input";
 import { Label } from '@/components/UI/label';
 import { Button } from '@/components/UI/button';
 import { Textarea } from '@/components/UI/textarea';
-import { AuthContext } from '../auth/auth-context';
+import { AuthContext } from '@/auth/auth-context';
+import { DataContext } from '@/components/DataContext';
 import {
     Select,
     SelectContent,
@@ -15,8 +16,8 @@ import {
 
 const CreateIncident = () => {
     const { authState } = useContext(AuthContext);
+    const { rooms } = useContext(DataContext)
     const { id } = useParams();
-    const reservationId = id;
     const host = import.meta.env.VITE_APP_HOST;
     const [reservation, setReservation] = useState(null)
     const [equipment, setEquipment] = useState([]);
@@ -58,7 +59,7 @@ const CreateIncident = () => {
     }, [id, authState.token]);
 
      useEffect(() => {
-      fetch(`${host}/rooms/${reservation?.roomId}/equipment`, {
+      fetch(`${host}/rooms/${incident?.roomId}/equipment`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: authState.token,
@@ -71,7 +72,7 @@ const CreateIncident = () => {
         .catch((error) =>
           console.error("Error al obtener los datos de las reseñas:", error)
         );
-    }, [reservation]);
+    }, [incident.roomId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -110,9 +111,6 @@ const CreateIncident = () => {
         }
     }
 
-   
-    console.log(reservation?.roomId)
-
     return (
       <>
         <div className="flex flex-col w-full">
@@ -124,13 +122,36 @@ const CreateIncident = () => {
                 name="description"
                 value={incident?.description}
                 onChange={handleChange}
-                placeholder="Describe el problema durante tu reserva"
+                placeholder={authState.user.role === 'admin' ? 'Describe la incidencia con el equipo' : "Describe el problema durante tu reserva"}
                 required
               />
             </div>
+            {authState.user.role === 'admin' && 
+                        <div>
+                        <Label>Espacio</Label>
+                        <Select
+                            onValueChange={(value) =>
+                            setIncident((prevIncident) => ({ ...prevIncident, roomId: value }))
+                            }
+                        >
+                            <SelectTrigger>
+                            <SelectValue placeholder="Selecciona el espacio" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {rooms?.map((room) => (
+                                    <SelectItem key={room.id} value={room.id}>
+                                        {room.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                      </div>
+            }
+
             <div>
               <Label>Equipo</Label>
               <Select
+              disabled={authState.user.role === 'admin' && !incident.roomId ? true : false}
                 onValueChange={(value) =>
                   setIncident((prevIncident) => ({ ...prevIncident, equipmentId: value }))
                 }
