@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Button } from "@/components/UI/button.jsx";
 import { Switch } from "@/components/UI/switch.jsx";
 import { FaTrash } from "react-icons/fa";
+import { Dialog } from "@/components/Dialog.jsx";
 
 export function UserAdmin() {
   const [userDetail, setUserDetail] = useState([]);
@@ -88,7 +89,7 @@ export function UserAdmin() {
     }
   }
 
-  const handleIncidentDeletion = () => {
+  const handleUserDeletion = () => {
     fetch(`${host}/admin/users/delete/${id}`, {
       method: "DELETE",
       headers: {
@@ -102,40 +103,11 @@ export function UserAdmin() {
           return toast.error(data.error.message);
         } else {
           navigate("/admin/users");
-          toast.success("Artículo eliminado correctamente");
+          toast.success("Usuario eliminado correctamente");
         }
       })
-      .catch((error) =>
-        console.error("Error al eliminar la incidencia:", error)
-      );
+      .catch((error) => console.error("Error al eliminar el usuario:", error));
   };
-
-  const showConfirmationNotification = () => {
-    toast(
-      <div className="flex flex-col gap-3 my-5 ml-5">
-        <p>
-          <b>¿Deseas eliminar el usuario?</b>
-        </p>
-
-        <p className="text-sm">Esta acción será permanente</p>
-
-        <div className="flex justify-end gap-2 px-4 md:px-0 mt-5">
-          <Button onClick={() => toast.dismiss()}>Rechazar</Button>
-          <Button
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            onClick={() => handleIncidentDeletion()}
-          >
-            Sí, estoy seguro
-          </Button>
-        </div>
-      </div>,
-      {
-        autoClose: false,
-      }
-    );
-  };
-
-  console.log({ rol: userDetail.role });
 
   return (
     <div className="flex flex-col">
@@ -146,14 +118,13 @@ export function UserAdmin() {
             <Button asChild>
               <Link to="/admin/users">Volver</Link>
             </Button>
-            <Button
-              variant="destructive"
-              size="icon"
-              onClick={showConfirmationNotification}
-            >
-              <FaTrash />
-            </Button>
-            <ToastContainer position="top-center" theme="colored" />
+            <Dialog
+              buttonContent={<FaTrash />}
+              title="¿Deseas eliminar el usuario?"
+              description="Esta acción será permanente"
+              handleButtonAction={handleUserDeletion}
+              sureText="Sí, lo estoy"
+            />
           </div>
         )}
       </div>
