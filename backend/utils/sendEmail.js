@@ -76,7 +76,7 @@ const htmlContent = template({verificationCode});
   }
 };
 
-/* email de recuperacion de contraseña  */
+/* email informativo de cambio de contraseña  */
 export const sendChangePasswordEmail = async (email) => {
 const htmlRegistro = "C:/Users/danie/Documents/PROYECTO-COWORQUEEN-git/COWORQUEEN/backend/utils/emails/changePassword.html";  //correo de recuperacion contraseña 
 const htmlContent = fs.readFileSync(htmlRegistro, 'utf8');
@@ -86,6 +86,27 @@ const htmlContent = fs.readFileSync(htmlRegistro, 'utf8');
     from: SMTP_USER,
     to: email,
     subject: "COWORQUEEN - Cambio de Contraseña",
+    html: htmlContent,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw createError(503, "Error al enviar el correo");
+  }
+};
+
+/* email informativo de creacion de reserva  */
+export const sendCreatedReservationEmail = async (email, name, user, roomName, reservationDateBeg, reservationDateEnd) => {
+const htmlRegistro = "C:/Users/danie/Documents/PROYECTO-COWORQUEEN-git/COWORQUEEN/backend/utils/emails/createdReservation.html";  //correo de recuperacion contraseña 
+const htmltemplate = fs.readFileSync(htmlRegistro, 'utf8');
+const template = handlebars.compile(htmltemplate);
+const htmlContent = template({name, user, roomName, reservationDateBeg, reservationDateEnd});
+
+
+  const mailOptions = { 
+    from: SMTP_USER,
+    to: email,
+    subject: "COWORQUEEN - Reserva Existosa",
     html: htmlContent,
   };
   try {
