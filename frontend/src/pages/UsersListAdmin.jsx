@@ -132,8 +132,7 @@ export function UsersListAdmin() {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre de usuario</TableHead>
-            <TableHead className="w-[200px]">Nombre</TableHead>
-            <TableHead className="w-[200px]">Apellidos</TableHead>
+            <TableHead className="w-max">Nombre</TableHead>
             <TableHead className="w-[200px]">Correo electrónico</TableHead>
             <TableHead className="w-[50px]">Verificado</TableHead>
             <TableHead className="w-[50px]">Rol</TableHead>
@@ -148,11 +147,10 @@ export function UsersListAdmin() {
                 <TableCell className="font-bold">
                   <Link to={`/admin/users/${user.id}`}>{user.username}</Link>
                 </TableCell>
-                <TableCell>{user.firstName ? user.firstName : "---"}</TableCell>
-                <TableCell>{user.lastName ? user.lastName : "---"}</TableCell>
+                <TableCell>{user.firstName ? user.firstName : "---"} {user.lastName ? user.lastName : "---"}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.verified ? "Sí" : "No"}</TableCell>
-                <TableCell>{user.role}</TableCell>
+                <TableCell className="text-center">{user.verified ? "Sí" : "No"}</TableCell>
+                <TableCell>{user.role === 'admin' ? 'Admin' : 'Cliente'}</TableCell>
                 <TableCell>
                   <FechaVisual fecha={user.createdAt} />
                 </TableCell>
