@@ -39,6 +39,8 @@ function CreateChangePasswordForm() {
       if (response.ok) {
         setSuccessMessage("Contraseña modificada correctamente");
         setErrorMessage("");
+        navigate("/profile");
+
       } else {
         setErrorMessage(data.error.message);
         setSuccessMessage("");
