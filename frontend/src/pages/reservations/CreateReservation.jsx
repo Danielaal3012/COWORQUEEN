@@ -12,6 +12,7 @@ import {
 import { es } from "date-fns/locale";
 import { toast } from "react-toastify";
 import { Button } from "@/components/UI/button";
+import { formatReservation } from "@/utils/formatDate";
 
 const CreateReservation = () => {
   const { authState } = useContext(AuthContext);
@@ -72,21 +73,21 @@ const CreateReservation = () => {
 
   //cancelar segun el tipo de sala
 
-  const formatDateTime = (date, time) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    const hourString = time?.toString().padStart(2, "0");
-    return `${year}-${month}-${day} ${hourString}:00:00`;
-  };
+  // const formatDateTime = (date, time) => {
+  //   const year = date.getFullYear();
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   const hourString = time?.toString().padStart(2, "0");
+  //   return `${year}-${month}-${day} ${hourString}:00:00`;
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formattedReservationData = {
       roomId: id,
-      reservationDateBeg: formatDateTime(date, startTime),
-      reservationDateEnd: formatDateTime(date, endTime),
+      reservationDateBeg: formatReservation(date, startTime),
+      reservationDateEnd: formatReservation(date, endTime),
     };
 
     try {

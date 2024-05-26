@@ -14,14 +14,10 @@ export const formatDateTime = (date) => {
     return new Date(date).toLocaleTimeString('es-ES', options);
   }
 
-  // redundante?
-  export const formatDate = (date) => {
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(date).toLocaleDateString("es-ES", options);
+  export const formatReservation = (date, time) => {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const hourString = time?.toString().padStart(2, "0");
+        return `${year}-${month}-${day} ${hourString}:00:00`;
   }
