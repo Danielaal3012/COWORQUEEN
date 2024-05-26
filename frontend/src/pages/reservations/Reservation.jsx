@@ -3,12 +3,14 @@ import { Dialog } from "@/components/Dialog.jsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { formatDateTime, formatTime } from "@/utils/formatDate";
 
 const ViewReservation = () => {
   const { authState } = useContext(AuthContext);
   const [reservationData, setReservationData] = useState({});
   const { id } = useParams();
   const host = import.meta.env.VITE_APP_HOST;
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +51,6 @@ const ViewReservation = () => {
 
   const currentDate = new Date();
 
-  console.log(reservationData);
-
   return (
     <div className="flex flex-col w-full">
       {reservationData && (
@@ -76,12 +76,12 @@ const ViewReservation = () => {
             </li>
             <li>
               <span className="font-bold">Fecha:</span>{" "}
-              {reservationData.reservationDateBeg} -{" "}
-              {reservationData.reservationDateEnd}
+              {formatDateTime(reservationData.reservationDateBeg)} -{" "}
+              {formatTime(reservationData.reservationDateEnd)}
             </li>
             <li>
               <span className="font-bold">Fecha de creación:</span>{" "}
-              {reservationData.createdAt}
+              {formatDateTime(reservationData.createdAt)}
             </li>
           </ul>
         </div>
