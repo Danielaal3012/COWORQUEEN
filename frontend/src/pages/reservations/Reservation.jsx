@@ -72,7 +72,7 @@ const ViewReservation = () => {
           <ul className="flex flex-col gap-y-4">
             <li>
               <span className="font-bold">Espacio:</span>{" "}
-              {reservationData.roomId}
+              {reservationData.roomName}
             </li>
             <li>
               <span className="font-bold">Fecha:</span>{" "}

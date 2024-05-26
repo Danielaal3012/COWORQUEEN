@@ -51,7 +51,6 @@ const AdminReservationList = () => {
     return new Date(date).toLocaleTimeString('es-ES', options);
   };
 
-
   console.log(reservations)
 
   return (
@@ -80,16 +79,25 @@ const AdminReservationList = () => {
             {reservations.map((reservation) => (
               <TableRow key={reservation.id}>
                 <TableCell>
+                <Button variant="link" className="text-text" asChild >
+                  <Link to={`/reservation/${reservation.id}`}>
                   {formatDate(reservation.reservationDateBeg)} - {formatEnd(reservation.reservationDateEnd)}
+                  </Link>
+                  </Button>
                 </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
-                    <Link to={`/admin/room/${reservation.roomId}`}>Ver espacio</Link>
+                    <Button variant="link" className="text-text" asChild >
+                    <Link to={`/admin/room/${reservation.roomId}`}>{reservation?.roomName}</Link>
+                  </Button>
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
-                    usuario
+                  <Button variant="link" className="text-text" asChild >
+                    <Link to={`/admin/users/${reservation.userId}`}> {reservation?.userFirstName} {reservation?.userLastName}</Link>
+                  </Button>
                 </TableCell>
+                {console.log(reservation)}
                 <TableCell className="hidden md:table-cell">
-                {reservation.reservationCheckin === 0 ? (<Badge>No realizado</Badge>) : (<Badge>Realizado</Badge>)}
+                {reservation.reservationCheckin === 0 ? (<Badge>No realizado</Badge>) : (<Badge variant="outline">Realizado</Badge>)}
                 </TableCell>
               </TableRow>
             ))}
