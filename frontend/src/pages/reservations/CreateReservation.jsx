@@ -12,6 +12,7 @@ import {
 import { es } from "date-fns/locale";
 import { toast } from "react-toastify";
 import { Button } from "@/components/UI/button";
+import { formatReservation } from "@/utils/formatDate";
 
 const CreateReservation = () => {
   const { authState } = useContext(AuthContext);
@@ -63,7 +64,7 @@ const CreateReservation = () => {
   let hours = Array.from({ length: 15 }, (_, i) => i + 8);
 
   if (currentDate.getDate() === date?.getDate()) {
-     hours = hours.filter(hour => hour > currentDate.getHours())
+    hours = hours.filter((hour) => hour > currentDate.getHours());
   }
 
   //revisar despues de las 22h no muestra selects
@@ -72,25 +73,24 @@ const CreateReservation = () => {
 
   //cancelar segun el tipo de sala
 
-  const formatDateTime = (date, time) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hourString = time?.toString().padStart(2, "0");
-    return `${year}-${month}-${day} ${hourString}:00:00`;
-  }
+  // const formatDateTime = (date, time) => {
+  //   const year = date.getFullYear();
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   const hourString = time?.toString().padStart(2, "0");
+  //   return `${year}-${month}-${day} ${hourString}:00:00`;
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formattedReservationData = {
       roomId: id,
-      reservationDateBeg: formatDateTime(date, startTime),
-      reservationDateEnd: formatDateTime(date, endTime),
-    }
-  
-    try {
+      reservationDateBeg: formatReservation(date, startTime),
+      reservationDateEnd: formatReservation(date, endTime),
+    };
 
+    try {
       const response = await fetch(`${host}/reservation/${id}`, {
         method: "POST",
         headers: {
@@ -105,14 +105,11 @@ const CreateReservation = () => {
         //navigate("/profile");
       } else {
         toast.error("Error al crear la reserva");
-
       }
     } catch (error) {
       toast.error(error);
     }
-  }
-
-  console.log()
+  };
 
   return (
     <div className="relative flex flex-col justify-center p-4 lg:justify-normal">
@@ -122,42 +119,30 @@ const CreateReservation = () => {
         locale={es}
         selected={date}
         fromDate={new Date()}
-        toMonth={new Date(currentDate.getFullYear(), currentDate.getMonth() + 3)}
+        toMonth={
+          new Date(currentDate.getFullYear(), currentDate.getMonth() + 3)
+        }
         onSelect={handleDateSelect}
         className="mx-auto my-4 border rounded-md h-fit w-fit"
       />
 
-<section className="flex flex-row justify-between my-4 lg:flex-col">
-
-      <Select onValueChange={handleStartTimeSelect} disabled={date === null}>
-        <SelectTrigger className="w-[175px]">
-        <SelectValue placeholder={startTime !== null ? `${startTime?.toString().padStart(2, "0")}:00` : 'Hora de entrada'}>
-            {startTime !== null ? `${startTime?.toString().padStart(2, "0")}:00` : 'Hora de entrada'}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {hours.slice(0, -1).map((hour) => {
-            const hourString = hour.toString().padStart(2, "0");
-            return (
-              <SelectItem key={hour} value={hour}>
-                {hourString}:00
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
-
-      <Select onValueChange={handleEndTimeSelect} disabled={startTime === null}>
-        <SelectTrigger className="w-[175px]">
-          <SelectValue placeholder={endTime !== null ? `${endTime?.toString().padStart(2, "0")}:00` : 'Hora de salida'}>
-            {endTime !== null ? `${endTime?.toString().padStart(2, "0")}:00` : null}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {hours
-            .slice(1)
-            .filter((hour) => hour > startTime)
-            .map((hour) => {
+      <section className="flex flex-row justify-between my-4 lg:flex-col">
+        <Select onValueChange={handleStartTimeSelect} disabled={date === null}>
+          <SelectTrigger className="w-[175px]">
+            <SelectValue
+              placeholder={
+                startTime !== null
+                  ? `${startTime?.toString().padStart(2, "0")}:00`
+                  : "Hora de entrada"
+              }
+            >
+              {startTime !== null
+                ? `${startTime?.toString().padStart(2, "0")}:00`
+                : "Hora de entrada"}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {hours.slice(0, -1).map((hour) => {
               const hourString = hour.toString().padStart(2, "0");
               return (
                 <SelectItem key={hour} value={hour}>
@@ -165,10 +150,44 @@ const CreateReservation = () => {
                 </SelectItem>
               );
             })}
-        </SelectContent>
-      </Select>
+          </SelectContent>
+        </Select>
+
+        <Select
+          onValueChange={handleEndTimeSelect}
+          disabled={startTime === null}
+        >
+          <SelectTrigger className="w-[175px]">
+            <SelectValue
+              placeholder={
+                endTime !== null
+                  ? `${endTime?.toString().padStart(2, "0")}:00`
+                  : "Hora de salida"
+              }
+            >
+              {endTime !== null
+                ? `${endTime?.toString().padStart(2, "0")}:00`
+                : null}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {hours
+              .slice(1)
+              .filter((hour) => hour > startTime)
+              .map((hour) => {
+                const hourString = hour.toString().padStart(2, "0");
+                return (
+                  <SelectItem key={hour} value={hour}>
+                    {hourString}:00
+                  </SelectItem>
+                );
+              })}
+          </SelectContent>
+        </Select>
       </section>
-      <Button onClick={handleSubmit} className="sticky mx-auto bottom-4 w-fit">Confirmar</Button>
+      <Button onClick={handleSubmit} className="sticky mx-auto bottom-4 w-fit">
+        Confirmar
+      </Button>
     </div>
   );
 };

@@ -17,8 +17,12 @@ export const reservationRouter = Router();
 // Listado de todas las reservas
 reservationRouter.get("/reservations", authenticate, isAdmin, async (req, res, next) => {
   try {
-    const [reservations] = await pool.execute("SELECT * FROM reservations");
-
+    const [reservations] = await pool.execute(`
+    SELECT reservations.*, users.firstName as userFirstName, users.lastName as userLastName, rooms.name as roomName
+    FROM reservations
+    JOIN users ON reservations.userId = users.id
+    JOIN rooms ON reservations.roomId = rooms.id
+  `);
     if (!reservations) {
       throw createError(404, "Reservas no encontradas");
     }
@@ -203,9 +207,15 @@ reservationRouter.get(
     try {
       const reservationId = req.params.reservationId;
       const [[reservation]] = await pool.execute(
-        `SELECT * FROM reservations WHERE id = ?`,
+        `
+        SELECT reservations.*, users.firstName as userFirstName, users.lastName as userLastName, rooms.name as roomName
+        FROM reservations
+        JOIN users ON reservations.userId = users.id
+        JOIN rooms ON reservations.roomId = rooms.id
+        `,
         [reservationId]
       );
+
       if (reservation.length === 0) {
         throw createError(404, "Reserva no encontrada");
       }
