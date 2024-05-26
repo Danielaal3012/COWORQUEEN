@@ -23,7 +23,26 @@ export const reviewRouter = Router();
 reviewRouter.get("/reviews", async (req, res, next) => {
   try {
     const [reviews] = await pool.execute(
-      "SELECT reviews.id, reviews.rate , reviews.description, reviews.reservationId FROM reviews"
+      `
+  SELECT 
+    reviews.id,
+    reviews.rate,
+    reviews.description,
+    reviews.reservationId,
+    reservations.userId,
+    reservations.roomId,
+    users.firstName,
+    users.lastName,
+    rooms.name AS roomName
+  FROM 
+    reviews
+  JOIN 
+    reservations ON reviews.reservationId = reservations.id
+  JOIN 
+    users ON reservations.userId = users.id
+  JOIN 
+    rooms ON reservations.roomId = rooms.id;
+`
     );
     if (!reviews) {
       throw createError(404, "Reseñas no encontradas");
@@ -225,7 +244,6 @@ reviewRouter.patch(
   }
 );
 
-
 // Obtener detalles de una review por su id
 reviewRouter.get("/review/:reviewId", async (req, res, next) => {
   try {
@@ -235,9 +253,31 @@ reviewRouter.get("/review/:reviewId", async (req, res, next) => {
       throw createError(400, "Datos de entrada no válidos");
     }
     const [review] = await pool.execute(
-      "SELECT * FROM reviews WHERE id = ?",
+      `
+      SELECT 
+        reviews.id,
+        reviews.rate,
+        reviews.description,
+        reviews.reservationId,
+        reservations.userId,
+        reservations.roomId,
+        users.firstName,
+        users.lastName,
+        rooms.name AS roomName
+      FROM 
+        reviews
+      JOIN 
+        reservations ON reviews.reservationId = reservations.id
+      JOIN 
+        users ON reservations.userId = users.id
+      JOIN 
+        rooms ON reservations.roomId = rooms.id
+      WHERE 
+        reviews.id = ?;
+      `,
       [reviewId]
     );
+    
     if (!review[0]) {
       throw createError(404, "Review no encontrada");
     }
