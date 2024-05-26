@@ -22,6 +22,7 @@ import { SelectValue } from "@radix-ui/react-select";
 import { Label } from "@/components/UI/label.jsx";
 import { Button } from "@/components/UI/button.jsx";
 import { Pagination } from "@/components/Pagination.jsx";
+import { Badge } from "@/components/UI/badge";
 
 export function UsersListAdmin() {
   const { authState } = useContext(AuthContext);
@@ -69,92 +70,114 @@ export function UsersListAdmin() {
     });
   };
   return (
-    <div className="flex flex-col w-full">
-    <div className="flex justify-between px-4 mb-4 md:px-0">
-      <h2>Usuarios</h2>
+    <div className="flex flex-col w-full px-4 md:px-0">
+      <div className="flex justify-between mb-4 ">
+        <h2>Usuarios</h2>
       </div>
-      <div className="flex gap-1.5 items-center w-full justify-between mb-4">
 
+      <div className="flex px-4 flex-col md:flex-row md:px-0 gap-1.5 items-center w-full justify-between mb-4">
         <Input
-          className="w-[400px]"
+          className="md:w-[400px]"
           type="search"
           name="search"
           placeholder="Busca un usuario"
           onChange={handleChange}
         />
+
         <div className="flex flex-row items-center">
-
-        <Label className="w-[150px]">Usuarios por página</Label>
-        <Select
-          onValueChange={(value) =>
-            setUsersQueries((prevState) => ({
-              ...prevState,
-              limit: value,
-            }))
-          }
-        >
-
-          <SelectTrigger className="w-[75px]">
-            <SelectValue placeholder="10" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="10">10</SelectItem>
-            <SelectItem value="25">25</SelectItem>
-            <SelectItem value="50">50</SelectItem>
-            <SelectItem value="100">100</SelectItem>
-          </SelectContent>
-        </Select>
-          
+          <Label className="w-[150px]">Usuarios por página</Label>
+          <Select
+            onValueChange={(value) =>
+              setUsersQueries((prevState) => ({
+                ...prevState,
+                limit: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[75px]">
+              <SelectValue placeholder="10" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+
         <div className="flex flex-row items-center gap-x-4">
-
-        <Label>Orden</Label>
-        <Select
-          onValueChange={(value) =>
-            setUsersQueries((prevState) => ({
-              ...prevState,
-              direction: value,
-            }))
-          }
-        >
-          <SelectTrigger className="w-[130px]">
-            <SelectValue placeholder="Ascendente" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ASC">Ascendente</SelectItem>
-            <SelectItem value="DESC">Descendente</SelectItem>
-          </SelectContent>
-        </Select>
+          <Label>Orden</Label>
+          <Select
+            onValueChange={(value) =>
+              setUsersQueries((prevState) => ({
+                ...prevState,
+                direction: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Ascendente" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ASC">Ascendente</SelectItem>
+              <SelectItem value="DESC">Descendente</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+
       </div>
 
-      <Table className="w-fit">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre de usuario</TableHead>
-            <TableHead className="w-max">Nombre</TableHead>
-            <TableHead className="w-[200px]">Correo electrónico</TableHead>
-            <TableHead className="w-[50px]">Verificado</TableHead>
-            <TableHead className="w-[50px]">Rol</TableHead>
-            <TableHead className="w-[200px]">Creado</TableHead>
-            <TableHead className="w-[200px]">Última modificación</TableHead>
+            <TableHead className="hidden md:table-cell">Nombre</TableHead>
+            <TableHead className="min-w-[200px] hidden md:table-cell">
+              Correo electrónico
+            </TableHead>
+            <TableHead className="w-[50px] hidden md:table-cell">
+              Verificado
+            </TableHead>
+            <TableHead className="w-[50px] md:text-center">Rol</TableHead>
+            <TableHead className="w-[200px] hidden md:table-cell">
+              Creado
+            </TableHead>
+            <TableHead className="w-[200px] hidden md:table-cell">
+              Última modificación
+            </TableHead>
+            {/* <TableHead></TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {usersList && usersList.length > 0 ? (
             usersList.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="font-bold">
-                  <Link to={`/admin/users/${user.id}`}>{user.username}</Link>
+                <Link to={`/admin/users/${user.id}`}>
+                  <TableCell className="font-bold">{user.username}</TableCell>
+                </Link>
+                <TableCell className="hidden md:table-cell">
+                  {user.firstName ? user.firstName : "---"}{" "}
+                  {user.lastName ? user.lastName : "---"}
                 </TableCell>
-                <TableCell>{user.firstName ? user.firstName : "---"} {user.lastName ? user.lastName : "---"}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell className="text-center">{user.verified ? "Sí" : "No"}</TableCell>
-                <TableCell>{user.role === 'admin' ? 'Admin' : 'Cliente'}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {user.email}
+                </TableCell>
+                <TableCell className="hidden text-center md:table-cell">
+                  {user.verified ? "Sí" : "No"}
+                </TableCell>
+
                 <TableCell>
+                  {user?.role === "admin" ? (
+                    <Badge>Admin</Badge>
+                  ) : (
+                    <Badge variant="outline">Cliente</Badge>
+                  )}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
                   <FechaVisual fecha={user.createdAt} />
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell">
                   <FechaVisual fecha={user.updatedAt} />
                 </TableCell>
               </TableRow>
