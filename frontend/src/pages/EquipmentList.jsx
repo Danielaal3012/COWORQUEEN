@@ -82,7 +82,7 @@ export const EquipmentList = () => {
         <Input
           type="search"
           name="search"
-          className="w-1/2"
+          className="w-1/3"
           placeholder="Busca un equipo"
           onChange={handleChange}
         />
