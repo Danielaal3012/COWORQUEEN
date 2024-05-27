@@ -7,6 +7,7 @@ import { Badge } from "@/components/UI/badge";
 import { AuthContext } from "../auth/auth-context";
 import { toast } from "react-toastify";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import { formatDateTime } from "@/utils/formatDate";
 
 const ViewIncident = () => {
   const { authState } = useContext(AuthContext);
@@ -108,16 +109,6 @@ const ViewIncident = () => {
               </div>
             )}
           </div>
-          {/* <h2 className="mb-8 text-xl font-bold">Incidencia</h2>
-            {incidentData.status === "pending" && (
-                <Button
-                    variant="destructive"
-                    onClick={handleIncidentResolve}
-                >
-                    Marcar como resuelta
-                </Button>
-                )}
-                 */}
           <ul className="flex flex-col gap-y-4">
             <li>
               <span className="font-bold">Descripción:</span>{" "}
@@ -125,17 +116,19 @@ const ViewIncident = () => {
             </li>
             <li>
               <span className="font-bold">Estado:</span>{" "}
-              <Badge>
-                {incidentData.status === "pending" ? "Pendiente" : "Resuelta"}
-              </Badge>
+              {incidentData.status === "pending" ? (
+                <Badge variant="outline">Pendiente</Badge>
+              ) : (
+                <Badge>Resuelta</Badge>
+              )}
             </li>
             <li>
               <span className="font-bold">Fecha de creación:</span>{" "}
-              {incidentData.createdAt}
+              {formatDateTime(incidentData.createdAt)}
             </li>
             <li>
               <span className="font-bold">Fecha de resolución:</span>{" "}
-              {incidentData.updatedAt}
+              {formatDateTime(incidentData.updatedAt)}
             </li>
             <li>
               <span className="font-bold">Sala:</span>{" "}

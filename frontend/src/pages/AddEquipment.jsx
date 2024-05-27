@@ -47,9 +47,10 @@ export function AddEquipment() {
     }
   }
   return (
-    <form
+    <div className="flex flex-col w-full ">
+ <form
       onSubmit={onSubmit}
-      className="flex flex-col p-4 mx-auto mt-4 rounded-md gap-y-4"
+      className="flex flex-col w-full p-4 mx-auto mt-4 rounded-md gap-y-4"
     >
       <Button asChild>
         <Link to="/admin/equipment">Volver</Link>
@@ -80,5 +81,7 @@ export function AddEquipment() {
         Añadir artículo
       </Button>
     </form>
+    </div>
+   
   );
 }

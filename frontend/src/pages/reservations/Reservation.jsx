@@ -3,12 +3,14 @@ import { Dialog } from "@/components/Dialog.jsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { formatDateTime, formatTime } from "@/utils/formatDate";
 
 const ViewReservation = () => {
   const { authState } = useContext(AuthContext);
   const [reservationData, setReservationData] = useState({});
   const { id } = useParams();
   const host = import.meta.env.VITE_APP_HOST;
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const ViewReservation = () => {
       .catch((error) => console.error("Error al cancelar la reserva:", error));
   };
 
-  console.log(reservationData);
+  const currentDate = new Date();
 
   return (
     <div className="flex flex-col w-full">
@@ -55,28 +57,31 @@ const ViewReservation = () => {
         <div>
           <div className="flex justify-between px-4 md:px-0">
             <h2>Reserva</h2>
-            <Dialog
-              buttonVariant="outline"
-              buttonContent="Cancelar reserva"
-              title="¿Estás seguro?"
-              description="Esta acción no se puede deshacer. Esto cancelará permanentemente tu reserva y deberás crear una nueva."
-              handleButtonAction={handleReservationCancel}
-              sureText="Sí, estoy seguro"
-            />
+            {new Date(reservationData.reservationDateBeg) > currentDate && (
+                          <Dialog
+                          buttonVariant="outline"
+                          buttonContent="Cancelar reserva"
+                          title="¿Estás seguro?"
+                          description="Esta acción no se puede deshacer. Esto cancelará permanentemente tu reserva y deberás crear una nueva."
+                          handleButtonAction={handleReservationCancel}
+                          sureText="Sí, estoy seguro"
+                        />)
+              }
+
           </div>
           <ul className="flex flex-col gap-y-4">
             <li>
               <span className="font-bold">Espacio:</span>{" "}
-              {reservationData.roomId}
+              {reservationData.roomName}
             </li>
             <li>
               <span className="font-bold">Fecha:</span>{" "}
-              {reservationData.reservationDateBeg} -{" "}
-              {reservationData.reservationDateEnd}
+              {formatDateTime(reservationData.reservationDateBeg)} -{" "}
+              {formatTime(reservationData.reservationDateEnd)}
             </li>
             <li>
               <span className="font-bold">Fecha de creación:</span>{" "}
-              {reservationData.createdAt}
+              {formatDateTime(reservationData.createdAt)}
             </li>
           </ul>
         </div>

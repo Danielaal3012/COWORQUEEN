@@ -22,9 +22,11 @@ import { SelectValue } from "@radix-ui/react-select";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaPlus } from "react-icons/fa";
 
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
   const [equipmentList, setEquipmentList] = useState([]);
   const [equipmentTotal, setEquipmentTotal] = useState();
   const [equipmentQueries, setEquipmentQueries] = useState({
@@ -36,7 +38,7 @@ export const EquipmentList = () => {
   const { search, offset, limit, direction } = equipmentQueries;
   useEffect(() => {
     fetch(
-      `http://localhost:3000/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
+      `${host}/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
         method: "get",
         headers: {
@@ -75,8 +77,13 @@ export const EquipmentList = () => {
 
   return (
     <div className="flex flex-col w-full">
-    <div className="flex justify-between px-4 mb-4 md:px-0">
-      <h2>Equipo</h2>
+      <div className="flex justify-between px-4 mb-4 md:px-0">
+        <h2>Equipo</h2>
+        <Button variant="outline" size="icon">
+          <Link to="/admin/equipment/add">
+            <FaPlus />
+          </Link>
+        </Button>
       </div>
       <div className="flex items-center justify-between gap-1.5 w-full mb-4">
         <Input
@@ -130,24 +137,24 @@ export const EquipmentList = () => {
         </Select>
         </div>
         
-        <Button asChild>
+        {/* <Button asChild>
           <Link to="/admin/equipment/add">Añadir</Link>
-        </Button>
+        </Button> */}
       </div>
 
       <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
-            <TableHead className="w-[450px]">Descripción</TableHead>
+            <TableHead className="w-full">Descripción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {equipmentList && equipmentList.length > 0 ? (
             equipmentList.map((equipment) => (
               <TableRow key={equipment.id}>
-                <TableCell className="font-bold">
-                  <Button onClick={() => setNewUrl(location.pathname)}>
+                <TableCell>
+                  <Button variant="link" className="text-text" asChild>
                     <Link to={`/admin/equipment/${equipment.id}`}>
                       {equipment.name}
                     </Link>

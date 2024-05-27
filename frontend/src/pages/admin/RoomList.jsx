@@ -8,7 +8,6 @@ import { AuthContext } from "@/auth/auth-context";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -39,6 +38,7 @@ const AdminRoomList = () => {
 
   console.log(rooms);
 
+
     return (
       <div className="flex flex-col w-full">
         <div className="flex justify-between px-4 md:px-0">
@@ -51,7 +51,6 @@ const AdminRoomList = () => {
         </div>
         <section className="flex flex-col w-full mx-auto mt-8">
           <Table className="w-full">
-            {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
             <TableHeader>
               <TableRow>
                 {/* <TableHead className="w-[350px]">ID</TableHead> */}
@@ -71,7 +70,7 @@ const AdminRoomList = () => {
                 <TableRow key={room?.id}>
                   {/* <TableCell className="hidden md:table-cell">{room.id}</TableCell> */}
                   <TableCell className="font-bold">
-                    <Link to={`/admin/room/${room?.id}`}>{room?.name}</Link>
+                    <Link to={`/admin/room/${room?.id}/edit`}>{room?.name}</Link>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {room?.description}

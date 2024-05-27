@@ -6,13 +6,12 @@ import { AuthContext } from "@/auth/auth-context";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
-import { FaPlus } from "react-icons/fa";
+import { formatDateTime, formatTime } from "@/utils/formatDate";
 
 const AdminReservationList = () => {
   const { authState } = useContext(AuthContext);
@@ -34,25 +33,6 @@ const AdminReservationList = () => {
         console.error("Error al obtener los datos de las reservas:", error)
       );
   }, []);
-
-  const formatDate = (date) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(date).toLocaleDateString("es-ES", options);
-  };
-
-  const formatEnd = (date) => {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(date).toLocaleTimeString('es-ES', options);
-  };
-
-
-  console.log(reservations)
 
   return (
     <div className="flex flex-col w-full">
@@ -80,16 +60,25 @@ const AdminReservationList = () => {
             {reservations.map((reservation) => (
               <TableRow key={reservation.id}>
                 <TableCell>
-                  {formatDate(reservation.reservationDateBeg)} - {formatEnd(reservation.reservationDateEnd)}
+                <Button variant="link" className="text-text" asChild >
+                  <Link to={`/reservation/${reservation.id}`}>
+                  {formatDateTime(reservation.reservationDateBeg)} - {formatTime(reservation.reservationDateEnd)}
+                  </Link>
+                  </Button>
                 </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
-                    <Link to={`/admin/room/${reservation.roomId}`}>Ver espacio</Link>
+                    <Button variant="link" className="text-text" asChild >
+                    <Link to={`/admin/room/${reservation.roomId}`}>{reservation?.roomName}</Link>
+                  </Button>
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
-                    usuario
+                  <Button variant="link" className="text-text" asChild >
+                    <Link to={`/admin/users/${reservation.userId}`}> {reservation?.userFirstName} {reservation?.userLastName}</Link>
+                  </Button>
                 </TableCell>
+                {console.log(reservation)}
                 <TableCell className="hidden md:table-cell">
-                {reservation.reservationCheckin === 0 ? (<Badge>No realizado</Badge>) : (<Badge>Realizado</Badge>)}
+                {reservation.reservationCheckin === 0 ? (<Badge variant="outline">No realizado</Badge>) : (<Badge >Realizado</Badge>)}
                 </TableCell>
               </TableRow>
             ))}
