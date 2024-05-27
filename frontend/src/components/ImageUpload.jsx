@@ -19,6 +19,7 @@ const ImageUpload = ({
   type = "multiple",
   existing,
   id,
+  disabledState 
 }) => {
   const [files, setFiles] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -27,11 +28,10 @@ const ImageUpload = ({
   const existingCover = existing
     ? `${host}/uploads/rooms/${id}/${existing}`
     : null;
-    const eexistingAvatar = existing
-    ? `${host}/uploads/avatar/${existing}`
-    : null;
+    // const existingAvatar = existing
+    // ? `${host}/uploads/avatar/${existing}`
+    // : null;
 
-  console.log(existing);
 
   const onDrop = (acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
@@ -81,6 +81,7 @@ const ImageUpload = ({
       "image/webp": [".webp"],
     },
     multiple: true,
+    disabled: disabledState,
     onDropRejected: () => {
       setDialogMessage(
         "Solo se permiten archivos de imagen con extensiones png, jpg, jpeg o webp."
@@ -92,7 +93,7 @@ const ImageUpload = ({
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
-
+  
   return (
     <div
       className={` p-4 w-full ${
@@ -116,7 +117,7 @@ const ImageUpload = ({
             </div>
             <button
               onClick={removeFile(file)}
-              className="absolute top-0 right-0 p-2 mt-1 mr-1 text-white bg-red-700 border border-[#D5D4D7] rounded-full text-md hover:bg-red-800 transition-all ease-in-out duration-200"
+              className={`absolute top-0 right-0 p-2 mt-1 mr-1 text-white bg-red-700 border border-[#D5D4D7] rounded-full text-md ${disabledState ? 'hidden' : 'hover:bg-red-800'} transition-all ease-in-out duration-200`}
             >
               <FaX />
             </button>
@@ -142,14 +143,55 @@ const ImageUpload = ({
         </div>
       ) : null}
 
+      {type === 'avatar' && !disabledState && files.length == 1 ? (
+        files?.map((file, index) => (
+          <div
+            className="select-none relative m-0 aspect-square min-h-[144px] min-w-[144px] max-h-[144px] max-w-[144px]"
+            key={index}
+          >
+            <div className="w-full h-full overflow-hidden border border-[#D5D4D7] rounded-full">
+              <img
+                src={file.preview}
+                className="object-cover w-full h-full"
+                alt="Preview"
+              />
+            </div>
+            <button
+              onClick={removeFile(file)}
+              className={`absolute top-0 right-0 p-2 mt-1 mr-1 text-white bg-red-700 border border-[#D5D4D7] rounded-full text-md ${disabledState ? 'hidden' : 'hover:bg-red-800'} transition-all ease-in-out duration-200`}
+            >
+              <FaX />
+            </button>
+          </div>
+        ))
+      ) : type === 'avatar'  && !existing && files.length >= 0 ? (
+        <div className="select-none  p-6 text-center border border-[#D5D4D7] aspect-square min-h-[144px] min-w-[144px] max-h-[144px] max-w-[144px] rounded-lg">
+          <FaImage className="p-2 m-2 mx-auto text-6xl text-[#63646F] border-2 border-[#D5D4D7] border-dashed rounded-full" />
+          <p className="text-[#71717A] font-medium">
+            No se han subido archivos
+          </p>
+          <p className="text-[#9B9BA2] ">Sube una imagen para verla aquí</p>
+        </div>
+      ) : type === 'avatar'  && existing && files.length >= 0 ? (
+        <div className="select-none relative m-0 aspect-square min-h-[144px] min-w-[144px] max-h-[144px] max-w-[144px]">
+          <div className="w-full h-full overflow-hidden border border-[#D5D4D7] rounded-full">
+            <img
+              src={existing}
+              className="object-cover w-full h-full"
+              alt="Preview"
+            />
+          </div>
+        </div>
+      ) : null}
+      
       <div
         {...getRootProps({ className: "dropzone" })}
-        className="p-6 text-center border-2 border-[#D5D4D7] w-full min-h-[200px] max-h-[300px] border-dashed rounded-lg cursor-pointer hover:bg-black/[0.025] transition-all ease-in-out duration-300 select-none "
+        className={`p-6 text-center border-2 border-[#D5D4D7] w-full min-h-[200px] max-h-[300px] border-dashed rounded-lg   ${disabledState ? 'opacity-65 cursor-not-allowed' : 'hover:bg-black/[0.025] cursor-pointer '} transition-all ease-in-out duration-300 select-none`}
       >
-        <input {...getInputProps()} />
+        <input {...getInputProps()}  />
         <MdOutlineFileUpload className="p-2 m-2 mx-auto text-6xl text-[#63646F] border-2 border-[#D5D4D7] border-dashed rounded-full" />
         <p className="text-[#71717A] font-medium ">
-          Arrastra y suelta archivos aquí, o haz clic para seleccionar archivos
+          Arrastra y suelta archivos aquí, o haz clic para seleccionar imágenes
         </p>
         <p className="text-[#9B9BA2]  ">
           Puedes subir hasta {maxFiles} imágen{maxFiles > 1 ? "es" : ""}
@@ -169,7 +211,7 @@ const ImageUpload = ({
               </div>
               <button
                 onClick={removeFile(file)}
-                className="absolute top-0 right-0 p-2 mt-1 mr-1 text-white bg-red-700 border border-[#D5D4D7] rounded-full text-md hover:bg-red-800 transition-all ease-in-out duration-200"
+                className={`absolute top-0 right-0 p-2 mt-1 mr-1 text-white bg-red-700 border border-[#D5D4D7] rounded-full text-md  transition-all ease-in-out duration-200 ${disabledState ? 'hidden' : 'hover:bg-red-800'}`}
               >
                 <FaX />
               </button>

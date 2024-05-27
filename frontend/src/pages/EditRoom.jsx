@@ -206,13 +206,9 @@ if (images.length > 0) {
     }
   };
 
-  console.log(cover)
-
   const handleImagesChange = (newFiles) => {
     setImages(newFiles);
   };
-
-  console.log(images)
 
   return (
     <div className={`relative flex flex-col w-full ${isDesktop ? 'h-full' : 'min-h-[95dvh]'}`}>
