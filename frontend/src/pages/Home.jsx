@@ -67,7 +67,7 @@ const HomePage = () => {
                   />
                   <div className="absolute bg-opacity-50 bg-secondary w-fit" />
                   <div className="absolute bottom-0 flex items-center justify-between w-full ">
-                    <h3 className="px-2 py-1 overflow-hidden font-bold text-center bg-secondary rounded-tr-xl min-w-11 max-h-8">{room.name}</h3>
+                    <h3 className="px-2 overflow-hidden text-2xl font-bold text-center bg-secondary rounded-tr-xl min-w-11 max-h-10">{room.name}</h3>
                     <Badge className="mx-2 text-center">
                       {room.typeOf}
                     </Badge>
