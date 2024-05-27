@@ -9,6 +9,10 @@ import {
   viewRoomSchema,
 } from "../../schemas/roomSchemas.js";
 import { createError } from "../../../utils/error.js";
+import { promises as fs } from "fs";
+import { dirname, resolve, basename } from "path";
+import { cwd } from "process";
+
 import crypto from "crypto";
 
 const dbPool = getPool();
@@ -148,6 +152,23 @@ roomRouter.get(
 
       const room = await validateRoomId(roomId);
 
+      // console.log(room)
+
+      // console.log(room.image)
+
+      const roomPath = resolve(
+        cwd(),
+        "..",
+        "frontend",
+        "public",
+        "uploads",
+        "rooms",
+        room.id
+      );
+
+          const files = await fs.readdir(roomPath);
+          //const filteredFiles = files.filter(file => file !== room.image);
+
       const [result] = await dbPool.execute(
         `
         SELECT AVG(reviews.rate) as averageRate
@@ -166,7 +187,8 @@ roomRouter.get(
       res.status(200).json({
         message: {
           ...room,
-          averageRate: averageRate
+          averageRate: averageRate,
+          images: files
         }
       });
     } catch (error) {

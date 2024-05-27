@@ -2,9 +2,28 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "@/auth/auth-context";
 import { Button } from "@/components/UI/button";
-import { useNavigate } from 'react-router-dom';
+import { Badge } from "@/components/UI/badge";
+import { useNavigate } from "react-router-dom";
+import { formatAverageRate } from "@/utils/formatRating";
 import { Skeleton } from "@/components/UI/skeleton";
 import { DataContext } from "@/components/DataContext";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/UI/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/UI/card"
+
 
 function ViewRoom() {
   const { authState } = useContext(AuthContext);
@@ -35,34 +54,75 @@ function ViewRoom() {
     ? host + "/uploads/rooms/" + roomId + "/" + roomData.image
     : "";
 
+  console.log(roomData);
+
   return (
-    <div className="flex flex-col text-center ">
+    <div className="flex flex-col w-full text-center">
+
 
       {roomData && (
-        <div className="relative px-4">
-          <h2 className="mb-4 text-xl font-bold ">{roomData.name}</h2>
-          <ul className="flex flex-col gap-y-4">
-            {roomData.image ? (
-              <img src={cover} alt="room" className="w-[300px] h-auto justify-center mx-auto flex" />
-            ) : (
-              <Skeleton className="w-[300px] h-[200px] justify-center mx-auto flex " />
-            )
-          }
+        <div className="relative flex flex-col justify-center w-full px-4 md:px-0">
 
-            <li>
-              <span className="font-bold">Descripción:</span>{" "}
+          <section className="flex flex-row items-center justify-between">
+          <h2 className="">{roomData.name}</h2>
+          <p className="text-right">{formatAverageRate(roomData.averageRate)}</p>
+          </section>
+
+          <Carousel
+            className="mx-auto mb-4"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
+          >
+  <CarouselContent className="-ml-2 w-full h-full aspect-video md:w-[450px] md:h-[300px] md:min-w-[450px] md:min-h-[300px] md:max-w-[450px] md:max-h-[300px]">
+    {roomData?.images?.map((image, index) => (
+      <CarouselItem key={index}>
+        <Card className="w-full h-full overflow-hidden">
+          <CardContent className="w-full h-full p-0">
+            <img
+              src={host + "/uploads/rooms/" + roomId + "/" + image}
+              alt="room"
+              className="object-cover w-full h-full"
+            />
+          </CardContent>
+        </Card>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+
+              <p className="text-left text-balance">
               {roomData.description}
-            </li>
-            <li>
-              <span className="font-bold">Capacidad:</span> {roomData.capacity}
-            </li>
-            <li>
-              <span className="font-bold">Tipo:</span> {roomData.typeOf}
-            </li>
-          </ul>
+
+              </p>
+
+              <section className="flex flex-row justify-between my-2">
+              <div className="text-left">
+
+                <span className="font-bold">Capacidad:</span> {roomData.capacity}
+                </div>
+                <div className="flex items-center text-right gap-x-4">
+                <span className="font-bold">Tipo:</span> {roomData.typeOf === 'Pública' ? <Badge variant="secondary">Pública</Badge> : <Badge>Privada</Badge>}
+                </div>
+              </section>
+         
+              
         </div>
       )}
-      <Button className="sticky bottom-0 z-10 mx-auto" onClick={() => navigate(`/room/${id}/reserve`)}>Reservar</Button>
+      <Button
+        className="sticky bottom-0 z-10 mx-auto"
+        onClick={() => navigate(`/room/${id}/reserve`)}
+      >
+        Reservar
+      </Button>
     </div>
   );
 }

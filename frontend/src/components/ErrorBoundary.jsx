@@ -17,7 +17,7 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <Layout>Algo salió mal. Por favor, recarga la página.</Layout>;
+      return <div>Algo salió mal. Por favor, recarga la página.</div>;
     }
 
     return this.props.children; 
