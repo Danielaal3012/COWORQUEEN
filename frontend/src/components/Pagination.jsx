@@ -9,7 +9,6 @@ export function Pagination({ totalRecords, limit, onPageChange, offset }) {
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-  console.log({ currentPage, offset, limit });
 
   const handlePageClick = (pageNumber) => {
     onPageChange(pageNumber);
@@ -23,11 +22,17 @@ export function Pagination({ totalRecords, limit, onPageChange, offset }) {
       >
         Anterior
       </Button>
-      {pageNumbers.map((pageNumber) => (
-        <button key={pageNumber} onClick={() => handlePageClick(pageNumber)}>
-          {pageNumber}
-        </button>
-      ))}
+      <div className="flex gap-1">
+        {pageNumbers.map((pageNumber, index) => (
+          <Button
+            variant="outline"
+            key={index}
+            onClick={() => handlePageClick(pageNumber)}
+          >
+            {`${pageNumber}`}
+          </Button>
+        ))}
+      </div>
       <Button
         disabled={currentPage === totalPages}
         onClick={() => handlePageClick(currentPage + 1)}
@@ -37,3 +42,5 @@ export function Pagination({ totalRecords, limit, onPageChange, offset }) {
     </div>
   );
 }
+
+
