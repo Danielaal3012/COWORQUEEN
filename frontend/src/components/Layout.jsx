@@ -4,7 +4,7 @@ import { Button } from "@/components/UI/button";
 import useMediaQuery from "@/utils/mediaquery";
 import { useContext, useEffect } from "react";
 import { FaArrowRight, FaHome, FaUserCircle } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "../assets/images/Logo.png";
 import { AuthContext } from "../auth/auth-context";
 import {
@@ -22,22 +22,13 @@ import { DataContext } from "@/components/DataContext";
 
 const Layout = ({ children }) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const location = useLocation();
   const { authState } = useContext(AuthContext);
   const host = import.meta.env.VITE_APP_HOST;
   const avatar = authState?.user?.avatar
     ? host + "/uploads/avatar/" + "/" + authState.user.avatar
     : null;
 
-  const { navigationData, updateNavigationData } = useContext(DataContext);
 
-  useEffect(() => {
-    updateNavigationData({
-      ...navigationData,
-      path: location.pathname,
-      scroll: window.scrollY,
-    });
-  }, [location.pathname]);
 
   if (isDesktop) {
     return (

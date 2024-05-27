@@ -9,18 +9,6 @@ export function DataProvider({ children }) {
     return storedRooms ? JSON.parse(storedRooms) : { data: [], lastUpdated: null };
   });
 
-  const [navigationData, setNavigationData] = useState(() => {
-    const storedNavigationData = localStorage.getItem("navigationData");
-    return storedNavigationData
-      ? JSON.parse(storedNavigationData)
-      : { path: "", savedPath: "", scroll: 0 };
-  });
-
-  const updateNavigationData = (newNavigationData) => {
-    setNavigationData(newNavigationData);
-    localStorage.setItem("navigationData", JSON.stringify(newNavigationData));
-  };
-
   const updateRooms = (newRooms) => {
     const updatedRooms = {
       data: newRooms,
@@ -35,15 +23,11 @@ export function DataProvider({ children }) {
     if (storedRooms) {
       setRooms(JSON.parse(storedRooms));
     }
-    const storedNavigationData = localStorage.getItem("navigationData");
-    if (storedNavigationData) {
-      setNavigationData(JSON.parse(storedNavigationData));
-    }
   }, []);
 
   return (
     <DataContext.Provider
-      value={{ rooms, navigationData, updateRooms, updateNavigationData }}
+      value={{ rooms, updateRooms }}
     >
       {children}
     </DataContext.Provider>

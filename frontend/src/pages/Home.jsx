@@ -17,7 +17,7 @@ const HomePage = () => {
     const now = new Date();
   
     if (rooms.data.length > 0) {
-      const lastUpdated = new Date(rooms.lastUpdated);
+      const lastUpdated = new Date(rooms?.lastUpdated);
       if ((now - lastUpdated) < updateInterval) {
         console.log('No se necesita actualización, las habitaciones ya están actualizadas.');
         return;
@@ -86,8 +86,8 @@ const HomePage = () => {
       <section>filtros</section>
       <section className="w-full h-dvh">
         <section className="flex flex-wrap justify-center gap-4 my-4">
-          {rooms.data.length > 0 &&
-            rooms.data.map((room) => (
+          {rooms?.data?.length > 0 &&
+            rooms?.data?.map((room) => (
               <figure
                 key={room.id}
                 className="relative w-[45%] max-w-[45%] h-auto lg:w-[300px] lg:max-w-[300px] lg:h-[200px] overflow-hidden rounded-md hover:opacity-80"
