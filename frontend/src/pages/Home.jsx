@@ -3,6 +3,8 @@ import { AuthContext } from "@/auth/auth-context";
 import { DataContext } from "@/components/DataContext";
 import { Badge } from "@/components/UI/badge";
 import { Link } from "react-router-dom";
+import { FaRegStar, FaRegStarHalf } from "react-icons/fa6";
+
 
 const HomePage = () => {
   const { authState } = useContext(AuthContext);
@@ -33,6 +35,25 @@ const HomePage = () => {
       });
   }
 
+  const formatAverageRate = (rate) => {
+    if (rate === null || rate === undefined || isNaN(rate)) {
+      return null;
+    }
+  
+    const roundedRate = Math.round(rate * 2) / 2;
+    const fullStars = Math.floor(roundedRate);
+    const hasHalfStar = roundedRate % 1 !== 0;
+  
+    return (
+      <div className="flex flex-row p-1">
+        {[...Array(fullStars)].map((_, i) => (
+          <FaRegStar key={i} />
+        ))}
+        {hasHalfStar && <FaRegStarHalf />}
+      </div>
+    );
+  };
+
   console.log(rooms)
 
   return (
@@ -59,9 +80,12 @@ const HomePage = () => {
                       {room.typeOf}
                     </Badge>
                   </div>
-                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-white rounded-bl-xl min-w-11">
-                    <p className="p-2">{room.capacity}</p>
+                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-white rounded-bl-xl min-w-11 max-h-6">
+                    <p className="">{room.capacity}</p>
                   </div>
+                  <div className="absolute top-0 left-0 items-center overflow-hidden font-bold text-center min-w-11 max-h-6">
+                  {formatAverageRate(room.averageRate)}
+                                    </div>
                 </Link>
               </figure>
               // <p className="hidden">{room.description}</p>
