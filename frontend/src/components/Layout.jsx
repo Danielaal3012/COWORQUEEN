@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   if (isDesktop) {
     return (
       <div className="relative flex flex-col w-full bg-transparent h-dvh ">
-        <nav className="flex items-center justify-between w-full h-17 bg-secondary">
+        <nav className="flex items-center justify-between w-full bg-[#121212] h-17">
           <section className="w-1/5  h-[80px] flex items-center px-4 ">
             <Link to="/">
               <img
