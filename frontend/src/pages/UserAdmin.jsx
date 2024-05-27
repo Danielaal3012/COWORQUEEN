@@ -11,11 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Button } from "@/components/UI/button.jsx";
 import { Switch } from "@/components/UI/switch.jsx";
 import { FaTrash } from "react-icons/fa";
 import { Dialog } from "@/components/Dialog.jsx";
+import { formatDateTime } from "@/utils/formatDate";
 
 export function UserAdmin() {
   const [userDetail, setUserDetail] = useState([]);
@@ -24,15 +25,6 @@ export function UserAdmin() {
   const { id } = useParams();
   const host = import.meta.env.VITE_APP_HOST;
   const navigate = useNavigate();
-
-  function FechaVisual({ date }) {
-    const options = { day: "numeric", month: "numeric", year: "numeric" };
-    if (date) {
-      return <div>{new Date(date).toLocaleDateString("es-ES", options)}</div>;
-    } else {
-      return <div>---</div>;
-    }
-  }
 
   useEffect(() => {
     fetch(`${host}/admin/users/${id}`, {
@@ -50,18 +42,12 @@ export function UserAdmin() {
   }, []);
 
   const onChangeCheck = () => {
-    if (userDetail.role === "normal") {
-      setUserDetail({
-        ...userDetail,
-        role: "admin",
-      });
-    } else if (userDetail.role === "admin") {
-      setUserDetail({
-        ...userDetail,
-        role: "normal",
-      });
-    }
+    setUserDetail(prevDetail => ({
+      ...prevDetail,
+      role: prevDetail.role === "admin" ? "normal" : "admin",
+    }));
   };
+  
 
   async function handleSaveChanges(e) {
     e.preventDefault();
@@ -110,7 +96,7 @@ export function UserAdmin() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className="flex justify-between px-4 md:px-0">
         <h2>{userDetail.username}</h2>
         {authState.user.role === "admin" && (
@@ -129,7 +115,6 @@ export function UserAdmin() {
         )}
       </div>
       <Table className="w-fit">
-        <TableCaption>Lita de usuarios</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
@@ -153,17 +138,17 @@ export function UserAdmin() {
               <TableCell>{userDetail.email}</TableCell>
               <TableCell>{userDetail.verified ? "Sí" : "No"}</TableCell>
               <TableCell>
-                <Switch
+              <Switch
                   checked={userDetail.role === "admin"}
                   onCheckedChange={onChangeCheck}
                   disabled={!editing}
                 />
               </TableCell>
               <TableCell>
-                <FechaVisual date={userDetail.createdAt} />
+                {formatDateTime(userDetail.createdAt)}
               </TableCell>
               <TableCell>
-                <FechaVisual date={userDetail.updatedAt} />
+              {formatDateTime(userDetail.updatedAt)} 
               </TableCell>
             </TableRow>
           ) : (
@@ -194,7 +179,7 @@ export function UserAdmin() {
       ) : (
         <div className="flex flex-col items-center mt-4 gap-y-2 ">
           <Button onClick={() => setEditing(true)} className="w-full ">
-            Editar artículo
+            Editar usuario
           </Button>
         </div>
       )}

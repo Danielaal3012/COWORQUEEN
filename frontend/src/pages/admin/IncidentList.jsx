@@ -68,20 +68,30 @@ const AdminIncidentList = () => {
             {incidents.map((incident) => (
               <TableRow key={incident.incidentId}>
                 <TableCell>
+                <Button variant="link" className="text-text" asChild>
+
                   <Link to={`/incident/${incident.incidentId}`}>
                   {incident.description}
                   </Link>
+                  </Button>
                   </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
-                  <Badge>
-                    {incident.status === "pending" ? "Pendiente" : "Resuelta"}
-                  </Badge>
+                  {incident.status === 'pending' ? <Badge variant="outline">Pendiente</Badge> : <Badge>Resuelta</Badge>}
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
+                  <Button variant="link" className="text-text" asChild>
+                    <Link to={`/admin/room/${incident.roomId}`}> 
                   {incident.roomName}
+                  </Link>
+                  </Button>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
+                <Button variant="link" className="text-text" asChild>
+                    <Link to={`/admin/equipment/${incident.equipmentId}`}> 
                   {incident.equipmentName}
+                  </Link>
+                  </Button>
+                
                 </TableCell>
                 {/* Enlace al equipo */}
                 {/* <TableCell>acciones</TableCell> */}
