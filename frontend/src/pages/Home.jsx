@@ -63,16 +63,16 @@ const HomePage = () => {
                   <img
                     src={host + "/uploads/rooms/" + room.id + "/" + room.image}
                     alt={room.name}
-                    className="w-full"
+                    className="w-full rounded-xl"
                   />
-                  <div className="absolute bg-white bg-opacity-50 w-fit" />
-                  <div className="absolute bottom-0 flex items-center justify-between w-full px-2 py-1 ">
-                    <h3 className="font-bold">{room.name}</h3>
-                    <Badge variant="outline" className="text-center bg-primary">
+                  <div className="absolute bg-opacity-50 bg-secondary w-fit" />
+                  <div className="absolute bottom-0 flex items-center justify-between w-full ">
+                    <h3 className="px-2 py-1 overflow-hidden font-bold text-center bg-secondary rounded-tr-xl min-w-11 max-h-8">{room.name}</h3>
+                    <Badge className="mx-2 text-center">
                       {room.typeOf}
                     </Badge>
                   </div>
-                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-white rounded-bl-xl min-w-11 max-h-6">
+                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-secondary rounded-bl-xl min-w-11 max-h-6">
                     <p className="">{room.capacity}</p>
                   </div>
                   <div className="absolute top-0 left-0 items-center overflow-hidden font-bold text-center min-w-11 max-h-6">

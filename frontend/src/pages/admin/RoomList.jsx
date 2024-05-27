@@ -80,8 +80,8 @@ const AdminRoomList = () => {
                   </TableCell>
                   <TableCell className="text-center">
                     <Badge
-                      variant="outline"
-                      className="text-center bg-secondary/20"
+                      variant="secondary"
+                      className="text-center"
                     >
                       {room?.typeOf}
                     </Badge>

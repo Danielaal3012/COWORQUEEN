@@ -76,7 +76,7 @@ const AdminIncidentList = () => {
                   </Button>
                   </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
-                  {incident.status === 'pending' ? <Badge variant="outline">Pendiente</Badge> : <Badge>Resuelta</Badge>}
+                  {incident.status === 'pending' ? <Badge variant="secondary">Pendiente</Badge> : <Badge>Resuelta</Badge>}
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
                   <Button variant="link" className="text-text" asChild>
