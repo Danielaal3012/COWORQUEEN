@@ -5,7 +5,7 @@ import useMediaQuery from "@/utils/mediaquery";
 import { useContext, useEffect } from "react";
 import { FaArrowRight, FaHome, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Logo from "../assets/images/Logo.png";
+import LogoNegro from "../assets/images/LogoNegro.png";
 import { AuthContext } from "../auth/auth-context";
 import {
   FaUsers,
@@ -33,20 +33,20 @@ const Layout = ({ children }) => {
   if (isDesktop) {
     return (
       <div className="relative flex flex-col w-full bg-transparent h-dvh ">
-        <nav className="flex items-center justify-between w-full h-14 bg-secondary/75">
-          <section className="w-1/5 px-4 ">
+        <nav className="flex items-center justify-between w-full h-17 bg-secondary">
+          <section className="w-1/5  h-[80px] flex items-center px-4 ">
             <Link to="/">
               <img
-                src={Logo}
+                src={LogoNegro}
                 alt="Logo"
                 className="h-10 min-h-10 min-w-[220px]"
               />
             </Link>
           </section>
-          <section className="flex items-center px-4">
+          <section className="flex items-center px-7">
             {authState?.token ? (
               <Link to="/profile">
-                <Avatar className="h-11 w-11">
+                <Avatar className="h-9 w-9">
                   <AvatarImage src={avatar} alt="Avatar" />
                   <AvatarFallback>
                     <FaUserCircle />
@@ -63,7 +63,7 @@ const Layout = ({ children }) => {
 
         <div className="flex flex-row w-full h-full py-4">
           {authState?.user?.role === "admin" && (
-            <div className="flex flex-col min-w-[200px] h-full px-4  bg-slate-200 rounded-r-lg gap-y-4 py-4">
+            <div className="flex flex-col min-w-[200px] h-full px-4  bg-[#B29900] rounded-r-lg gap-y-4 py-4">
              
               <Button variant="link" className="w-full text-lg text-black" asChild>
                 <Link to="/admin/users">
