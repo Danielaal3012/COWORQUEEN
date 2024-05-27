@@ -41,7 +41,7 @@ const AdminRoomList = () => {
 
     return (
       <div className="flex flex-col w-full">
-        <div className="flex justify-between px-4 md:px-0">
+        <div className="flex justify-between px-4 md:px-0 ">
           <h2>Espacios</h2>
           <Button variant="outline" size="icon">
             <Link to="/create-room">
@@ -81,7 +81,7 @@ const AdminRoomList = () => {
                   <TableCell className="text-center">
                     <Badge
                       variant="outline"
-                      className="text-center bg-secondary"
+                      className="text-center bg-secondary/20"
                     >
                       {room?.typeOf}
                     </Badge>
