@@ -44,7 +44,6 @@ const handleFileUpload = (req, res, next) => {
       }
       const filePath = path.join(dirPath, fileName);
 
-      // Mover el archivo al directorio de destino
       file.mv(filePath, (err) => {
         if (err) {
           console.error('Error al mover el archivo:', err);
@@ -57,7 +56,6 @@ const handleFileUpload = (req, res, next) => {
           filePath: filePath
         });
 
-        // Solo llamamos a next() cuando todos los archivos se han procesado
         if (processedFiles.length === files.length) {
           req.body.files = processedFiles;
           next();
