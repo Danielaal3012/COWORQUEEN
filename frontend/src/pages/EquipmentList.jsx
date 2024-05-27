@@ -137,7 +137,10 @@ export const EquipmentList = () => {
             equipmentList.map((equipment) => (
               <TableRow key={equipment.id}>
                 <TableCell className="font-bold">
-                  <Button onClick={() => setNewUrl(location.pathname)}>
+                  <Button
+                    variant="link"
+                    onClick={() => setNewUrl(location.pathname)}
+                  >
                     <Link to={`/admin/equipment/${equipment.id}`}>
                       {equipment.name}
                     </Link>
