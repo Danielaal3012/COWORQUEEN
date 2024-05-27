@@ -172,7 +172,6 @@ mediaRouter.post(
       const { id: roomId } = req.params;
       const files = req.body.files;
 
-
       if (!files || files.length === 0) {
         return res
           .status(400)
@@ -181,7 +180,6 @@ mediaRouter.post(
 
       const uploadedFiles = [];
 
-      
       for (const file of files) {
         const mediaId = crypto.randomUUID();
         const { fileName, filePath } = file;
@@ -190,8 +188,8 @@ mediaRouter.post(
 
         const imagePath = resolve(
           cwd(),
-        "..",
-        "frontend",
+          "..",
+          "frontend",
           "public",
           "uploads",
           "rooms",
@@ -199,24 +197,9 @@ mediaRouter.post(
           imageFileName
         );
 
-        console.log('subido:', filePath)
-
-        console.log(imagePath)
-  
-
         const imageDir = dirname(imagePath);
-        try {
-          // Verificar si el archivo existe
-        
-          // Crear el directorio de destino si no existe
-          await fs.mkdir(imageDir, { recursive: true });
-        
-          // Mover el archivo
-          await fs.rename(filePath, imagePath);
-        } catch (error) {
-          console.error(`Error al mover el archivo: ${error.message}`);
-        }
-
+        await fs.mkdir(imageDir, { recursive: true });
+        await fs.rename(filePath, imagePath);
 
         await dbPool.execute(
           `INSERT INTO media(id, url, roomId) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE url = ?, id = ?`,
