@@ -4,6 +4,7 @@ import { DataContext } from "@/components/DataContext";
 import { Badge } from "@/components/UI/badge";
 import { Link } from "react-router-dom";
 import { FaRegStar, FaRegStarHalf } from "react-icons/fa6";
+import ImageUpload from "@/components/ImageUpload";
 
 
 const HomePage = () => {
@@ -74,6 +75,10 @@ const HomePage = () => {
     );
   };
 
+
+
+
+
   console.log(rooms)
 
   return (
@@ -113,6 +118,7 @@ const HomePage = () => {
             ))}
         </section>
       </section>
+
     </div>
   );
 };

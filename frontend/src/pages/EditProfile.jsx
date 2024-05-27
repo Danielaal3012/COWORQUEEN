@@ -52,7 +52,7 @@ const EditProfile = () => {
     const data = await response.json();
 
     if (response.ok) {
-      updateAvatar(data.url);
+      updateAvatar(data.file);
       toast.success("Avatar actualizado correctamente");
       //navigate("/profile");
     } else {
@@ -81,6 +81,7 @@ const EditProfile = () => {
       if (!response.ok) {
         throw new Error("Failed to update profile");
       } else {
+        console.log(user)
         updateUser(user);
         setEditing(false);
       }
