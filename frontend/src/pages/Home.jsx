@@ -8,39 +8,56 @@ import { FaRegStar, FaRegStarHalf } from "react-icons/fa6";
 
 const HomePage = () => {
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
   const { rooms, updateRooms } = useContext(DataContext);
 
-  const host = import.meta.env.VITE_APP_HOST;
-
-  if (rooms.length === 0) {
-    fetch(`${host}/rooms`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authState.token,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          // throw new Error('Error al obtener las habitaciones');
-          console.error("Error al obtener las habitaciones");
-        }
-        return res.json();
-        console.log(res);
-      })
-      .then((data) => {
-        updateRooms(data.message);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+  const fetchRoomsIfNeeded = async (host, authState, rooms, updateRooms) => {
+    const updateInterval = 3600000;
+    const now = new Date();
+  
+    if (rooms.data.length > 0) {
+      const lastUpdated = new Date(rooms.lastUpdated);
+      if ((now - lastUpdated) < updateInterval) {
+        console.log('No se necesita actualización, las habitaciones ya están actualizadas.');
+        return;
+      }
+    }
+  
+    try {
+      const response = await fetch(`${host}/rooms`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authState.token,
+        },
       });
-  }
+  
+      if (!response.ok) {
+        console.error("Error al obtener las habitaciones");
+        return;
+      }
+  
+      const data = await response.json();
+      updateRooms(data.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRoomsIfNeeded(host, authState, rooms, updateRooms);
+  }, [authState, rooms, updateRooms, host]);
+
+  console.log(rooms)
+
 
   const formatAverageRate = (rate) => {
     if (rate === null || rate === undefined || isNaN(rate)) {
       return null;
     }
   
-    const roundedRate = Math.round(rate * 2) / 2;
+    // Convertir rate de una escala de 0-10 a 0-5
+    const scaledRate = rate / 2;
+    const roundedRate = Math.round(scaledRate * 2) / 2;
     const fullStars = Math.floor(roundedRate);
     const hasHalfStar = roundedRate % 1 !== 0;
   
@@ -50,6 +67,9 @@ const HomePage = () => {
           <FaRegStar key={i} />
         ))}
         {hasHalfStar && <FaRegStarHalf />}
+        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
+          <FaRegStar key={i + fullStars + 1} style={{ visibility: 'hidden' }} />
+        ))}
       </div>
     );
   };
@@ -61,8 +81,8 @@ const HomePage = () => {
       <section>filtros</section>
       <section className="w-full h-dvh">
         <section className="flex flex-wrap justify-center gap-4 my-4">
-          {rooms.length > 0 &&
-            rooms.map((room) => (
+          {rooms.data.length > 0 &&
+            rooms.data.map((room) => (
               <figure
                 key={room.id}
                 className="relative w-[45%] max-w-[45%] h-auto lg:w-[300px] lg:max-w-[300px] lg:h-[200px] overflow-hidden rounded-md hover:opacity-80"
