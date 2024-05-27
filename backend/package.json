@@ -29,6 +29,7 @@
     "mysql2": "^3.9.5",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
+    "react-dropzone": "^14.2.3",
     "react-rating": "^2.0.5",
     "sequelize": "^6.37.3"
   },
