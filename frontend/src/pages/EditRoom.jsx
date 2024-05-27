@@ -26,6 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/UI/tabs";
 import { FaPlus } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import useMediaQuery from "@/utils/mediaquery";
+import ImageUpload from "@/components/ImageUpload";
 
 function EditRoom() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -42,8 +43,9 @@ function EditRoom() {
   });
 
   const [equipment, setEquipment] = useState(null);
-
   const [roomEquipment, setRoomEquipment] = useState({ equipmentIds: [] });
+  const [cover, setCover] = useState(null); 
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     fetch(`${host}/room/${id}`, {
@@ -70,14 +72,12 @@ function EditRoom() {
     })
       .then((res) => res.json())
       .then((body) => {
-        console.log(body);
-        //mapear los ids del equipo del espacio en room equipment
         setRoomEquipment({
           equipmentIds: body.equipment.map((equip) => equip.id),
         });
       })
       .catch((error) =>
-        console.error("Error al obtener los datos de la habitación:", error)
+        console.error("Error al obtener los datos del equipo de la habitación:", error)
       );
   }, [id]);
 
@@ -90,11 +90,10 @@ function EditRoom() {
     })
       .then((res) => res.json())
       .then((body) => {
-        console.log(body);
         setEquipment(body.data);
       })
       .catch((error) =>
-        console.error("Error al obtener los datos de la habitación:", error)
+        console.error("Error al obtener los datos del equipo:", error)
       );
   }, []);
 
@@ -145,18 +144,74 @@ function EditRoom() {
       .catch((error) => {
         console.error(error);
       });
+
+    if (cover) {
+      const formData = new FormData();
+      formData.append("file", cover);
+
+      fetch(`${host}/room/${id}/cover`, {
+        method: "POST",
+        headers: {
+          Authorization: authState.token,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            console.error("Error al actualizar la portada del espacio.");
+          } else {
+            toast.success("Portada de la habitación actualizada correctamente");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+if (images.length > 0) {
+      const formData = new FormData();
+      images.forEach((image, index) => {
+        formData.append(`file${index}`, image);
+      });
+
+      fetch(`${host}/room/${id}/images`, {
+        method: "POST",
+        headers: {
+          Authorization: authState.token,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            console.error("Error al actualizar las imágenes del espacio.");
+          } else {
+            toast.success("Imágenes de la habitación actualizadas correctamente");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   const handleRemoveEquipment = (idToRemove) => {
-    setRoomEquipment((prevState) => {
-      return {
-        equipmentIds: prevState.equipmentIds.filter((id) => id !== idToRemove),
-      };
-    });
+    setRoomEquipment((prevState) => ({
+      equipmentIds: prevState.equipmentIds.filter((id) => id !== idToRemove),
+    }));
+  };
+
+  const handleCoverChange = (newFiles) => {
+    if (newFiles.length > 0) {
+      setCover(newFiles[0]); 
+    }
+  };
+
+  const handleImagesChange = (newFiles) => {
+    setImages(newFiles);
   };
 
   return (
-    <div className={`relative flex flex-col w-full  ${isDesktop ? 'h-full' : 'min-h-[95dvh]'}`}>
+    <div className={`relative flex flex-col w-full ${isDesktop ? 'h-full' : 'min-h-[95dvh]'}`}>
       <h2>Editar espacio </h2>
       <Tabs defaultValue="info" className="flex flex-col w-full mt-4">
         <TabsList className="mx-auto w-fit">
@@ -171,7 +226,7 @@ function EditRoom() {
           <form onSubmit={handleUpdateRoom} className="flex flex-col gap-y-4">
             <div>
               <Label>Portada</Label>
-              <p>input portada</p>
+              <ImageUpload onFilesChange={handleCoverChange} maxFiles={1} type="cover" existing={roomData.image} id={roomData.id} />
             </div>
             <div>
               <Label>Nombre</Label>
@@ -321,7 +376,9 @@ function EditRoom() {
             </Dialog>
           </section>
         </TabsContent>
-        <TabsContent value="images">imagenes</TabsContent>
+        <TabsContent value="images">
+          <ImageUpload onFilesChange={handleImagesChange} />
+        </TabsContent>
       </Tabs>
       <Button
         onClick={handleUpdateRoom}

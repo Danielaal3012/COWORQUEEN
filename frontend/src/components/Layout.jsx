@@ -14,7 +14,9 @@ import {
   FaTriangleExclamation,
   FaTicket,
   FaStarHalfStroke,
+  FaCalendarCheck,
 } from "react-icons/fa6";
+import { BsPersonWorkspace } from "react-icons/bs";
 
 import { DataContext } from "@/components/DataContext";
 
@@ -84,7 +86,7 @@ const Layout = ({ children }) => {
                 asChild
               >
                 <Link to="/admin/rooms">
-                  <FaBorderAll />
+                  <BsPersonWorkspace />
                   Espacios
                 </Link>
               </Button>
@@ -114,7 +116,7 @@ const Layout = ({ children }) => {
                 asChild
               >
                 <Link to="/admin/reservations">
-                  <FaTicket />
+                  <FaCalendarCheck />
                   Reservas
                 </Link>
               </Button>

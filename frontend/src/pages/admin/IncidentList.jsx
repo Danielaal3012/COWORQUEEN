@@ -48,10 +48,8 @@ const AdminIncidentList = () => {
       </div>
       <section className="flex flex-col w-full mx-auto mt-8">
         <Table className="w-full">
-          {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow>
-              {/* <TableHead className="w-[100px] hidden md:table-cell">ID</TableHead> */}
              
               <TableHead>Descripción</TableHead>
               <TableHead className="w-[100px] hidden md:table-cell text-center">
@@ -69,22 +67,31 @@ const AdminIncidentList = () => {
           <TableBody>
             {incidents.map((incident) => (
               <TableRow key={incident.incidentId}>
-                {/* <TableCell className="hidden md:table-cell">{incident.incidentId}</TableCell> */}
                 <TableCell>
+                <Button variant="link" className="text-text" asChild>
+
                   <Link to={`/incident/${incident.incidentId}`}>
                   {incident.description}
                   </Link>
+                  </Button>
                   </TableCell>
                 <TableCell className="hidden text-center md:table-cell">
-                  <Badge>
-                    {incident.status === "pending" ? "Pendiente" : "Resuelta"}
-                  </Badge>
+                  {incident.status === 'pending' ? <Badge variant="outline">Pendiente</Badge> : <Badge>Resuelta</Badge>}
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
+                  <Button variant="link" className="text-text" asChild>
+                    <Link to={`/admin/room/${incident.roomId}`}> 
                   {incident.roomName}
+                  </Link>
+                  </Button>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
+                <Button variant="link" className="text-text" asChild>
+                    <Link to={`/admin/equipment/${incident.equipmentId}`}> 
                   {incident.equipmentName}
+                  </Link>
+                  </Button>
+                
                 </TableCell>
                 {/* Enlace al equipo */}
                 {/* <TableCell>acciones</TableCell> */}

@@ -8,7 +8,6 @@ import { AuthContext } from "@/auth/auth-context";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -38,6 +37,7 @@ const AdminRoomList = () => {
     }, []);
 
   console.log(rooms);
+
 
     return (
       <div className="flex flex-col w-full">

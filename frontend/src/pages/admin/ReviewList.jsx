@@ -41,15 +41,9 @@ const AdminReviewList = () => {
     <div className="flex flex-col w-full">
       <div className="flex justify-between px-4 md:px-0">
         <h2>Reseñas</h2>
-        {/* <Button variant="outline" size="icon">
-          <Link to="/create-incident">
-            <FaPlus />
-          </Link>
-        </Button> */}
       </div>
       <section className="flex flex-col w-full mx-auto mt-8">
         <Table className="w-full">
-          {/* <TableCaption>Lita de incidencias recientes</TableCaption> */}
           <TableHeader>
             <TableRow> 
               <TableHead>Descripción</TableHead>
@@ -59,7 +53,7 @@ const AdminReviewList = () => {
               <TableHead className="hidden md:table-cell w-[175px]">
                 Reserva
               </TableHead>
-              <TableHead className="hidden md:table-cell w-[100px]">
+              <TableHead className="hidden md:table-cell w-[200px]">
                 Usuario
               </TableHead>
             </TableRow>
@@ -74,12 +68,18 @@ const AdminReviewList = () => {
                     {review.rate}
                 </TableCell>{" "}
                 <TableCell className="hidden md:table-cell">
+                  <Button variant="link" className="text-text" asChild>
                     <Link to={`/reservation/${review.reservationId}`}>
                         Ver reserva
                     </Link>
+                    </Button>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                nombre + apellido usuario
+                <Button variant="link" className="text-text" asChild>
+                <Link to={`/admin/users/${review.userId}`}>
+                {review.firstName} {review.lastName} 
+                </Link>
+                </Button>
                 </TableCell>
               </TableRow>
             ))}

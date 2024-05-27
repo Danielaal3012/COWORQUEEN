@@ -26,6 +26,7 @@ import { FaPlus } from "react-icons/fa";
 
 export const EquipmentList = () => {
   const { authState } = useContext(AuthContext);
+  const host = import.meta.env.VITE_APP_HOST;
   const [equipmentList, setEquipmentList] = useState([]);
   const [equipmentTotal, setEquipmentTotal] = useState();
   const [equipmentQueries, setEquipmentQueries] = useState({
@@ -37,7 +38,7 @@ export const EquipmentList = () => {
   const { search, offset, limit, direction } = equipmentQueries;
   useEffect(() => {
     fetch(
-      `http://localhost:3000/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
+      `${host}/equipment/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
       {
         method: "get",
         headers: {
@@ -145,15 +146,15 @@ export const EquipmentList = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
-            <TableHead className="w-[450px]">Descripción</TableHead>
+            <TableHead className="w-full">Descripción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {equipmentList && equipmentList.length > 0 ? (
             equipmentList.map((equipment) => (
               <TableRow key={equipment.id}>
-                <TableCell className="font-bold">
-                  <Button onClick={() => setNewUrl(location.pathname)}>
+                <TableCell>
+                  <Button variant="link" className="text-text" asChild>
                     <Link to={`/admin/equipment/${equipment.id}`}>
                       {equipment.name}
                     </Link>

@@ -6,7 +6,7 @@ export function DataProvider({ children }) {
 
   const [rooms, setRooms] = useState(() => {
     const storedRooms = localStorage.getItem("rooms");
-    return storedRooms ? JSON.parse(storedRooms) : [];
+    return storedRooms ? JSON.parse(storedRooms) : { data: [], lastUpdated: null };
   });
 
   const [navigationData, setNavigationData] = useState(() => {
@@ -22,8 +22,12 @@ export function DataProvider({ children }) {
   };
 
   const updateRooms = (newRooms) => {
-    setRooms(newRooms);
-    localStorage.setItem("rooms", JSON.stringify(newRooms));
+    const updatedRooms = {
+      data: newRooms,
+      lastUpdated: new Date().toISOString(),
+    };
+    setRooms(updatedRooms);
+    localStorage.setItem("rooms", JSON.stringify(updatedRooms));
   };
 
   useEffect(() => {
