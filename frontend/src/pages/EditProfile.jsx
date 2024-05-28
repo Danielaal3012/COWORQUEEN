@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
 import { FaPencilAlt, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ImageUpload from "@/components/ImageUpload";
 
 const EditProfile = () => {
   const [user, setUser] = useState(null);
@@ -17,6 +18,8 @@ const EditProfile = () => {
   const { authState, updateUser, updateAvatar } = useContext(AuthContext);
   const [editing, setEditing] = useState(false);
   const navigate = useNavigate();
+  const host = import.meta.env.VITE_APP_HOST;
+  const avatar = authState?.user?.avatar ? host + "/uploads/avatar/" + authState.user.avatar : null;
 
   useEffect(() => {
     if (authState && authState.user) {
@@ -35,9 +38,9 @@ const EditProfile = () => {
 
   const handleFileUpload = async () => {
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", avatarUpload);
 
-    const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/${authState.user.id}/media/add-avatar`,
+    const response = await fetch(`${host}/user/${authState.user.id}/media/add-avatar`,
       {
         method: "POST",
         headers: {
@@ -50,7 +53,7 @@ const EditProfile = () => {
     const data = await response.json();
 
     if (response.ok) {
-      updateAvatar(data.url);
+      updateAvatar(data.file);
       toast.success("Avatar actualizado correctamente");
       //navigate("/profile");
     } else {
@@ -58,14 +61,26 @@ const EditProfile = () => {
     }
   };
 
+  const [avatarUpload, setAvatarUpload] = useState(null); 
+
+  const handleAvatarUpdate = (newFiles) => {
+    if (newFiles.length > 0) {
+      setAvatarUpload(newFiles[0]); 
+    }
+  };
+
   const handleSaveChanges = async () => {
 
-    if (selectedFile) {
+    if (avatarUpload) {
+      try {
         handleFileUpload();
+      } catch {
+        handleFileUpload();
+      }
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/update/profile/`,
+      const response = await fetch(`${host}/user/update/profile/`,
         {
           method: "PUT",
           headers: {
@@ -90,14 +105,15 @@ const EditProfile = () => {
   return (
     <div className="w-full">
       {user && (
-        <div className="flex flex-col w-full p-4 ">
-          <div className="flex flex-row items-center justify-between w-full ">
-            <Avatar className="w-[96px] h-[96px] aspect-square">
-            <AvatarImage src={previewUrl ? previewUrl : authState?.user?.avatar} />              <AvatarFallback className="text-4xl bg-secondary/75">
+        <div className="flex flex-col w-full px-4 md:px-0 ">
+            {/* <Avatar className="w-[96px] h-[96px] aspect-square">
+            <AvatarImage src={previewUrl ? previewUrl : avatar} />
+                          <AvatarFallback className="text-4xl bg-secondary/75">
                 {authState?.user?.firstName?.split("")[0]}
               </AvatarFallback>
-            </Avatar>
-            <Input
+            </Avatar> */}
+            <ImageUpload onFilesChange={handleAvatarUpdate} maxFiles={1} type="avatar" existing={avatar} id={user.id} disabledState={!editing} />
+            {/* <Input
               type="file"
               className="w-2/3"
               disabled={!editing}
@@ -105,9 +121,8 @@ const EditProfile = () => {
                 setSelectedFile(e.target.files[0]);
                 setPreviewUrl(URL.createObjectURL(e.target.files[0]));
               }}
-            />
+            /> */}
             {/* Mostrar preview de la imagen, quitar texto del nombre de archivo */}
-          </div>
           <div className="flex flex-col w-full mt-8 gap-y-4">
             <div className="flex flex-row items-center">
               <Label className="w-1/3">Nombre de usuario</Label>
@@ -160,6 +175,7 @@ const EditProfile = () => {
                   onClick={() => {
                     setEditing(false);
                     setUser(previousInfo);
+                    setAvatarUpload(null);
                   }}
                   className="flex justify-center w-1/2 mx-auto mt-4 text-center"
                 >

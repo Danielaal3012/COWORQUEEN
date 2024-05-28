@@ -9,65 +9,23 @@ import { FaUserCircle, FaCogs, FaQuestionCircle, FaSignOutAlt } from "react-icon
 
 
 const Profile = () => {
-    const [user, setUser] = useState(null);
-    const { authState, updateUser, logout } = useContext(AuthContext);
-    const [editing, setEditing] = useState(false);
+    const { authState, logout } = useContext(AuthContext);
 
-    useEffect(() => {
-        if (authState && authState.user) {
-            setUser(authState.user);
-        }
-    }, [authState]);
-
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setUser(prevUser => ({
-    //         ...prevUser,
-    //         [name]: value
-    //     }));
-    // };
-
-    // const handleSaveChanges = async () => {
-    //     try {
-
-    //         console.log(authState.token)
-    //         console.log(user)
-
-    //         const response = await fetch('http://localhost:3000/user/update/profile/', {
-    //             method: 'PUT',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 Authorization: authState.token, 
-    //             },
-    //             body: JSON.stringify(user),
-    //         });
-    
-    //         if (!response.ok) {
-    //             throw new Error('Failed to update profile');
-    //         } else {
-    //             updateUser(user);
-    //             setEditing(false); 
-    //         }
-    //     } catch (error) {
-    //         console.error('Error saving changes:', error);
-    //     }
-    // };
-    
     return (
-        <div className='flex flex-col w-full bg-secondary/75'>
-            <section className='m-4'>
+        <div className='flex flex-col w-full '>
+            <section className='m-4 '>
                 <h3 className='text-xl font-bold '>Perfil</h3>
                 <h2 className='text-2xl font-bold'>Hola {authState?.user?.firstName}</h2>
             </section>
-            <section className='flex flex-col p-4 rounded-t-lg h-max gap-y-4 bg-background'>
+            <section className='flex flex-col h-full p-4 rounded-t-lg gap-y-4 '>
                 <Link to="/edit-profile">
                     <Button variant="ghost" className="justify-start w-full text-md gap-x-4">
                         <FaUserCircle className='text-2xl' /> Datos personales
                     </Button>
                 </Link>
-                <Link to="/user-settings">
+                <Link to="/change-password">
                 <Button variant="ghost" className="justify-start w-full text-md gap-x-4">
-                    <FaCogs className='text-2xl' /> Ajustes
+                    <FaCogs className='text-2xl' /> Cambiar contraseña
                 </Button>
                 </Link>
                 <Link to="/help">

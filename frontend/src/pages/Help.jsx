@@ -86,7 +86,7 @@ const Help = () => {
                 {reservations.length > 0 && (
                     <>
                         {reservations.map((reservation) => (
-                            <Link key={reservation.id} className='flex flex-row justify-between' to={`/reservation/${reservation.id}`}>
+                            <Link key={reservation.id} className='flex flex-row justify-between' to={`/reservation/${reservation.id}/create-incident`}>
                                 <p>{reservation.roomId}</p>
                                 <p> {new Date(reservation.createdAt).toLocaleString('es-ES', {
                                     day: '2-digit',

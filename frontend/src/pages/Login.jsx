@@ -43,8 +43,7 @@ function LoginForm() {
       } else {
         login(data.token, data.user);
       }
-      // Redirigir a la página de home
-      //await new Promise((resolve) => setTimeout(resolve, 250));
+
       navigate("/");
       toast.success("Inicio de sesión exitoso");
     } catch (error) {
@@ -106,11 +105,11 @@ function LoginForm() {
             Iniciar sesión
           </Button>
 
-          <Button asChild variant="link">
+          <Button asChild variant="link" className="justify-center">
             <Link to="/register">Crear cuenta</Link>
           </Button>
 
-          <Button asChild variant="link">
+          <Button asChild variant="link" className="justify-center">
             <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
           </Button>
 
