@@ -108,9 +108,9 @@ export function EquipmentItem() {
             <h2>Artículo: {equipmentData.id}</h2>
             {authState.user.role === "admin" && (
               <div className="flex items-center gap-x-2">
-                <Button asChild>
+                {/* <Button asChild>
                   <Link to="/admin/equipment">Volver</Link>
-                </Button>
+                </Button> */}
                 <Dialog
                   buttonContent={<FaTrash />}
                   title="¿Deseas eliminar el artículo?"

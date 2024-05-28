@@ -94,10 +94,8 @@ const CreateReservation = () => {
 
       if (response.ok) {
         toast.success("Reserva creada con éxito");
-        //navigate("/profile");
-      } else {
-        toast.error("Error al crear la reserva");
-      }
+        navigate("/reservations");
+      } 
     } catch (error) {
       toast.error(error);
     }
