@@ -9,6 +9,10 @@ import {
   viewRoomSchema,
 } from "../../schemas/roomSchemas.js";
 import { createError } from "../../../utils/error.js";
+import { promises as fs } from "fs";
+import { dirname, resolve, basename } from "path";
+import { cwd } from "process";
+
 import crypto from "crypto";
 
 const dbPool = getPool();
@@ -141,32 +145,81 @@ roomRouter.get(
     try {
       const roomId = req.params.roomId;
       const { error } = viewRoomSchema.validate({ roomId });
-      
+
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
 
       const room = await validateRoomId(roomId);
+      if (!room) {
+        throw createError(404, "Room not found");
+      }
 
-      const [result] = await dbPool.execute(
-        `
-        SELECT AVG(reviews.rate) as averageRate
-        FROM reviews
-        JOIN reservations ON reviews.reservationId = reservations.id
-        WHERE reservations.roomId = ?;
-        `,
-        [roomId]
+      const roomPath = resolve(
+        cwd(),
+        "..",
+        "frontend",
+        "public",
+        "uploads",
+        "rooms",
+        room.id
       );
 
+      let filteredFiles = [];
+      try {
+        const files = await fs.readdir(roomPath);
+        filteredFiles = files.filter(file =>
+          file.endsWith('.png') ||
+          file.endsWith('.jpg') ||
+          file.endsWith('.jpeg') ||
+          file.endsWith('.webp')
+        );
+      } catch (error) {
+        console.log(error);
+        filteredFiles = [];
+      }
+
       let averageRate = null;
-      if (result.length > 0 && result[0].averageRate !== null) {
-        averageRate = parseFloat(result[0].averageRate);
+      try {
+        const [result] = await dbPool.execute(
+          `
+          SELECT AVG(reviews.rate) as averageRate
+          FROM reviews
+          JOIN reservations ON reviews.reservationId = reservations.id
+          WHERE reservations.roomId = ?;
+          `,
+          [roomId]
+        );
+        if (result.length > 0 && result[0].averageRate !== null) {
+          averageRate = parseFloat(result[0].averageRate);
+        }
+      } catch (error) {
+        console.log(error);
+        averageRate = null;
+      }
+
+      let equipment = [];
+      try {
+        const [equipmentResult] = await dbPool.execute(
+          `
+          SELECT equipment.id, equipment.name, equipment.description 
+          FROM equipmentRooms 
+          JOIN equipment ON equipmentRooms.equipmentId = equipment.id 
+          WHERE equipmentRooms.roomId = ?`,
+          [roomId]
+        );
+        equipment = equipmentResult;
+      } catch (error) {
+        console.log(error);
+        equipment = [];
       }
 
       res.status(200).json({
         message: {
           ...room,
-          averageRate: averageRate
+          averageRate: averageRate,
+          images: filteredFiles,
+          equipment: equipment
         }
       });
     } catch (error) {

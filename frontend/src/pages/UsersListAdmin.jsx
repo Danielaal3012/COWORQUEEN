@@ -166,7 +166,7 @@ export function UsersListAdmin() {
                   {user?.role === "admin" ? (
                     <Badge>Admin</Badge>
                   ) : (
-                    <Badge variant="outline">Cliente</Badge>
+                    <Badge variant="secondary">Cliente</Badge>
                   )}
                 </TableCell>
                 <TableCell className="hidden md:table-cell">

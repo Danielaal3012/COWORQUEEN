@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   if (isDesktop) {
     return (
       <div className="relative flex flex-col w-full bg-transparent h-dvh ">
-        <nav className="flex items-center justify-between w-full h-17 bg-secondary">
+        <nav className="flex items-center justify-between w-full bg-primary-foreground h-17">
           <section className="w-1/5  h-[80px] flex items-center px-4 ">
             <Link to="/">
               <img
@@ -63,9 +63,9 @@ const Layout = ({ children }) => {
 
         <div className="flex flex-row w-full h-full py-4">
           {authState?.user?.role === "admin" && (
-            <div className="flex flex-col min-w-[200px] h-full px-4  bg-[#B29900] rounded-r-lg gap-y-4 py-4">
+            <div className="flex flex-col min-w-[200px] h-full px-4  bg-secondary rounded-r-lg gap-y-4 py-4">
              
-              <Button variant="link" className="w-full text-lg text-black" asChild>
+              <Button variant="link" className="w-full text-lg text-primary-foreground" asChild>
                 <Link to="/admin/users">
                   <FaUsers />
                   Usuarios
@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
               </Button>
               <Button
                 variant="link"
-                className="w-full text-lg text-black"
+                className="w-full text-lg text-primary-foreground"
                 asChild
               >
                 <Link to="/admin/rooms">
@@ -83,7 +83,7 @@ const Layout = ({ children }) => {
               </Button>
               <Button
                 variant="link"
-                className="w-full text-lg text-black"
+                className="w-full text-lg text-primary-foreground"
                 asChild
               >
                 <Link to="/admin/equipment">
@@ -93,7 +93,7 @@ const Layout = ({ children }) => {
               </Button>
               <Button
                 variant="link"
-                className="w-full text-lg text-black"
+                className="w-full text-lg text-primary-foreground"
                 asChild
               >
                 <Link to="/admin/incidents">
@@ -103,7 +103,7 @@ const Layout = ({ children }) => {
               </Button>
               <Button
                 variant="link"
-                className="w-full text-lg text-black"
+                className="w-full text-lg text-primary-foreground"
                 asChild
               >
                 <Link to="/admin/reservations">
@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
               </Button>
               <Button
                 variant="link"
-                className="w-full text-lg text-black"
+                className="w-full text-lg text-primary-foreground"
                 asChild
               >
                 <Link to="/admin/reviews">
@@ -124,7 +124,7 @@ const Layout = ({ children }) => {
             </div>
           )}
 
-          <div className="flex flex-row w-full h-full p-4 mx-4 rounded-lg bg-secondary/15">
+          <div className="flex flex-row w-full h-full p-4 mx-4 rounded-lg bg-secondary/25">
             {children}
           </div>
         </div>

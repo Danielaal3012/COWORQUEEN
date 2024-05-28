@@ -117,7 +117,7 @@ const ViewIncident = () => {
             <li>
               <span className="font-bold">Estado:</span>{" "}
               {incidentData.status === "pending" ? (
-                <Badge variant="outline">Pendiente</Badge>
+                <Badge variant="secondary">Pendiente</Badge>
               ) : (
                 <Badge>Resuelta</Badge>
               )}

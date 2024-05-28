@@ -78,7 +78,7 @@ const AdminReservationList = () => {
                 </TableCell>
                 {console.log(reservation)}
                 <TableCell className="hidden md:table-cell">
-                {reservation.reservationCheckin === 0 ? (<Badge variant="outline">No realizado</Badge>) : (<Badge >Realizado</Badge>)}
+                {reservation.reservationCheckin === 0 ? (<Badge variant="secondary">No realizado</Badge>) : (<Badge >Realizado</Badge>)}
                 </TableCell>
               </TableRow>
             ))}

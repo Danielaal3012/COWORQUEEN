@@ -3,9 +3,7 @@ import { AuthContext } from "@/auth/auth-context";
 import { DataContext } from "@/components/DataContext";
 import { Badge } from "@/components/UI/badge";
 import { Link } from "react-router-dom";
-import { FaRegStar, FaRegStarHalf } from "react-icons/fa6";
-import ImageUpload from "@/components/ImageUpload";
-
+import { formatAverageRate } from "@/utils/formatRating";
 
 const HomePage = () => {
   const { authState } = useContext(AuthContext);
@@ -13,7 +11,7 @@ const HomePage = () => {
   const { rooms, updateRooms } = useContext(DataContext);
 
   const fetchRoomsIfNeeded = async (host, authState, rooms, updateRooms) => {
-    const updateInterval = 3600000;
+    const updateInterval = 1; // arreglarlo después: 1 hora
     const now = new Date();
   
     if (rooms.data.length > 0) {
@@ -50,62 +48,35 @@ const HomePage = () => {
 
   console.log(rooms)
 
-
-  const formatAverageRate = (rate) => {
-    if (rate === null || rate === undefined || isNaN(rate)) {
-      return null;
-    }
-  
-    // Convertir rate de una escala de 0-10 a 0-5
-    const scaledRate = rate / 2;
-    const roundedRate = Math.round(scaledRate * 2) / 2;
-    const fullStars = Math.floor(roundedRate);
-    const hasHalfStar = roundedRate % 1 !== 0;
-  
-    return (
-      <div className="flex flex-row p-1">
-        {[...Array(fullStars)].map((_, i) => (
-          <FaRegStar key={i} />
-        ))}
-        {hasHalfStar && <FaRegStarHalf />}
-        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <FaRegStar key={i + fullStars + 1} style={{ visibility: 'hidden' }} />
-        ))}
-      </div>
-    );
-  };
-
-
-
-
-
-  console.log(rooms)
-
   return (
     <div className="w-full ">
       <section>filtros</section>
-      <section className="w-full h-dvh">
+      <section className="w-full ">
         <section className="flex flex-wrap justify-center gap-4 my-4">
           {rooms?.data?.length > 0 &&
             rooms?.data?.map((room) => (
               <figure
                 key={room.id}
-                className="relative w-[45%] max-w-[45%] h-auto lg:w-[300px] lg:max-w-[300px] lg:h-[200px] overflow-hidden rounded-md hover:opacity-80"
+                className="relative w-[180px] max-w-[180px] aspect-[3-2] max-h-[120px] lg:w-[300px] lg:max-w-[300px] lg:h-[200px] lg:max-h-[200px] overflow-hidden rounded-lg hover:opacity-80 border-solid border-4 border-gray-300"
               >
                 <Link to={`/room/${room.id}`}>
                   <img
-                    src={host + "/uploads/rooms/" + room.id + "/" + room.image}
+                    src={host + "/uploads/rooms/" + room?.id + "/" + room?.image}
                     alt={room.name}
-                    className="w-full"
+                    className="w-full rounded-lg"
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src='/defaultSpace.jpg'
+                    }}
                   />
-                  <div className="absolute bg-white bg-opacity-50 w-fit" />
-                  <div className="absolute bottom-0 flex items-center justify-between w-full px-2 py-1 ">
-                    <h3 className="font-bold">{room.name}</h3>
-                    <Badge variant="outline" className="text-center bg-primary">
+                  <div className="absolute bg-opacity-50 bg-secondary w-fit" />
+                  <div className="absolute bottom-0 flex items-center justify-between w-full ">
+                    <h3 className="px-2 py-0.5 overflow-hidden text-sm font-bold text-center md:text-2xl bg-secondary rounded-tr-lg min-w-11 max-h-10">{room.name}</h3>
+                    <Badge className="mr-[1px] rounded-lg">
                       {room.typeOf}
                     </Badge>
                   </div>
-                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-white rounded-bl-xl min-w-11 max-h-6">
+                  <div className="absolute top-0 right-0 overflow-hidden text-center rounded-bl-lg bg-secondary min-w-11 max-h-6">
                     <p className="">{room.capacity}</p>
                   </div>
                   <div className="absolute top-0 left-0 items-center overflow-hidden font-bold text-center min-w-11 max-h-6">
