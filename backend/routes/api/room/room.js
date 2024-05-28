@@ -145,12 +145,16 @@ roomRouter.get(
     try {
       const roomId = req.params.roomId;
       const { error } = viewRoomSchema.validate({ roomId });
-      
+
       if (error) {
         throw createError(400, "Datos de entrada no válidos");
       }
 
       const room = await validateRoomId(roomId);
+      if (!room) {
+        throw createError(404, "Room not found");
+      }
+
       const roomPath = resolve(
         cwd(),
         "..",
@@ -161,35 +165,54 @@ roomRouter.get(
         room.id
       );
 
-          const files = await fs.readdir(roomPath);
-          const filteredFiles = files.filter(file => 
-            file.endsWith('.png') || 
-            file.endsWith('.jpg') || 
-            file.endsWith('.jpeg') || 
-            file.endsWith('.webp')
-          );
-
-      const [result] = await dbPool.execute(
-        `
-        SELECT AVG(reviews.rate) as averageRate
-        FROM reviews
-        JOIN reservations ON reviews.reservationId = reservations.id
-        WHERE reservations.roomId = ?;
-        `,
-        [roomId]
-      );
-
-      let averageRate = null;
-      if (result.length > 0 && result[0].averageRate !== null) {
-        averageRate = parseFloat(result[0].averageRate);
+      let filteredFiles = [];
+      try {
+        const files = await fs.readdir(roomPath);
+        filteredFiles = files.filter(file =>
+          file.endsWith('.png') ||
+          file.endsWith('.jpg') ||
+          file.endsWith('.jpeg') ||
+          file.endsWith('.webp')
+        );
+      } catch (error) {
+        console.log(error);
+        filteredFiles = [];
       }
 
-      const [equipment] = await dbPool.execute(
-        `
-      
-      SELECT equipment.id, equipment.name, equipment.description FROM equipmentRooms JOIN equipment ON equipmentRooms.equipmentId = equipment.id WHERE equipmentRooms.roomId = ?`,
-        [roomId]
-      )
+      let averageRate = null;
+      try {
+        const [result] = await dbPool.execute(
+          `
+          SELECT AVG(reviews.rate) as averageRate
+          FROM reviews
+          JOIN reservations ON reviews.reservationId = reservations.id
+          WHERE reservations.roomId = ?;
+          `,
+          [roomId]
+        );
+        if (result.length > 0 && result[0].averageRate !== null) {
+          averageRate = parseFloat(result[0].averageRate);
+        }
+      } catch (error) {
+        console.log(error);
+        averageRate = null;
+      }
+
+      let equipment = [];
+      try {
+        const [equipmentResult] = await dbPool.execute(
+          `
+          SELECT equipment.id, equipment.name, equipment.description 
+          FROM equipmentRooms 
+          JOIN equipment ON equipmentRooms.equipmentId = equipment.id 
+          WHERE equipmentRooms.roomId = ?`,
+          [roomId]
+        );
+        equipment = equipmentResult;
+      } catch (error) {
+        console.log(error);
+        equipment = [];
+      }
 
       res.status(200).json({
         message: {
