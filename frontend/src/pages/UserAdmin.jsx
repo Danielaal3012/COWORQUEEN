@@ -101,9 +101,9 @@ export function UserAdmin() {
         <h2>{userDetail.username}</h2>
         {authState.user.role === "admin" && (
           <div className="flex items-center gap-x-2">
-            <Button asChild>
+            {/* <Button asChild>
               <Link to="/admin/users">Volver</Link>
-            </Button>
+            </Button> */}
             <Dialog
               buttonContent={<FaTrash />}
               title="¿Deseas eliminar el usuario?"
