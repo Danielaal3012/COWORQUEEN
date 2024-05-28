@@ -50,7 +50,7 @@ const HomePage = () => {
 
   return (
     <div className="w-full ">
-      <section>filtros</section>
+      {/* <section>filtros</section> */}
       <section className="w-full ">
         <section className="flex flex-wrap justify-center gap-4 my-4">
           {rooms?.data?.length > 0 &&
