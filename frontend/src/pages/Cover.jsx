@@ -5,7 +5,7 @@ const Cover = () => {
 const fileUrl = '/public/DosierInfo.pdf'; 
   const fileName = 'DosierInfo.pdf';
   return (
-<div className="absolute inset-0 flex items-center justify-center ">
+<div className="flex items-center justify-center h-full w-full ">
     <div className="flex flex-col justify-items-stretch  h-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex flex-row  text-center  mb-4">
             <h1 className="text-5xl font-bold text-left">
