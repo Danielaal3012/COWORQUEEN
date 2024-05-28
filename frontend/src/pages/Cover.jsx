@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DownloadButton from '@/components/DownloadArchivo.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Cover = () => {
 const fileUrl = '/public/DosierInfo.pdf'; 
   const fileName = 'DosierInfo.pdf';
+
+ const navigate = useNavigate();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldRedirect(true);
+    }, 10000); // Espera  10 segundos antes de redirigir
+
+    // Limpiar el temporizador si el componente se desmonta
+    return () => clearTimeout(timer);
+  }, []); // Dependencias vacías significa que este efecto se ejecuta solo una vez
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      navigate('/home');
+    }
+  }, [shouldRedirect, navigate]);
+
   return (
 <div className="flex items-center justify-center h-full w-full ">
     <div className="flex flex-col justify-items-stretch  h-auto bg-white p-8 rounded-lg shadow-lg">
