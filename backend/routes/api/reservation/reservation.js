@@ -51,15 +51,17 @@ reservationRouter.get(
       }
       
       const [reservations] = await pool.execute(
-        "SELECT * FROM reservations WHERE userId = ?",
+        "SELECT reservations.*, rooms.name as roomName, rooms.image as roomCover FROM reservations JOIN rooms ON reservations.roomId = rooms.id WHERE reservations.userId = ?",
         [userId]
       );
       if (!reservations) {
         throw createError(404, "Reservas no encontradas");
       }
+
       res.status(200).json({
         reservations
       });
+
     } catch (error) {
       next(error);
     }

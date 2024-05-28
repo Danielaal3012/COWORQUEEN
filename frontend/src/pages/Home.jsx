@@ -72,7 +72,7 @@ const HomePage = () => {
                   <div className="absolute bg-opacity-50 bg-secondary w-fit" />
                   <div className="absolute bottom-0 flex items-center justify-between w-full ">
                     <h3 className="px-2 py-0.5 overflow-hidden text-sm font-bold text-center md:text-2xl bg-secondary rounded-tr-lg min-w-11 max-h-10">{room.name}</h3>
-                    <Badge className="mr-[1px] rounded-lg">
+                    <Badge className="mr-[1px] md:mr-0 md:mx-2 rounded-lg">
                       {room.typeOf}
                     </Badge>
                   </div>
