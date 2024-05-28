@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
       <div className="relative flex flex-col w-full bg-transparent h-dvh ">
         <nav className="flex items-center justify-between w-full bg-primary-foreground h-17">
           <section className="w-1/5  h-[80px] flex items-center px-4 ">
-            <Link to="/">
+            <Link to="/home">
               <img
                 src={LogoNegro}
                 alt="Logo"
