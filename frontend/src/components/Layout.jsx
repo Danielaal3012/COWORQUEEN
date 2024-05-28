@@ -55,9 +55,12 @@ const Layout = ({ children }) => {
             </Link>
           </section>
           <section className="flex items-center px-7 gap-x-4">
+
+          {authState?.user.role === 'normal' && (
             <Button variant="link" className="text-[#e4e4e4] hover:text-white" asChild>
               <Link to="/reservations">Mis reservas</Link>
             </Button>
+          )}
         
             {authState?.token ? (
               <Link to="/profile">
