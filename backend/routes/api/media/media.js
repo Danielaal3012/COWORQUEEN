@@ -1,6 +1,7 @@
 import "dotenv/config.js";
 import express, { Router } from "express";
 import { promises as fs } from "fs";
+import { existsSync } from "fs";
 import { getPool } from "../../../database/getPool.js";
 import authenticate from "../../middleware/authenticateTokenUser.js";
 import process from "node:process";
@@ -49,9 +50,13 @@ mediaRouter.post(
           "avatar",
           avatarFileName
         );
-        if (fs.existsSync(avatarPath)) {
-          unlinkSync(avatarPath);
-        }
+        try {
+          if (existsSync(imagePath)) {
+            unlinkSync(imagePath)
+          }
+        } catch (error) {
+          console.log(error)
+      }
       }
 
       const uploadedFilePath = req.body.files[0].filePath;
@@ -100,6 +105,7 @@ mediaRouter.post(
       const mediaId = crypto.randomUUID();
       const { fileName } = req.body.files[0];
 
+
       const [room] = await dbPool.execute(
         `SELECT image FROM rooms WHERE id = ?`,
         [roomId]
@@ -107,7 +113,10 @@ mediaRouter.post(
 
       if (room[0].image) {
         const imageUrl = room[0].image;
+        // console.log(imageUrl)
+
         const imageFileName = basename(imageUrl);
+        console.log(imageFileName)
         const imagePath = resolve(
           cwd(),
           "..",
@@ -118,9 +127,17 @@ mediaRouter.post(
           roomId,
           imageFileName
         );
-        if (fs.existsSync(imagePath)) {
-          unlinkSync(imagePath);
-        }
+        console.log(imagePath)
+
+        try {
+          if (existsSync(imagePath)) {
+            unlinkSync(imagePath)
+          }
+        } catch (error) {
+          console.log(error)
+      }
+
+
       }
 
       const uploadedFilePath = req.body.files[0].filePath;
