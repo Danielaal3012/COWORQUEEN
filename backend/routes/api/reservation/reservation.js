@@ -74,7 +74,6 @@ reservationRouter.post(
   authenticate,
   async (req, res, next) => {
     try {
-      const userId = req.user.Id;
       const roomId = req.params.roomId;
       const userId = req.user.id;
       const { reservationDateBeg, reservationDateEnd } = req.body;
