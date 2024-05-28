@@ -61,9 +61,13 @@ const HomePage = () => {
               >
                 <Link to={`/room/${room.id}`}>
                   <img
-                    src={host + "/uploads/rooms/" + room.id + "/" + room.image}
+                    src={host + "/uploads/rooms/" + room?.id + "/" + room?.image}
                     alt={room.name}
                     className="w-full rounded-lg"
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src='/defaultSpace.jpg'
+                    }}
                   />
                   <div className="absolute bg-opacity-50 bg-secondary w-fit" />
                   <div className="absolute bottom-0 flex items-center justify-between w-full ">
