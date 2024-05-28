@@ -23,9 +23,9 @@ const Profile = () => {
                         <FaUserCircle className='text-2xl' /> Datos personales
                     </Button>
                 </Link>
-                <Link to="/user-settings">
+                <Link to="/change-password">
                 <Button variant="ghost" className="justify-start w-full text-md gap-x-4">
-                    <FaCogs className='text-2xl' /> Ajustes
+                    <FaCogs className='text-2xl' /> Cambiar contraseña
                 </Button>
                 </Link>
                 <Link to="/help">

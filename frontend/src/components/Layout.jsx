@@ -17,6 +17,17 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa6";
 import { BsPersonWorkspace } from "react-icons/bs";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/UI/navigation-menu"
+
 
 import { DataContext } from "@/components/DataContext";
 
@@ -33,8 +44,8 @@ const Layout = ({ children }) => {
   if (isDesktop) {
     return (
       <div className="relative flex flex-col w-full bg-transparent h-dvh ">
-        <nav className="flex items-center justify-between w-full bg-primary-foreground h-17">
-          <section className="w-1/5  h-[80px] flex items-center px-4 ">
+        <nav className="flex items-center justify-between w-full h-14 bg-primary-foreground">
+          <section className="flex items-center w-1/5 h-full px-4 ">
             <Link to="/">
               <img
                 src={LogoNegro}
@@ -43,7 +54,11 @@ const Layout = ({ children }) => {
               />
             </Link>
           </section>
-          <section className="flex items-center px-7">
+          <section className="flex items-center px-7 gap-x-4">
+            <Button variant="link" className="text-[#e4e4e4] hover:text-white" asChild>
+              <Link to="/reservations">Mis reservas</Link>
+            </Button>
+        
             {authState?.token ? (
               <Link to="/profile">
                 <Avatar className="h-9 w-9">

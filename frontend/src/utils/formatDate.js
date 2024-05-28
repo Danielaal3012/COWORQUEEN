@@ -25,6 +25,16 @@ export const formatDateTime = (date) => {
     const options = { hour: '2-digit', minute: '2-digit' };
     return new Date(date).toLocaleTimeString('es-ES', options);
   }
+
+  export const formatSmallDate = (date) => {
+    if (!date) return null;
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }
+    return new Date(date).toLocaleDateString("es-ES", options);
+  }
   
   export const formatReservation = (date, time) => {
     if (!date || !time) return null;

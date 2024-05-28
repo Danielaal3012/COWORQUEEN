@@ -13,10 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/UI/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import {
-  Card,
-  CardContent
-} from "@/components/UI/card";
+import { Card, CardContent } from "@/components/UI/card";
 
 function ViewRoom() {
   const { authState } = useContext(AuthContext);
@@ -87,8 +84,8 @@ function ViewRoom() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="hidden md:block" />
+            <CarouselNext className="hidden md:block" />
           </Carousel>
 
           <p className="text-left text-balance">{roomData?.description}</p>
@@ -108,17 +105,18 @@ function ViewRoom() {
           </section>
 
           <section>
-  <h3 className="font-bold">Equipo disponible:</h3>
-  <ul className="ml-4">
-    {roomData?.equipment?.map((equipment, index) => (
-      <li key={index}>{equipment?.name}</li>
-    ))}
-  </ul>
-</section>
-
+            <h3 className="font-bold">Equipo disponible:</h3>
+            <p>
+              {roomData?.equipment?.map((equipment, index, arr) => (
+                <span key={index}>
+                  {equipment?.name}
+                  {index < arr.length - 1 ? ", " : ""}
+                </span>
+              ))}
+            </p>
+          </section>
         </div>
       )}
-
 
       <Button
         className="sticky mx-auto bottom-4 w-fit"

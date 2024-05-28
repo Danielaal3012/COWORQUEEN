@@ -27,8 +27,11 @@ import ViewIncident from "./pages/ViewIncident.jsx";
 import CreateReservation from "./pages/reservations/CreateReservation.jsx";
 import ReviewsContainer from './routes/ReviewsContainer'
 
-import AdminReviewList from "./pages/admin/ReviewList.jsx";
+import CreateReview from "@/pages/CreateReview.jsx";
+import EditReview from "@/pages/EditReview.jsx";
+import ViewReview from "@/pages/ViewReview.jsx";
 
+import AdminReviewList from "./pages/admin/ReviewList.jsx";
 
 import { EquipmentList } from "./pages/EquipmentList.jsx";
 import { AddEquipment } from "./pages/AddEquipment.jsx";
@@ -85,15 +88,18 @@ const App = () => {
 
           <Route path="/profile" element={<Layout><ProtectedProfile /></Layout>} />
           <Route path="/edit-profile" element={<Layout><ProtectedEditProfile /></Layout>} />
-          <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} />
+          {/* <Route path="/user-settings" element={<Layout><ProtectedUserSettings /></Layout>} /> */}
           <Route path="/help" element={<Layout><ProtectedHelp /></Layout>} />
           <Route path="/reservations" element={<Layout><ProtectedMyReservations /></Layout>} />
           <Route path="/reservation/:id/create-incident" element={<Layout><ProtectedCreateIncident /></Layout>} />
           <Route path="/incident/:id" element={<Layout><ProtectedViewIncident /></Layout>} />
 
-          <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> {/* contenedor de rutas anidadas reviews*/}
+          {/* <Route path="/review/*" element={<Layout><ReviewsContainer/></Layout>} /> contenedor de rutas anidadas reviews */}
 
-         
+          <Route path="/review/:reviewId" element={<Layout><ViewReview/></Layout>} />
+          <Route path="/reservation/:reservationId/review" element={<Layout><CreateReview /></Layout>} />
+          <Route path="/review/:reviewId/edit" element={<Layout><EditReview/></Layout>} />
+
          <Route path="/create-reservation" element={<Layout><ProtectedCreateReservation /></Layout>} />
          <Route path="/room/:id/reserve" element={<Layout><ProtectedCreateReservation /></Layout>} />
 
