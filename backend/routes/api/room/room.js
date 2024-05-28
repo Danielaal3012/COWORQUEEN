@@ -151,11 +151,6 @@ roomRouter.get(
       }
 
       const room = await validateRoomId(roomId);
-
-      // console.log(room)
-
-      // console.log(room.image)
-
       const roomPath = resolve(
         cwd(),
         "..",
@@ -167,7 +162,12 @@ roomRouter.get(
       );
 
           const files = await fs.readdir(roomPath);
-          //const filteredFiles = files.filter(file => file !== room.image);
+          const filteredFiles = files.filter(file => 
+            file.endsWith('.png') || 
+            file.endsWith('.jpg') || 
+            file.endsWith('.jpeg') || 
+            file.endsWith('.webp')
+          );
 
       const [result] = await dbPool.execute(
         `
@@ -184,11 +184,19 @@ roomRouter.get(
         averageRate = parseFloat(result[0].averageRate);
       }
 
+      const [equipment] = await dbPool.execute(
+        `
+      
+      SELECT equipment.id, equipment.name, equipment.description FROM equipmentRooms JOIN equipment ON equipmentRooms.equipmentId = equipment.id WHERE equipmentRooms.roomId = ?`,
+        [roomId]
+      )
+
       res.status(200).json({
         message: {
           ...room,
           averageRate: averageRate,
-          images: files
+          images: filteredFiles,
+          equipment: equipment
         }
       });
     } catch (error) {

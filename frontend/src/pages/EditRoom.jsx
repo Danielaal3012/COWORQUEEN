@@ -226,7 +226,7 @@ if (images.length > 0) {
           <form onSubmit={handleUpdateRoom} className="flex flex-col gap-y-4">
             <div>
               <Label>Portada</Label>
-              <ImageUpload onFilesChange={handleCoverChange} maxFiles={1} type="cover" existing={roomData.image} id={roomData.id} />
+              <ImageUpload onFilesChange={handleCoverChange} maxFiles={1} type="cover" existing={roomData?.image} id={roomData?.id} />
             </div>
             <div>
               <Label>Nombre</Label>

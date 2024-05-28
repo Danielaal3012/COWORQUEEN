@@ -57,22 +57,22 @@ const HomePage = () => {
             rooms?.data?.map((room) => (
               <figure
                 key={room.id}
-                className="relative w-[45%] max-w-[45%] h-auto lg:w-[300px] lg:max-w-[300px] lg:h-[200px] overflow-hidden rounded-md hover:opacity-80"
+                className="relative w-[180px] max-w-[180px] aspect-[3-2] max-h-[120px] lg:w-[300px] lg:max-w-[300px] lg:h-[200px] lg:max-h-[200px] overflow-hidden rounded-lg hover:opacity-80"
               >
                 <Link to={`/room/${room.id}`}>
                   <img
                     src={host + "/uploads/rooms/" + room.id + "/" + room.image}
                     alt={room.name}
-                    className="w-full rounded-xl"
+                    className="w-full rounded-lg"
                   />
                   <div className="absolute bg-opacity-50 bg-secondary w-fit" />
                   <div className="absolute bottom-0 flex items-center justify-between w-full ">
-                    <h3 className="px-2 overflow-hidden text-2xl font-bold text-center bg-secondary rounded-tr-xl min-w-11 max-h-10">{room.name}</h3>
-                    <Badge className="mx-2 text-center">
+                    <h3 className="px-2 py-0.5 overflow-hidden text-sm font-bold text-center md:text-2xl bg-secondary rounded-tr-lg min-w-11 max-h-10">{room.name}</h3>
+                    <Badge className="mr-[1px] rounded-lg">
                       {room.typeOf}
                     </Badge>
                   </div>
-                  <div className="absolute top-0 right-0 overflow-hidden text-center bg-secondary rounded-bl-xl min-w-11 max-h-6">
+                  <div className="absolute top-0 right-0 overflow-hidden text-center rounded-bl-lg bg-secondary min-w-11 max-h-6">
                     <p className="">{room.capacity}</p>
                   </div>
                   <div className="absolute top-0 left-0 items-center overflow-hidden font-bold text-center min-w-11 max-h-6">

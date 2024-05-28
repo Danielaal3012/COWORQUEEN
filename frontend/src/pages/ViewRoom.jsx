@@ -22,8 +22,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/UI/card"
-
+} from "@/components/UI/card";
 
 function ViewRoom() {
   const { authState } = useContext(AuthContext);
@@ -51,21 +50,20 @@ function ViewRoom() {
   }, [roomId]);
 
   const cover = roomData.image
-    ? host + "/uploads/rooms/" + roomId + "/" + roomData.image
+    ? host + "/uploads/rooms/" + roomId + "/" + roomData?.image
     : "";
 
   console.log(roomData);
 
   return (
-    <div className="flex flex-col w-full text-center">
-
-
+    <div className="relative flex flex-col justify-center w-full lg:justify-normal">
       {roomData && (
         <div className="relative flex flex-col justify-center w-full px-4 md:px-0">
-
-          <section className="flex flex-row items-center justify-between">
-          <h2 className="">{roomData.name}</h2>
-          <p className="text-right">{formatAverageRate(roomData.averageRate)}</p>
+          <section className="flex flex-row items-center justify-between mb-4">
+            <h2 className="">{roomData.name}</h2>
+            <p className="text-right">
+              {formatAverageRate(roomData.averageRate)}
+            </p>
           </section>
 
           <Carousel
@@ -80,45 +78,56 @@ function ViewRoom() {
               }),
             ]}
           >
-  <CarouselContent className="-ml-2 w-full h-full aspect-video md:w-[450px] md:h-[300px] md:min-w-[450px] md:min-h-[300px] md:max-w-[450px] md:max-h-[300px]">
-    {roomData?.images?.map((image, index) => (
-      <CarouselItem key={index}>
-        <Card className="w-full h-full overflow-hidden">
-          <CardContent className="w-full h-full p-0">
-            <img
-              src={host + "/uploads/rooms/" + roomId + "/" + image}
-              alt="room"
-              className="object-cover w-full h-full"
-            />
-          </CardContent>
-        </Card>
-      </CarouselItem>
+            <CarouselContent className="-ml-2 w-full h-full aspect-video md:w-[450px] md:h-[300px] md:min-w-[450px] md:min-h-[300px] md:max-w-[450px] md:max-h-[300px]">
+              {roomData?.images?.map((image, index) => (
+                <CarouselItem key={index}>
+                  <Card className="w-full h-full overflow-hidden">
+                    <CardContent className="w-full h-full p-0">
+                      <img
+                        src={host + "/uploads/rooms/" + roomId + "/" + image}
+                        alt="room"
+                        className="object-cover w-full h-full"
+                      />
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+
+          <p className="text-left text-balance">{roomData.description}</p>
+
+          <section className="flex flex-row justify-between my-2">
+            <div className="text-left">
+              <span className="font-bold">Capacidad:</span> {roomData.capacity}
+            </div>
+            <div className="flex items-center text-right gap-x-4">
+              <span className="font-bold">Tipo:</span>{" "}
+              {roomData.typeOf === "Pública" ? (
+                <Badge>Pública</Badge>
+              ) : (
+                <Badge>Privada</Badge>
+              )}
+            </div>
+          </section>
+
+          <section>
+  <h3 className="font-bold">Equipo disponible:</h3>
+  <ul className="ml-4">
+    {roomData.equipment?.map((equipment, index) => (
+      <li key={index}>{equipment.name}</li>
     ))}
-  </CarouselContent>
-  <CarouselPrevious />
-  <CarouselNext />
-</Carousel>
+  </ul>
+</section>
 
-              <p className="text-left text-balance">
-              {roomData.description}
-
-              </p>
-
-              <section className="flex flex-row justify-between my-2">
-              <div className="text-left">
-
-                <span className="font-bold">Capacidad:</span> {roomData.capacity}
-                </div>
-                <div className="flex items-center text-right gap-x-4">
-                <span className="font-bold">Tipo:</span> {roomData.typeOf === 'Pública' ? <Badge variant="secondary">Pública</Badge> : <Badge>Privada</Badge>}
-                </div>
-              </section>
-         
-              
         </div>
       )}
+
+
       <Button
-        className="sticky bottom-0 z-10 mx-auto"
+        className="sticky mx-auto bottom-4 w-fit"
         onClick={() => navigate(`/room/${id}/reserve`)}
       >
         Reservar
