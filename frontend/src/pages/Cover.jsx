@@ -12,11 +12,10 @@ const fileUrl = '/public/DosierInfo.pdf';
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRedirect(true);
-    }, 10000); // Espera  10 segundos antes de redirigir
+    }, 10000); 
 
-    // Limpiar el temporizador si el componente se desmonta
     return () => clearTimeout(timer);
-  }, []); // Dependencias vacías significa que este efecto se ejecuta solo una vez
+  }, []); 
 
   useEffect(() => {
     if (shouldRedirect) {
