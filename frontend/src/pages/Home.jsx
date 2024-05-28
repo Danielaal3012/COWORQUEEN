@@ -57,7 +57,7 @@ const HomePage = () => {
             rooms?.data?.map((room) => (
               <figure
                 key={room.id}
-                className="relative w-[180px] max-w-[180px] aspect-[3-2] max-h-[120px] lg:w-[300px] lg:max-w-[300px] lg:h-[200px] lg:max-h-[200px] overflow-hidden rounded-lg hover:opacity-80"
+                className="relative w-[180px] max-w-[180px] aspect-[3-2] max-h-[120px] lg:w-[300px] lg:max-w-[300px] lg:h-[200px] lg:max-h-[200px] overflow-hidden rounded-lg hover:opacity-80 border-solid border-4 border-gray-300"
               >
                 <Link to={`/room/${room.id}`}>
                   <img
