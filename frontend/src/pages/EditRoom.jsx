@@ -63,6 +63,11 @@ function EditRoom() {
       );
   }, [id]);
 
+  console.log(roomData)
+  console.log(roomEquipment)
+  console.log(cover)
+  console.log(images)
+
   useEffect(() => {
     fetch(`${host}/rooms/${id}/equipment`, {
       headers: {
@@ -321,7 +326,7 @@ if (images.length > 0) {
                   </DialogDescription>
                 </DialogHeader>
                 <Select
-                  value={roomEquipment.equipmentIds[0]}
+                  value={roomEquipment?.equipmentIds[0]}
                   multiple={true}
                   onValueChange={(value) =>
                     setRoomEquipment((prevState) => {
@@ -337,13 +342,13 @@ if (images.length > 0) {
                 >
                   <SelectTrigger>
                     <SelectValue>
-                      {roomEquipment.equipmentIds.length > 0 ? (
-                        roomEquipment.equipmentIds
+                      {roomEquipment?.equipmentIds.length > 0 ? (
+                        roomEquipment?.equipmentIds
                           .map((id) => {
                             const equip = equipment?.find(
                               (equip) => equip.id === id
                             );
-                            return equip ? equip.name : id;
+                            return equip ? equip?.name : id;
                           })
                           .join(", ")
                       ) : (
@@ -353,12 +358,12 @@ if (images.length > 0) {
                   </SelectTrigger>
                   <SelectContent>
                     {equipment?.filter(
-                      (equip) => !roomEquipment.equipmentIds.includes(equip.id)
+                      (equip) => !roomEquipment?.equipmentIds.includes(equip.id)
                     ).length > 0 ? (
                       equipment
                         ?.filter(
                           (equip) =>
-                            !roomEquipment.equipmentIds.includes(equip.id)
+                            !roomEquipment?.equipmentIds.includes(equip.id)
                         )
                         .map((equip) => (
                           <SelectItem key={equip.id} value={equip.id}>
