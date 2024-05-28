@@ -49,7 +49,7 @@ function ViewRoom() {
       );
   }, [roomId]);
 
-  const cover = roomData.image
+  const cover = roomData?.image
     ? host + "/uploads/rooms/" + roomId + "/" + roomData?.image
     : "";
 
