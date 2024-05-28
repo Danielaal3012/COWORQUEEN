@@ -5,8 +5,6 @@ import { Button } from "@/components/UI/button";
 import { Badge } from "@/components/UI/badge";
 import { useNavigate } from "react-router-dom";
 import { formatAverageRate } from "@/utils/formatRating";
-import { Skeleton } from "@/components/UI/skeleton";
-import { DataContext } from "@/components/DataContext";
 import {
   Carousel,
   CarouselContent,
@@ -17,11 +15,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/UI/card";
 
 function ViewRoom() {
@@ -49,7 +43,7 @@ function ViewRoom() {
       );
   }, [roomId]);
 
-  const cover = roomData.image
+  const cover = roomData?.image
     ? host + "/uploads/rooms/" + roomId + "/" + roomData?.image
     : "";
 
@@ -60,9 +54,9 @@ function ViewRoom() {
       {roomData && (
         <div className="relative flex flex-col justify-center w-full px-4 md:px-0">
           <section className="flex flex-row items-center justify-between mb-4">
-            <h2 className="">{roomData.name}</h2>
+            <h2 className="">{roomData?.name}</h2>
             <p className="text-right">
-              {formatAverageRate(roomData.averageRate)}
+              {formatAverageRate(roomData?.averageRate)}
             </p>
           </section>
 
@@ -97,15 +91,15 @@ function ViewRoom() {
             <CarouselNext />
           </Carousel>
 
-          <p className="text-left text-balance">{roomData.description}</p>
+          <p className="text-left text-balance">{roomData?.description}</p>
 
           <section className="flex flex-row justify-between my-2">
             <div className="text-left">
-              <span className="font-bold">Capacidad:</span> {roomData.capacity}
+              <span className="font-bold">Capacidad:</span> {roomData?.capacity}
             </div>
             <div className="flex items-center text-right gap-x-4">
               <span className="font-bold">Tipo:</span>{" "}
-              {roomData.typeOf === "Pública" ? (
+              {roomData?.typeOf === "Pública" ? (
                 <Badge>Pública</Badge>
               ) : (
                 <Badge>Privada</Badge>
@@ -116,8 +110,8 @@ function ViewRoom() {
           <section>
   <h3 className="font-bold">Equipo disponible:</h3>
   <ul className="ml-4">
-    {roomData.equipment?.map((equipment, index) => (
-      <li key={index}>{equipment.name}</li>
+    {roomData?.equipment?.map((equipment, index) => (
+      <li key={index}>{equipment?.name}</li>
     ))}
   </ul>
 </section>

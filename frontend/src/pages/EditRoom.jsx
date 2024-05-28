@@ -63,6 +63,11 @@ function EditRoom() {
       );
   }, [id]);
 
+  console.log(roomData)
+  console.log(roomEquipment)
+  console.log(cover)
+  console.log(images)
+
   useEffect(() => {
     fetch(`${host}/rooms/${id}/equipment`, {
       headers: {
@@ -234,7 +239,7 @@ if (images.length > 0) {
                 type="text"
                 name="name"
                 placeholder="Nombre del espacio"
-                value={roomData.name}
+                value={roomData?.name}
                 onChange={handleChange}
               />
             </div>
@@ -244,7 +249,7 @@ if (images.length > 0) {
                 type="text"
                 name="description"
                 placeholder="Descripción del espacio"
-                value={roomData.description}
+                value={roomData?.description}
                 onChange={handleChange}
               />
             </div>
@@ -253,7 +258,7 @@ if (images.length > 0) {
               <Input
                 type="number"
                 name="capacity"
-                value={roomData.capacity}
+                value={roomData?.capacity}
                 onChange={handleChange}
                 min="1"
                 max="256"
@@ -262,7 +267,7 @@ if (images.length > 0) {
             <div>
               <Label>Tipo</Label>
               <Select
-                value={roomData.typeOf}
+                value={roomData?.typeOf}
                 onValueChange={(value) =>
                   setRoomData((prevState) => ({ ...prevState, typeOf: value }))
                 }
@@ -315,13 +320,13 @@ if (images.length > 0) {
                   <DialogDescription>
                     Elige el equipo disponible en el espacio:{" "}
                     <span className="font-bold text-black">
-                      {roomData.name}
+                      {roomData?.name}
                     </span>
                     .
                   </DialogDescription>
                 </DialogHeader>
                 <Select
-                  value={roomEquipment.equipmentIds[0]}
+                  value={roomEquipment?.equipmentIds[0]}
                   multiple={true}
                   onValueChange={(value) =>
                     setRoomEquipment((prevState) => {
@@ -337,13 +342,13 @@ if (images.length > 0) {
                 >
                   <SelectTrigger>
                     <SelectValue>
-                      {roomEquipment.equipmentIds.length > 0 ? (
-                        roomEquipment.equipmentIds
+                      {roomEquipment?.equipmentIds.length > 0 ? (
+                        roomEquipment?.equipmentIds
                           .map((id) => {
                             const equip = equipment?.find(
                               (equip) => equip.id === id
                             );
-                            return equip ? equip.name : id;
+                            return equip ? equip?.name : id;
                           })
                           .join(", ")
                       ) : (
@@ -353,12 +358,12 @@ if (images.length > 0) {
                   </SelectTrigger>
                   <SelectContent>
                     {equipment?.filter(
-                      (equip) => !roomEquipment.equipmentIds.includes(equip.id)
+                      (equip) => !roomEquipment?.equipmentIds.includes(equip.id)
                     ).length > 0 ? (
                       equipment
                         ?.filter(
                           (equip) =>
-                            !roomEquipment.equipmentIds.includes(equip.id)
+                            !roomEquipment?.equipmentIds.includes(equip.id)
                         )
                         .map((equip) => (
                           <SelectItem key={equip.id} value={equip.id}>
