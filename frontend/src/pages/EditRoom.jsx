@@ -56,6 +56,7 @@ function EditRoom() {
     })
       .then((res) => res.json())
       .then((roomData) => {
+        console.log(roomData)
         setRoomData(roomData.message);
       })
       .catch((error) =>
@@ -63,7 +64,7 @@ function EditRoom() {
       );
   }, [id]);
 
-  console.log(roomData)
+  console.log('roodData',roomData)
   console.log(roomEquipment)
   console.log(cover)
   console.log(images)

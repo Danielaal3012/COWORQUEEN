@@ -11,7 +11,7 @@ const HomePage = () => {
   const { rooms, updateRooms } = useContext(DataContext);
 
   const fetchRoomsIfNeeded = async (host, authState, rooms, updateRooms) => {
-    const updateInterval = 3600000;
+    const updateInterval = 1; // arreglarlo después: 1 hora
     const now = new Date();
   
     if (rooms.data.length > 0) {
@@ -51,7 +51,7 @@ const HomePage = () => {
   return (
     <div className="w-full ">
       <section>filtros</section>
-      <section className="w-full h-dvh">
+      <section className="w-full ">
         <section className="flex flex-wrap justify-center gap-4 my-4">
           {rooms?.data?.length > 0 &&
             rooms?.data?.map((room) => (
