@@ -105,7 +105,7 @@ export function EquipmentItem() {
       {equipmentData && (
         <div className="flex flex-col w-full p-4 ">
           <div className="flex justify-between px-4 md:px-0">
-            <h2>Artículo: {equipmentData.id}</h2>
+            <h2>{equipmentData.name}</h2>
             {authState.user.role === "admin" && (
               <div className="flex items-center gap-x-2">
                 {/* <Button asChild>
