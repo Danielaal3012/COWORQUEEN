@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/UI/alert-dialog";
+import useMediaQuery from "@/utils/mediaquery";
 
 const ImageUpload = ({
   onFilesChange,
@@ -21,6 +22,7 @@ const ImageUpload = ({
   id,
   disabledState 
 }) => {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [files, setFiles] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -99,7 +101,7 @@ const ImageUpload = ({
       className={` p-4 w-full ${
         type === "multiple"
           ? "flex flex-col"
-          : "flex flex-row items-center justify-between gap-x-16"
+          : "flex flex-row items-center justify-between gap-x-4 md:gap-x-16"
       }`}
     >
       {type === "cover" && files.length == 1 ? (
@@ -190,12 +192,14 @@ const ImageUpload = ({
       >
         <input {...getInputProps()}  />
         <MdOutlineFileUpload className="p-2 m-2 mx-auto text-6xl text-[#63646F] border-2 border-[#D5D4D7] border-dashed rounded-full" />
-        <p className="text-[#71717A] font-medium ">
+        <p className="text-[#71717A] font-medium text-balance ">
           Arrastra y suelta archivos aquí, o haz clic para seleccionar imágenes
         </p>
+        {isDesktop && (
         <p className="text-[#9B9BA2]  ">
           Puedes subir hasta {maxFiles} imágen{maxFiles > 1 ? "es" : ""}
         </p>
+        )}
       </div>
 
       {type === "multiple" && files.length > 0 && (

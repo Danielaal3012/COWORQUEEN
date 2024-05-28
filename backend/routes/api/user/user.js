@@ -141,7 +141,6 @@ userRouter.post("/login", async (req, res, next) => {
         email: user.email,
         avatar: user.avatar,
       },
-
     });
   } catch (err) {
     next(err);

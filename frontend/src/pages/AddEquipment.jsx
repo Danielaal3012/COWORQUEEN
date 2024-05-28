@@ -52,9 +52,9 @@ export function AddEquipment() {
       onSubmit={onSubmit}
       className="flex flex-col w-full p-4 mx-auto mt-4 rounded-md gap-y-4"
     >
-      <Button asChild>
+      {/* <Button asChild>
         <Link to="/admin/equipment">Volver</Link>
-      </Button>
+      </Button> */}
       <div>
         <Label>Nombre del artículo</Label>
         <Input

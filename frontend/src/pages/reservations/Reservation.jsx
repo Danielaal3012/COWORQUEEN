@@ -51,13 +51,15 @@ const ViewReservation = () => {
 
   const currentDate = new Date();
 
+  console.log(reservationData)
+
   return (
     <div className="flex flex-col w-full">
       {reservationData && (
         <div>
           <div className="flex justify-between px-4 md:px-0">
             <h2>Reserva</h2>
-            {new Date(reservationData.reservationDateBeg) > currentDate && (
+            {new Date(reservationData.reservationDateBeg) < currentDate && (
                           <Dialog
                           buttonVariant="outline"
                           buttonContent="Cancelar reserva"
