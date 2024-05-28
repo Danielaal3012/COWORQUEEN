@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/UI/alert-dialog";
+import useMediaQuery from "@/utils/mediaquery";
 
 const ImageUpload = ({
   onFilesChange,
@@ -21,6 +22,7 @@ const ImageUpload = ({
   id,
   disabledState 
 }) => {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [files, setFiles] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -193,7 +195,7 @@ const ImageUpload = ({
         <p className="text-[#71717A] font-medium text-balance ">
           Arrastra y suelta archivos aquí, o haz clic para seleccionar imágenes
         </p>
-        {type !== 'avatar' && (
+        {isDesktop && (
         <p className="text-[#9B9BA2]  ">
           Puedes subir hasta {maxFiles} imágen{maxFiles > 1 ? "es" : ""}
         </p>
