@@ -36,7 +36,7 @@ const Layout = ({ children }) => {
   const { authState } = useContext(AuthContext);
   const host = import.meta.env.VITE_APP_HOST;
   const avatar = authState?.user?.avatar
-    ? host + "/uploads/avatar/" + "/" + authState.user.avatar
+    ? host + "/uploads/avatar/" + "/" + authState?.user?.avatar
     : null;
 
 
@@ -56,7 +56,7 @@ const Layout = ({ children }) => {
           </section>
           <section className="flex items-center px-7 gap-x-4">
 
-          {authState?.user.role === 'normal' && (
+          {authState?.user?.role === 'normal' && (
             <Button variant="link" className="text-[#e4e4e4] hover:text-white" asChild>
               <Link to="/reservations">Mis reservas</Link>
             </Button>
