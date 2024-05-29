@@ -23,12 +23,13 @@ import { SelectValue } from "@radix-ui/react-select";
 
   import { FaPlus } from "react-icons/fa";
 import { Pagination } from "@/components/Pagination.jsx";
+import { set } from "date-fns";
 
 
-
-export const AdminRoomList = () => {
+ const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
-    const [rooms, setRooms] = useState([]);
+    // const [rooms, setRooms] = useState([]);
+  const [roomsList, setRoomsList] = useState([]);
     const [roomsTotal, setRoomsTotal]= useState([]);
     const host = import.meta.env.VITE_APP_HOST;
 
@@ -49,14 +50,13 @@ export const AdminRoomList = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                setRooms(data.message);
+                setRoomsList(data.message);
             })
             .catch((error) =>
                 console.error("Error al obtener los datos de las incidencias:", error)
             );
-    }, []);
+    }, [roomsList]);
     
-console.log(rooms);
     
 useEffect(() => {
 
@@ -68,7 +68,7 @@ useEffect(() => {
         })
             .then((res) => res.json())
             .then((body) => { 
-                setRooms(body.data);
+                setRoomsList(body.data);
                 setRoomsTotal(body.totalResults);
             })
             .catch((error) =>
@@ -85,7 +85,6 @@ useEffect(() => {
     });
   };
 
-  console.log(rooms);
 
 
     return (
@@ -166,8 +165,8 @@ useEffect(() => {
                 </TableHeader>
 
                 <TableBody>
-                    {rooms && rooms.length > 0? (
-                        rooms.map((room) => (
+                    {roomsList && roomsList.length > 0? (
+                        roomsList.map((room) => (
                             <TableRow key={room.id}>
                                 <TableCell className="font-bold">
                                     <Link to={`/admin/room/${room?.id}/edit`}>{room?.name}</Link>
@@ -211,3 +210,5 @@ useEffect(() => {
         </div>
     );
 };
+
+export default AdminRoomList;
