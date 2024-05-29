@@ -1,6 +1,6 @@
 # Coworqueen: Gestión de Coworking 
 
-<div align="center">
+<div>
 <img src="https://github.com/JonathanADB/Coworking/blob/main/frontend/src/assets/imgreadme/titulo.png">
 </div> 
 
