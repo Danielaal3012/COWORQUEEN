@@ -46,7 +46,6 @@ const CreateIncident = () => {
         }
 
         const data = await response.json();
-        console.log(data);
         setReservation(data.reservation);
 
         setIncident((prevIncident) => ({
