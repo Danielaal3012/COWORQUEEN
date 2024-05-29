@@ -214,6 +214,7 @@ reservationRouter.get(
         FROM reservations
         JOIN users ON reservations.userId = users.id
         JOIN rooms ON reservations.roomId = rooms.id
+        WHERE reservations.id = ?
         `,
         [reservationId]
       );
