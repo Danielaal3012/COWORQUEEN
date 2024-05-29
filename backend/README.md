@@ -1,10 +1,10 @@
-# Gestión de Coworking 
+# Coworqueen: Gestión de Coworking 
 
 <div align="center">
 <img src="https://github.com/JonathanADB/Coworking/blob/main/frontend/src/assets/imgreadme/titulo.png">
 </div> 
 
-"Gestión de Coworking" es una aplicación web que facilita la publicación, reserva y gestión de espacios de coworking para empresas.
+"Coworqueen" es una plataforma web que facilita la publicación, reserva y gestión de espacios de coworking para empresas.
 <br><br>
 
 <div display="flex">
@@ -12,8 +12,6 @@
   <img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
   <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white">
 </div>
-
-
 
 ## Autores
 
@@ -25,29 +23,35 @@
 # Endpoints
 ## USER
 
-<div display="flex">
-    <img src="https://img.shields.io/badge/POST-red?style=for-the-badge&logoColor=000000
-    ">/register - permite la creación de un usuario</div>
-
-
-<ul>
-<div display="flex">
-    <img src="https://img.shields.io/badge/POST-red?style=for-the-badge&logoColor=000000
-    ">/register - permite la creación de un usuario</div>
-
-<li>[POST] /validate - valida la cuenta de un usuario
-</li>
-<li>[POST] /login - inicia sesión en el servicio
-</li>
-<li>[PUT] /user/update/profile
-</li>
-<li>[PATCH] /change-password
-</li>
-<li>[POST] /forgot-password
-</li>
-<li>[POST] /reset-password
-</li>
-
+<ul style="list-style-type: none;">
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/POST-red?style=for-the-badge" style="margin-right: 10px;">
+        /users - permite la creación de un usuario
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/POST-red?style=for-the-badge" style="margin-right: 10px;">
+        /users/validate - valida la cuenta de un usuario
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/POST-red?style=for-the-badge" style="margin-right: 10px;">
+        /auth/login - inicia sesión en el servicio
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/PUT-blue?style=for-the-badge" style="margin-right: 10px;">
+        /users/profile - actualiza el perfil del usuario
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/PATCH-yellow?style=for-the-badge" style="margin-right: 10px;">
+        /users/password - cambia la contraseña
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/POST-red?style=for-the-badge" style="margin-right: 10px;">
+        /auth/forgot-password - olvido de contraseña
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="https://img.shields.io/badge/POST-red?style=for-the-badge" style="margin-right: 10px;">
+        /auth/reset-password - reinicio de contraseña
+    </li>
 </ul>
 
 
