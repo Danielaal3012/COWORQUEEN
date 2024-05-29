@@ -326,7 +326,7 @@ categoryIncidentsRouter.delete(
 
 // Eliminar incidencia como Admin
 categoryIncidentsRouter.delete(
-  "/incidents/:incidentId",
+  "/incident/:incidentId",
   authenticate,
   isAdmin,
   async (req, res, next) => {
