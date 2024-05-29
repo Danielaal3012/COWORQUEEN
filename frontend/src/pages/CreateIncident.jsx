@@ -80,20 +80,23 @@ const CreateIncident = () => {
   }, [id, authState.token]);
 
   useEffect(() => {
-    fetch(`${host}/rooms/${incident?.roomId}/equipment`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authState.token,
-      },
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        setEquipment(body.equipment);
+    if (incident?.roomId) {
+      fetch(`${host}/rooms/${incident.roomId}/equipment`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authState.token,
+        },
       })
-      .catch((error) =>
-        console.error("Error al obtener los datos de las reseñas:", error)
-      );
-  }, [incident.roomId]);
+        .then((res) => res.json())
+        .then((body) => {
+          console.log(body)
+          setEquipment(body.equipment);
+        })
+        .catch((error) =>
+          console.error("Error al obtener los datos del equipo", error)
+        );
+    }
+  }, [incident?.roomId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -127,7 +130,7 @@ const CreateIncident = () => {
       });
 
             if (!response.ok) {
-                toast.Error('No se ha podido crear la incidencia');
+                toast.error('No se ha podido crear la incidencia');
             }
 
       toast.success("Incidencia creada correctamente");
@@ -184,7 +187,7 @@ const CreateIncident = () => {
             <Label>Equipo</Label>
             <Select
               disabled={
-                authState.user.role === "admin" && !incident.roomId
+                authState.user.role === "admin" && incident.roomId === 0
                   ? true
                   : false
               }
