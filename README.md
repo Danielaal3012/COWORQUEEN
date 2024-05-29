@@ -1,4 +1,4 @@
-# Gestión de Coworking 
+# Coworqueen: Gestión de Coworking 
 <br>
 <div align="center">
 <img src="https://github.com/JonathanADB/Coworking/blob/test-2/frontend/src/assets/images/Logo.png">
@@ -6,7 +6,7 @@
 
 <br>
 
-"Gestión de Coworking" es una aplicación web que permite publicar, reservar y gestionar los espacios de coworking de una empresa.
+"Coworqueen" es una aplicación web que permite publicar, reservar y gestionar los espacios de coworking de una empresa.
 <div align="end"> 
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
@@ -25,12 +25,7 @@
 - Eduardo Martínez Frutos
 - Pablo Campuzano Fuente
 
-## Fase de desarrollo
-
-Actualmente nos encontramos en pleno desarrollo de la aplicación. Sprint 2.
-
-<img src="https://github.com/JonathanADB/Coworking/blob/test-2/frontend/src/assets/images/home.png">
-
+## Fases de desarrollo
 
 ## Sprint 1 (15/04 - 25/04)
 Durante este sprint se han realizado las siguientes tareas:
@@ -92,9 +87,5 @@ Actualmente nos encontramos en la fase de desarrollo del Sprint 2, que incluye l
 - Validación de endpoint con Joi.
 - Respuesta y feedback al usuario mediante tostify.
 
-## Inicialización y Actualidad
+## Sprint 3
 El proyecto está en desarrollo y se seguirá trabajando en el Sprint 3.
-
-Para inicializar el proyecto, sigue estos pasos:
-1. Instala las dependencias del proyecto utilizando `npm install`.
-2. Ejecuta el proyecto en modo de desarrollo utilizando `npm run dev`.
