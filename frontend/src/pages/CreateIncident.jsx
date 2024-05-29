@@ -166,11 +166,7 @@ const CreateIncident = () => {
           <div>
             <Label>Equipo</Label>
             <Select
-              disabled={
-                authState.user.role === "admin" && !incident.roomId
-                  ? true
-                  : false
-              }
+             
               onValueChange={(value) =>
                 setIncident((prevIncident) => ({
                   ...prevIncident,

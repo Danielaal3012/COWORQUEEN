@@ -77,7 +77,9 @@ const App = () => {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Layout><Home /></Layout>} />
+
+          <Route path="/" element={<Layout><Home /></Layout>} /> {/* cover antes de iniciar sesion*/}
+
 
           <Route path="/register" element={<Layout><Register /></Layout>} />
           <Route path="/validate" element={<Layout><ValidateUser /></Layout>} />
