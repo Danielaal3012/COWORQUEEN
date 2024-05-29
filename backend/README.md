@@ -1,6 +1,6 @@
 # Coworqueen: Gestión de Coworking 
 
-<div >
+<div align="center">
 <img src="https://github.com/JonathanADB/Coworking/blob/main/frontend/src/assets/imgreadme/titulo.png">
 </div> 
 
@@ -33,11 +33,6 @@
    ```
    
 2. Instalar dependencias:
-    ```sh
-    cd backend
-    npm install
-    ```
-
 ## Configuración
 
 1. Crear un archivo .env en la raíz del proyecto con el siguiente contenido:
@@ -71,16 +66,12 @@
     
 Para iniciar el servidor de desarrollo:
 
-    ```sh
     cd backend
     npm install
-    ```
 
 Para iniciar el servidor en producción:
 
-    ```sh
     npm start
-    ```
 
 
 # Endpoints
@@ -332,14 +323,3 @@ Para iniciar el servidor en producción:
         /rooms/searchReservations - búsqueda de reservas por sala y fecha
     </li>
 </ul>
-
-
-### Pasos para arrancar el backend
-
-1. Abrir una terminal en la carpeta "backend".
-2. Instalar las dependencias del proyecto con `npm install`.
-3. Configurar el archivo `.env`.
-4. Inicializar la base de datos con `npm run init-db`.
-5. Arrancar el servidor con `npm run start`.
-
-¡Con estos pasos, el servidor estará listo para ser probado usando POSTMAN!
