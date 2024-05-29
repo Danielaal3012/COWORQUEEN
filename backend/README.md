@@ -1,7 +1,7 @@
 # Coworqueen: Gestión de Coworking 
 
-<div>
-<img src="https://github.com/JonathanADB/Coworking/blob/main/frontend/src/assets/imgreadme/titulo.png">
+<div align="left">
+<img src="https://github.com/JonathanADB/Coworking/blob/main/backend/img/logo.png">
 </div> 
 
 "Coworqueen" es una plataforma web que facilita la publicación, reserva y gestión de espacios de coworking para empresas.
