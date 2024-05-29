@@ -26,7 +26,10 @@
 ## USER
 
 <ul>
-<li>[POST] /register - permite la creación de un usuario</li>
+<li>
+    <img src="https://img.shields.io/badge/POST-red?style=for-the-badge&logoColor=000000
+    ">
+ /register - permite la creación de un usuario</li>
 
 <li>[POST] /validate - valida la cuenta de un usuario
 </li>
