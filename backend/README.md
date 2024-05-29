@@ -25,6 +25,11 @@
 # Endpoints
 ## USER
 
+<div display="flex">
+    <img src="https://img.shields.io/badge/POST-red?style=for-the-badge&logoColor=000000
+    ">/register - permite la creación de un usuario</div>
+
+
 <ul>
 <div display="flex">
     <img src="https://img.shields.io/badge/POST-red?style=for-the-badge&logoColor=000000
