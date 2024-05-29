@@ -20,48 +20,18 @@
 - Daniela del Carmen Alvarez Carrasquel
 - Jorge Alberto Pérez Lehmann
 - Eduardo Martínez Frutos
-- Jonathan Alberto Domínguez Blanco
 - Pablo Campuzano Fuente
 
-### Sprint 1 (15/04 - 25/04)
+# Endpoints
+## USER
 
-Durante este sprint, hemos completado:
-
-- **Análisis**
-  - Análisis Funcional.
-  - Diseño del Wireframe.
-  - Diseño del mapa de sitio y flujo de control.
-
-- **Implementación y desarrollo del Backend**
-  - Creación del proyecto
-  - Configuración de la base de datos y del servidor con Express.
-  - Conexión con la base de datos desde Node.
-
-- **Middlewares**
-  - Middleware para manejo de errores y parseo del body de la petición.
-  - Middleware para la gestión de recursos estáticos.
-  - Middleware de autenticación de usuarios.
-
-- **Endpoints**
-  - Registro, validación y login de usuarios.
-  - Recuperación y cambio de contraseña.
-  - Listado de categorías de incidencias, equipamiento y tipo de espacio.
-  - Creación, reserva y cancelación de espacios.
-  - Confirmación o rechazo de reservas con notificación por email.
-  - Calificación de espacios.
-  - Listado y visualización de espacios con filtros y ordenación.
-
-- **Varios**
-  - Validación de peticiones con Joi.
-  - Colección de Postman con los endpoints implementados.
-
-  ### Tecnologías utilizadas
-
-- Postman
-- Node.js
-- Express
-- MySQL
-- MySQL Workbench
+[POST] /register - permite la creación de un usuario
+[POST] /validate - valida la cuenta de un usuario
+[POST] /login - inicia sesión en el servicio
+[PUT] /user/update/profile
+[PATCH] /change-password
+[POST] /forgot-password
+[POST] /reset-password
 
 ### Pasos para arrancar el backend
 
