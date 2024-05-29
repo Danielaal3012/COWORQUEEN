@@ -25,13 +25,24 @@
 # Endpoints
 ## USER
 
-[POST] /register - permite la creación de un usuario
-[POST] /validate - valida la cuenta de un usuario
-[POST] /login - inicia sesión en el servicio
-[PUT] /user/update/profile
-[PATCH] /change-password
-[POST] /forgot-password
-[POST] /reset-password
+<ul>
+<li>[POST] /register - permite la creación de un usuario</li>
+
+<li>[POST] /validate - valida la cuenta de un usuario
+</li>
+<li>[POST] /login - inicia sesión en el servicio
+</li>
+<li>[PUT] /user/update/profile
+</li>
+<li>[PATCH] /change-password
+</li>
+<li>[POST] /forgot-password
+</li>
+<li>[POST] /reset-password
+</li>
+
+</ul>
+
 
 ### Pasos para arrancar el backend
 
