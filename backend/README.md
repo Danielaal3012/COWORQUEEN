@@ -76,6 +76,8 @@ Para iniciar el servidor en producción:
 
 # Endpoints
 
+Después de crear un usuario, validarse e iniciar sesión se generará un token que será necesario incluir en autorización en las cabeceras de las peticiones subsiguientes.
+
 ## USER - Renombrar a account/auth
 
 <ul style="list-style-type: none;">
