@@ -28,9 +28,9 @@ const MyReservations = () => {
             })
     }, []);
         
-        //console.log(reservations)
-        console.log(pastReservations)
-        console.log(nextReservations)
+        console.log('Todas las reservas:',reservations)
+        console.log('Reservas anteriores:',pastReservations)
+        console.log('Próximas reservas:',nextReservations)
 
     return (
       <div className="p-4">
