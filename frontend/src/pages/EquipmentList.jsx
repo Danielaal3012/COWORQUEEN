@@ -147,7 +147,7 @@ export const EquipmentList = () => {
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
             <TableHead className="w-full">Descripción</TableHead>
-            <TableHead className="w-full">Cantidad</TableHead>
+            <TableHead className="w-full">Cantidad</TableHead> 
 
           </TableRow>
         </TableHeader>

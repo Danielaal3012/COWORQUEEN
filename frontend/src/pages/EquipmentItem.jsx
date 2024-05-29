@@ -99,8 +99,6 @@ export function EquipmentItem() {
       );
   };
 
-  const returnUrl = localStorage.getItem("returnPage");
-  console.log({ returnUrl });
 
   return (
     <div className="w-full">
