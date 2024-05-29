@@ -23,6 +23,7 @@ const MyReservations = () => {
             .then((body) => {
                 const nextReservations = body.reservations.filter(reservation => reservation.reservationCheckin === 0);
                 const pastReservations = body.reservations.filter(reservation => reservation.reservationCheckin === 1);
+                setReservations(body.reservations);
                 setNextReservations(nextReservations);
                 setPastReservations(pastReservations);
             })
