@@ -20,6 +20,69 @@
 - Eduardo Martínez Frutos
 - Pablo Campuzano Fuente
 
+## Requisitos Previos
+
+- Node.js (v14.x o superior)
+- npm (v6.x o superior)
+
+## Instalación
+
+1. Clonar el repositorio:
+   ```sh
+   git clone https://github.com/usuario/nombre-del-proyecto.git
+   ```
+   
+2. Instalar dependencias:
+    ```sh
+    cd backend
+    npm install
+    ```
+
+## Configuración
+
+1. Crear un archivo .env en la raíz del proyecto con el siguiente contenido:
+
+    ```sh
+    MODE=
+    CORS_ORIGIN=
+    DB_HOST=
+    DB_PORT=
+    DB_USER=
+    DB_PASS=
+    DB_NAME=
+    JWT_SECRET=
+    API_HOST=
+    VITE_APP_HOST=
+    FRONTEND_HOST=
+    BREVO_API_KEY= 
+    SMTP_HOST=
+    SMTP_PORT=
+    SMTP_USER=
+    SMTP_PASS=
+    ```
+
+2. Después de crear el archivo .env, inicializar la base de datos ejecutando el siguiente comando en la terminal:
+    
+    ```sh
+   npm run init-db
+   ```
+
+## Inicialización
+    
+Para iniciar el servidor de desarrollo:
+
+    ```sh
+    cd backend
+    npm install
+    ```
+
+Para iniciar el servidor en producción:
+
+    ```sh
+    npm start
+    ```
+
+
 # Endpoints
 
 ## USER - Renombrar a account/auth
