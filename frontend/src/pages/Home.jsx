@@ -53,6 +53,8 @@ const HomePage = () => {
       {/* <section>filtros</section> */}
       <section className="w-full ">
         <section className="flex flex-wrap justify-center gap-4 my-4">
+        <div class="border-b border-amber-600 w-full lg:border-transparent"></div>
+
           {rooms?.data?.length > 0 &&
             rooms?.data?.map((room) => (
               <figure
