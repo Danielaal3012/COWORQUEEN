@@ -51,7 +51,6 @@ import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
-import Cover from "./pages/Cover.jsx";
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -79,8 +78,7 @@ const App = () => {
       <Router>
         <Routes>
 
-          <Route path="/" element={<Layout><Cover /></Layout>} /> {/* cover antes de iniciar sesion*/}
-            <Route path="/home" element={<Layout><Home /></Layout>} />
+          <Route path="/" element={<Layout><Home /></Layout>} /> {/* cover antes de iniciar sesion*/}
 
 
           <Route path="/register" element={<Layout><Register /></Layout>} />

@@ -46,7 +46,6 @@ const HomePage = () => {
     fetchRoomsIfNeeded(host, authState, rooms, updateRooms);
   }, [authState, rooms, updateRooms, host]);
 
-  console.log(rooms)
 
   return (
     <div className="w-full ">
