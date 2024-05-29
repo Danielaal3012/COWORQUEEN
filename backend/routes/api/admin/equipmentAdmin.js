@@ -66,14 +66,15 @@ equipmentAdminRouter.patch(
       }
 
       const equipment = await validateEquipmentId(equipmentId);
-      const { name, description } = validateEquipmentEditRequest(req.body);
+      const { name, description, inventory } = validateEquipmentEditRequest(req.body);
 
       const updateEquipment = await dbPool.execute(
-        `UPDATE equipment SET name=?, description=?, updatedAt=CURRENT_TIME()
+        `UPDATE equipment SET name=?, description=?, inventory=?, updatedAt=CURRENT_TIME()
             WHERE id=?`,
         [
           name ? name : equipment.name,
           description ? description : equipment.description,
+          inventory ? inventory : equipment.inventory,
           equipmentId,
         ]
       );

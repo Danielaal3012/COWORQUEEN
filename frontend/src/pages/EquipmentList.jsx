@@ -147,6 +147,8 @@ export const EquipmentList = () => {
           <TableRow>
             <TableHead className="w-[200px]">Nombre</TableHead>
             <TableHead className="w-full">Descripción</TableHead>
+            <TableHead className="w-full">Cantidad</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -161,6 +163,8 @@ export const EquipmentList = () => {
                   </Button>
                 </TableCell>
                 <TableCell>{equipment.description}</TableCell>
+                <TableCell>{equipment.inventory}</TableCell>
+
               </TableRow>
             ))
           ) : (
