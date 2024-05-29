@@ -162,7 +162,7 @@ const CarouselPrevious = React.forwardRef(({ className, variant = "outline", siz
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}>
-      <ArrowLeft className="w-4 h-4" />
+      <ArrowLeft className="w-4 h-4 mx-auto" />
       <span className="sr-only">Previous slide</span>
     </Button>)
   );
@@ -183,7 +183,7 @@ const CarouselNext = React.forwardRef(({ className, variant = "outline", size = 
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}>
-      <ArrowRight className="w-4 h-4" />
+      <ArrowRight className="w-4 h-4 mx-auto" />
       <span className="sr-only">Next slide</span>
     </Button>)
   );

@@ -282,7 +282,7 @@ categoryIncidentsRouter.patch(
 
 // Eliminar incidencia creada por un usuario
 categoryIncidentsRouter.delete(
-  "/incidents/:incidentId",
+  "/incident/:incidentId",
   authenticate,
   async (req, res, next) => {
     const incidentId = req.params.incidentId;
@@ -326,7 +326,7 @@ categoryIncidentsRouter.delete(
 
 // Eliminar incidencia como Admin
 categoryIncidentsRouter.delete(
-  "/incidents/:incidentId",
+  "/incident/:incidentId",
   authenticate,
   isAdmin,
   async (req, res, next) => {

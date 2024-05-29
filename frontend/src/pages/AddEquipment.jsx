@@ -14,6 +14,7 @@ export function AddEquipment() {
   const [equipmentData, setEquipmentData] = useState({
     name: "",
     description: "",
+    inventory: 1,
   });
 
   const handleChange = (e) => {
@@ -36,6 +37,7 @@ export function AddEquipment() {
       body: JSON.stringify({
         name: equipmentData.name,
         description: equipmentData.description,
+        inventory: equipmentData.inventory,
       }),
     });
     const { ok, error } = response;
@@ -52,9 +54,9 @@ export function AddEquipment() {
       onSubmit={onSubmit}
       className="flex flex-col w-full p-4 mx-auto mt-4 rounded-md gap-y-4"
     >
-      <Button asChild>
+      {/* <Button asChild>
         <Link to="/admin/equipment">Volver</Link>
-      </Button>
+      </Button> */}
       <div>
         <Label>Nombre del artículo</Label>
         <Input
@@ -73,6 +75,17 @@ export function AddEquipment() {
           name="description"
           placeholder='Descripción del artículo"'
           value={equipmentData.description}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <Label>Cantidad</Label>
+        <Input
+          type="number"
+          name="inventory"
+          placeholder='Cantidad'
+          value={equipmentData.inventory}
           onChange={handleChange}
           required
         />

@@ -11,17 +11,20 @@ import ViewReview from "./ViewReview.jsx";
 function CreateReview() {
   const { authState } = useContext(AuthContext);
   const { reservationId } = useParams();
-   const [formData, setFormData] = useState({
+  const host = import.meta.env.VITE_APP_HOST;
+  const [isReviewId, setIsReviewId] = useState(null);
+  const [formData, setFormData] = useState({
     description: "",
     rate: "",
     reservationId: reservationId,
     userId: authState.user.id,
   });
-  const [isReviewId, setIsReviewId] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({...prevData, [name]: value }));
   };
+
   const handleRateChange = (rating) => {
     setFormData({
       ...formData,
@@ -36,7 +39,7 @@ function CreateReview() {
       return;
     }
     try {
-      const response = await fetch(`${import.meta.env.VITE_APP_HOST}/review/create/${reservationId}`, {
+      const response = await fetch(`${host}/review/create/${reservationId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,14 +62,15 @@ function CreateReview() {
 if (isReviewId === null) {
   return (
     <div className="flex flex-col w-full px-4 md:px-0">
-    <h2>Agregar una revisión</h2>
+    <h2>Agregar una reseña</h2>
     <div className="flex flex-col w-full gap-y-4">
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col my-4 w-fulljustify-normal gap-x-4">
+        <div className="flex flex-col w-full my-4 justify-normal gap-x-4">
           <Label>Descripción:</Label>
           <Textarea
             type="text"
             name="description"
+            className="mt-4"
             value={formData.description}
             onChange={handleChange}
             />

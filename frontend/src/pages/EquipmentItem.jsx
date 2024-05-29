@@ -17,6 +17,7 @@ export function EquipmentItem() {
     id: "",
     name: "",
     description: "",
+    inventory: 1,
     createdAt: "",
     updatedAt: "",
     deletedAt: "",
@@ -61,6 +62,7 @@ export function EquipmentItem() {
         body: JSON.stringify({
           name: equipmentData.name,
           description: equipmentData.description,
+          inventory: equipmentData.inventory,
         }),
       });
       if (!response.ok) {
@@ -97,20 +99,18 @@ export function EquipmentItem() {
       );
   };
 
-  const returnUrl = localStorage.getItem("returnPage");
-  console.log({ returnUrl });
 
   return (
     <div className="w-full">
       {equipmentData && (
         <div className="flex flex-col w-full p-4 ">
           <div className="flex justify-between px-4 md:px-0">
-            <h2>Artículo: {equipmentData.id}</h2>
+            <h2>{equipmentData.name}</h2>
             {authState.user.role === "admin" && (
               <div className="flex items-center gap-x-2">
-                <Button asChild>
+                {/* <Button asChild>
                   <Link to="/admin/equipment">Volver</Link>
-                </Button>
+                </Button> */}
                 <Dialog
                   buttonContent={<FaTrash />}
                   title="¿Deseas eliminar el artículo?"
@@ -141,6 +141,18 @@ export function EquipmentItem() {
                 placeholder="Descripción del artículo"
                 className="w-2/3"
                 value={equipmentData.description}
+                onChange={handleChange}
+                disabled={!editing}
+              />
+            </div>        
+            <div className="flex flex-row items-center">
+              <Label className="w-1/3">Cantidad</Label>
+              <Input
+                type="number"
+                name="inventory"
+                placeholder="Cantidad"
+                className="w-2/3"
+                value={equipmentData.inventory}
                 onChange={handleChange}
                 disabled={!editing}
               />

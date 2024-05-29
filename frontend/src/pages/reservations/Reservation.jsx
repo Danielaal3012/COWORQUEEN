@@ -11,6 +11,8 @@ const ViewReservation = () => {
   const { id } = useParams();
   const host = import.meta.env.VITE_APP_HOST;
   
+  console.log('ID de la reserva:',id)
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,13 +53,15 @@ const ViewReservation = () => {
 
   const currentDate = new Date();
 
+  console.log(reservationData)
+
   return (
     <div className="flex flex-col w-full">
       {reservationData && (
         <div>
           <div className="flex justify-between px-4 md:px-0">
             <h2>Reserva</h2>
-            {new Date(reservationData.reservationDateBeg) > currentDate && (
+            {new Date(reservationData.reservationDateBeg) < currentDate && (
                           <Dialog
                           buttonVariant="outline"
                           buttonContent="Cancelar reserva"

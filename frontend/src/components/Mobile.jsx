@@ -34,7 +34,7 @@ const Mobile = ({ children }) => {
           </Link>
           <div className="mb-4">{children}</div>
         </ScrollArea>
-        <div className="fixed bottom-0 flex items-center justify-around w-full h-12 text-2xl bg-[#171717] text-[#e4e4e4]">
+        <div className="fixed bottom-[-1px] flex items-center justify-around w-full h-12 text-2xl bg-[#171717] text-[#e4e4e4]">
           <Link to="/">
             <img src={coworqueen} height={24} width={24} alt="Coworqueen" className="h-6 aspect-auto" />
           </Link>

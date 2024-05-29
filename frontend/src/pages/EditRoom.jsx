@@ -219,7 +219,7 @@ if (images.length > 0) {
   return (
     <div className={`relative flex flex-col w-full ${isDesktop ? 'h-full' : 'min-h-[95dvh]'}`}>
       <h2>Editar espacio </h2>
-      <Tabs defaultValue="info" className="flex flex-col w-full mt-4">
+      <Tabs defaultValue="info" className="flex flex-col w-full">
         <TabsList className="mx-auto w-fit">
           <TabsTrigger value="info">Información</TabsTrigger>
           <TabsTrigger value="equipment">Equipo</TabsTrigger>
@@ -227,7 +227,7 @@ if (images.length > 0) {
         </TabsList>
         <TabsContent
           value="info"
-          className="flex flex-col w-full px-4 pt-4 mx-auto rounded-md"
+          className="flex flex-col w-full px-4 mx-auto rounded-md"
         >
           <form onSubmit={handleUpdateRoom} className="flex flex-col gap-y-4">
             <div>
@@ -290,14 +290,14 @@ if (images.length > 0) {
               const equip = equipment?.find((equip) => equip.id === id);
               return (
                 <figure
-                  className="relative flex bg-secondary/25 border border-ring rounded-lg w-[150px] h-[75px]"
+                  className="relative flex bg-vanilla/25 border border-ring rounded-lg w-[150px] h-[75px]"
                   key={id}
                 >
                   <span className="justify-center m-auto text-sm font-bold">
                     {equip?.name}
                   </span>
                   <button
-                    className="absolute top-0 right-0 m-1 rounded-tr-sm hover:ring-[1px] ring-ring hover:bg-secondary h-fit w-fit transition-all ease-in-out duration-300 "
+                    className="absolute top-0 right-0 m-1 rounded-tr-sm hover:ring-[1px] ring-ring hover:bg-vanilla h-fit w-fit transition-all ease-in-out duration-300 "
                     onClick={() => handleRemoveEquipment(id)}
                   >
                     <FaX className="text-sm p-0.5 text-primary" />
@@ -308,7 +308,7 @@ if (images.length > 0) {
 
             <Dialog>
               <DialogTrigger asChild>
-                <button className="flex bg-secondary/25 border border-ring rounded-lg w-[150px] h-[75px] hover:bg-secondary/5 hover:text-black hover:border-ring/75 transition-all ease-in-out">
+                <button className="flex bg-vanilla/25 border border-ring rounded-lg w-[150px] h-[75px] hover:bg-vanilla/5 hover:text-black hover:border-ring/75 transition-all ease-in-out">
                   <div className="flex flex-col justify-center m-auto mt-4 ">
                     <FaPlus className="justify-center mx-auto text-2xl text-primary" />
                     <span className="text-xs">Añade un equipo</span>

@@ -5,6 +5,8 @@ import {
   searchFiltersSchema,
 } from "../../schemas/searchSchemas.js";
 import { createError } from "../../../utils/error.js";
+import authenticate from "../../middleware/authenticateTokenUser.js";
+
 
 const pool = getPool();
 
@@ -131,3 +133,57 @@ searchsRouter.get("/rooms/searchReservations", async (req, res, next) => {
     next(err);
   }
 });
+
+//Busqueda de espacios Search
+searchsRouter.get(
+  "/rooms",
+  authenticate,
+  async (req, res, next) => {
+    try {
+      const { search, offset, limit, direction } = req.query;
+
+      const { error } = searchFiltersSchema.validate({
+        search,
+        offset,
+        limit,
+        direction,
+      });
+      if (error) {
+        throw createError(400, "Datos de entrada no válidos");
+      }
+
+      const validateDirection = ["ASC", "DESC"];
+      const orderDirection = validateDirection.includes(direction)
+        ? direction
+        : "ASC";
+
+      const validateLimit = [10, 25, 50, 100];
+      const limitSet = validateLimit.includes(+limit) ? limit : 10;
+
+      const [rooms] = await pool.execute(
+        `SELECT * FROM rooms
+            WHERE id LIKE ? OR name LIKE ? OR description LIKE ? OR typeOf LIKE ?
+            ORDER BY name ${orderDirection}
+            LIMIT ${limitSet} OFFSET ${offset}`,
+        [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+      );
+
+      const [[{ roomsTotal }]] = await pool.execute(
+        `SELECT COUNT(*) roomsTotal FROM rooms
+            WHERE id LIKE ? OR name LIKE ? OR description LIKE ? OR typeOf LIKE ?`,
+        [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+      );
+
+      if (!rooms) {
+        throw createError(400, "No se pudo carga la lista de Espacios");
+      }
+
+      res.status(200).json({
+        data: rooms,
+        totalResulsts: roomsTotal,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
