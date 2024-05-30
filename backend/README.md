@@ -29,13 +29,13 @@
 
 1. Clonar el repositorio:
    ```sh
-   git clone https://github.com/usuario/nombre-del-proyecto.git
+   git clone https://github.com/Danielaal3012/COWORQUEEN.git
    ```
    
-2. Instalar dependencias:
+2. Instalar dependencias: `npm install`
 ## Configuración
 
-1. Crear un archivo .env en la raíz del proyecto con el siguiente contenido:
+1. Crear un archivo .env en la raíz del backend con el siguiente contenido:
 
     ```sh
     MODE=
