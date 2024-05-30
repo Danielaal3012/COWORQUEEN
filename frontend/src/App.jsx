@@ -46,11 +46,11 @@ import MyReservations from "./pages/reservations/MyReservations.jsx";
 
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminIncidentList from "./pages/admin/IncidentList.jsx";
-import AdminRoomList from "./pages/admin/RoomList.jsx";
 import Room from "./pages/admin/rooms/Room.jsx";
 
 import Protected from "./components/Protected.jsx";
 import Admin from "./components/Admin.jsx";
+import AdminRoomList from "./pages/admin/RoomList.jsx";
 
 const ProtectedProfile = Protected(Profile);
 const ProtectedEditProfile = Protected(EditProfile);
@@ -64,10 +64,8 @@ const ProtectedMyReservations = Protected(MyReservations);
 
 const AdminAdminPanel = Admin(AdminPanel);
 const AdminCreateRoom = Admin(CreateRoom);
-//const AdminRoomList = Admin(RoomList);
 const AdminEditRoom = Admin(EditRoom);
 const AdminIncidents = Admin(AdminIncidentList);
-const AdminRooms = Admin(AdminRoomList);
 const AdminRoom = Admin(Room);
 const AdminReviews = Admin(AdminReviewList);
 const AdminReservations = Admin(AdminReservationList);
@@ -116,14 +114,14 @@ const App = () => {
           <Route path="/admin/users/:id" element={<Layout><UserAdmin /></Layout>}/>
 
           <Route path="/create-room" element={<Layout><AdminCreateRoom /></Layout>} />
-          <Route path="/room-list" element={<Layout><AdminRoomList /></Layout>} />
+          {/* <Route path="/room-list" element={<Layout><AdminRoomList /></Layout>} /> */}
           <Route path="/room/:id" element={<Layout><ViewRoom /></Layout>} />
 
 
           <Route path="/admin" element={<Layout><AdminAdminPanel /></Layout>} />
           <Route path="/admin/incidents" element={<Layout><AdminIncidents /></Layout>} />
 
-          <Route path="/admin/rooms" element={<Layout><AdminRooms /></Layout>} />
+          <Route path="/admin/rooms" element={<Layout><AdminRoomList/></Layout>} />
           <Route path="/admin/room/:id" element={<Layout><AdminRoom /></Layout>} />
           <Route path="/admin/room/:id/edit" element={<Layout><AdminEditRoom /></Layout>} />
 

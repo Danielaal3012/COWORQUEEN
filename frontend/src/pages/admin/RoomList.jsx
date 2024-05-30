@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Input } from "@/components/UI/Input";
 import { Label } from "@/components/UI/label";
 import { Button } from "@/components/UI/button";
@@ -20,26 +20,23 @@ import {
   SelectTrigger,
 } from "@/components/UI/select.jsx";
 import { SelectValue } from "@radix-ui/react-select";
-
-  import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { Pagination } from "@/components/Pagination.jsx";
-import { set } from "date-fns";
 
 
  const AdminRoomList = () => {
     const { authState } = useContext(AuthContext);
-    // const [rooms, setRooms] = useState([]);
-  const [roomsList, setRoomsList] = useState([]);
-    const [roomsTotal, setRoomsTotal]= useState([]);
     const host = import.meta.env.VITE_APP_HOST;
-
-  const [roomsQueries, setRoomsQueries] = useState({
+    const [roomsList, setRoomsList] = useState([]);
+    const [roomsTotal, setRoomsTotal]= useState([]);
+    const [roomsQueries, setRoomsQueries] = useState({
     search: "",
     offset: 0,
     limit: 10,
     direction: "ASC",
-  });
-  const { search, offset, limit, direction } = roomsQueries;
+  });   
+
+ const { search, offset, limit, direction } = roomsQueries;
 
   useEffect(() => {
     fetch(`${host}/rooms`, {
@@ -49,23 +46,26 @@ import { set } from "date-fns";
             },
         })
             .then((res) => res.json())
-            .then((data) => {
-                setRoomsList(data.message);
+            .then((body) => {
+                setRoomsList(body.message);
             })
             .catch((error) =>
                 console.error("Error al obtener los datos de las incidencias:", error)
             );
-    }, [roomsList]);
-    
-    
-useEffect(() => {
+    }, []);
 
-      fetch(`${host}/rooms?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`, {
+
+useEffect(() => {
+    fetch(
+    `${host}/rooms/searchlist?search=${search}&offset=${offset}&limit=${limit}&direction=${direction}`,
+        {
+            method: "get",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: authState.token,
             },
-        })
+        }
+    )
             .then((res) => res.json())
             .then((body) => { 
                 setRoomsList(body.data);
@@ -86,7 +86,6 @@ useEffect(() => {
   };
 
 
-
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-between px-4 md:px-0 ">
@@ -100,24 +99,26 @@ useEffect(() => {
 
             <div className="flex px-4 flex-col md:flex-row md:px-0 gap-1.5 items-center w-full justify-between mb-4">
                 <Input
-                    className="md:w-[400px]"
                     type="search"
                     name="search"
+                    className="w-1/3"
                     placeholder="Busca un espacio"
                     onChange={handleChange}
                 />
 
                 <div className="flex flex-row items-center">
-                    <Label className="w-[150px]">Espacios por página</Label>
-                    <Select
-                        onValueChange={(value) =>
-                            setRoomsQueries(prevState => ({
-                               ...prevState,
-                                limit: value,
-                            }))
-                        }
+
+                <Label className="w-[150px]">Espacios por página</Label>
+                <Select
+                        onValueChange={(value) => {
+                        console.log({ value });
+                        setRoomsQueries((prevState) => ({
+                        ...prevState,
+                        limit: value,
+                        }));
+                    }}
                     >
-                        <SelectTrigger className="w-[75px]">
+                        <SelectTrigger>
                             <SelectValue placeholder="10" />
                         </SelectTrigger>
                         <SelectContent>
@@ -139,7 +140,7 @@ useEffect(() => {
                             }))
                         }
                     >
-                        <SelectTrigger className="w-[130px]">
+                        <SelectTrigger>
                             <SelectValue placeholder="Ascendente" />
                         </SelectTrigger>
                         <SelectContent>
@@ -163,26 +164,25 @@ useEffect(() => {
                         <TableHead className="w-[100px] text-center ">Tipo</TableHead>
                     </TableRow>
                 </TableHeader>
-
                 <TableBody>
                     {roomsList && roomsList.length > 0? (
-                        roomsList.map((room) => (
-                            <TableRow key={room.id}>
+                        roomsList.map((rooms) => (
+                            <TableRow key={rooms.id}>
                                 <TableCell className="font-bold">
-                                    <Link to={`/admin/room/${room?.id}/edit`}>{room?.name}</Link>
+                                    <Link to={`/admin/room/${rooms?.id}/edit`}>{rooms?.name}</Link>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {room?.description}
+                                    {rooms?.description}
                                 </TableCell>
                                 <TableCell className="hidden text-center md:table-cell">
-                                    {room?.capacity}
+                                    {rooms?.capacity}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <Badge
                                         variant="secondary"
                                         className="text-center"
                                     >
-                                        {room?.typeOf}
+                                        {rooms?.typeOf}
                                     </Badge>
                                 </TableCell>
                             </TableRow>

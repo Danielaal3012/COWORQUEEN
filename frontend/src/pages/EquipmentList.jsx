@@ -65,15 +65,6 @@ export const EquipmentList = () => {
     });
   };
 
-  const location = useLocation();
-  console.log(location.pathname);
-
-  const [newUrl, setNewUrl] = useState();
-
-  useEffect(() => {
-    localStorage.setItem("returnPage", newUrl);
-  }, [newUrl]);
-  console.log({ newUrl });
 
   return (
     <div className="flex flex-col w-full">
