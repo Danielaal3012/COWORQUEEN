@@ -64,8 +64,8 @@ searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
     const limitSet = validateLimit.includes(+limit) ? limit : 10;
 
     const [equipment] = await pool.execute(
-      `SELECT id, name, description FROM equipment
-        WHERE name LIKE ? OR description LIKE ?
+      `SELECT id, name, description, inventory FROM equipment
+        WHERE name LIKE ? OR description OR inventory LIKE ?
         ORDER BY name ${orderDirection}
         LIMIT ${limitSet} OFFSET ${offset}`,
       [`%${search}%`, `%${search}%`]
@@ -73,7 +73,7 @@ searchsRouter.get("/equipment/searchlist", async (req, res, next) => {
 
     const [[{ equipmentTotal }]] = await pool.execute(
       `SELECT COUNT(*) equipmentTotal FROM equipment
-        WHERE name LIKE ? OR description LIKE ?`,
+        WHERE name LIKE ? OR description OR inventory LIKE ?`,
       [`%${search}%`, `%${search}%`]
     );
     res.status(200).json({
@@ -136,8 +136,7 @@ searchsRouter.get("/rooms/searchReservations", async (req, res, next) => {
 
 //Busqueda de espacios Search
 searchsRouter.get(
-  "/rooms",
-  authenticate,
+  "/rooms/searchlist",
   async (req, res, next) => {
     try {
       const { search, offset, limit, direction } = req.query;
@@ -161,29 +160,28 @@ searchsRouter.get(
       const limitSet = validateLimit.includes(+limit) ? limit : 10;
 
       const [rooms] = await pool.execute(
-        `SELECT * FROM rooms
-            WHERE id LIKE ? OR name LIKE ? OR description LIKE ? OR typeOf LIKE ?
+        `SELECT id, name, description, capacity, typeOf FROM rooms
+            WHERE name LIKE ? OR description OR capacity LIKE ?
             ORDER BY name ${orderDirection}
             LIMIT ${limitSet} OFFSET ${offset}`,
-        [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+        [`%${search}%`, `%${search}%`]
       );
 
       const [[{ roomsTotal }]] = await pool.execute(
         `SELECT COUNT(*) roomsTotal FROM rooms
-            WHERE id LIKE ? OR name LIKE ? OR description LIKE ? OR typeOf LIKE ?`,
-        [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+            WHERE name LIKE ? OR description OR capacity LIKE ?`,
+        [`%${search}%`, `%${search}%`]
       );
-
-      if (!rooms) {
-        throw createError(400, "No se pudo carga la lista de Espacios");
-      }
 
       res.status(200).json({
         data: rooms,
         totalResulsts: roomsTotal,
       });
-    } catch (err) {
-      next(err);
-    }
+
+    if (!rooms)
+      throw new Error("No se puede encontrar ningún equipamiento");
+  } catch (err) {
+    err.status = 401;
+    next(err);
   }
-);
+});
