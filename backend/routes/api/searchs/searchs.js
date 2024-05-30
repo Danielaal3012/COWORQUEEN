@@ -6,6 +6,7 @@ import {
 } from "../../schemas/searchSchemas.js";
 import { createError } from "../../../utils/error.js";
 import authenticate from "../../middleware/authenticateTokenUser.js";
+import isAdmin from "../../middleware/isAdmin.js";
 
 
 const pool = getPool();
@@ -134,7 +135,7 @@ searchsRouter.get("/rooms/searchReservations", async (req, res, next) => {
   }
 });
 
-//Busqueda de espacios Search
+//Busqueda de Espacios 
 searchsRouter.get(
   "/rooms/searchlist",
   async (req, res, next) => {
@@ -180,6 +181,60 @@ searchsRouter.get(
 
     if (!rooms)
       throw new Error("No se puede encontrar ningún equipamiento");
+  } catch (err) {
+    err.status = 401;
+    next(err);
+  }
+});
+
+//Busqueda de Incidencias 
+searchsRouter.get(
+  "/incidents/searchlist",
+authenticate,
+isAdmin,
+  async (req, res, next)  => {
+    try {
+      const { search, offset, limit, direction } = req.query;
+
+      const { error } = searchFiltersSchema.validate({
+        search,
+        offset,
+        limit,
+        direction,
+      });
+      if (error) {
+        throw createError(400, "Datos de entrada no válidos");
+      }
+
+      const validateDirection = ["ASC", "DESC"];
+      const orderDirection = validateDirection.includes(direction)
+        ? direction
+        : "ASC";
+
+      const validateLimit = [10, 25, 50, 100];
+      const limitSet = validateLimit.includes(+limit) ? limit : 10;
+
+      const [incidents] = await pool.execute(
+        `SELECT id, description, userId, roomId, equipmentId FROM incidents
+            WHERE userId LIKE ? OR description OR roomId LIKE ?
+            ORDER BY userId ${orderDirection}
+            LIMIT ${limitSet} OFFSET ${offset}`,
+        [`%${search}%`, `%${search}%`]
+      );
+
+      const [[{ incidentsTotal }]] = await pool.execute(
+        `SELECT COUNT(*) incidentsTotal FROM incidents
+            WHERE userId LIKE ? OR description OR roomId LIKE ?`,
+        [`%${search}%`, `%${search}%`]
+      );
+
+      res.status(200).json({
+        data: incidents,
+        totalResulsts: incidentsTotal,
+      });
+
+    if (!incidents)
+      throw new Error("No se puede encontrar ningún incidencia");
   } catch (err) {
     err.status = 401;
     next(err);
