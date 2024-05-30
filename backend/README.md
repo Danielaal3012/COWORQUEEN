@@ -1,7 +1,7 @@
 # Coworqueen: Gestión de Coworking 
 <br>
 <div align="center">
-<img src="hhttps://github.com/JonathanADB/Coworking/raw/main/backend/img/logo.png">
+<img src="https://github.com/Danielaal3012/COWORQUEEN/blob/2fad5541ee7f8a87db427fa8f6fe81bbd2287224/backend/img/logo.png">
 </div>
 
 <br>
