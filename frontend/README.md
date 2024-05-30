@@ -1,12 +1,12 @@
-# Frontend
-
-## Gestión de Coworking - COWorking
-
+# Coworqueen: Gestión de Coworking 
+<br>
 <div align="center">
 <img src="https://github.com/JonathanADB/Coworking/blob/test-2/frontend/src/assets/images/Logo.png">
 </div>
-"Gestión de Coworking" es una aplicación web que permite publicar, reservar y gestionar los espacios de coworking de una empresa.
 
+<br>
+
+"Coworqueen" es una aplicación web que permite publicar, reservar y gestionar los espacios de coworking de una empresa.
 <div align="end"> 
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />

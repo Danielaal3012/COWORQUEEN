@@ -72,20 +72,24 @@ Para iniciar el backend deberemos realizar los siguientes pasos:
 
 A partir de este momento ya será posible testear el servidor mediante POSTMAN.
 
+## Sprint 2 (29/04 - 09/05)
+Durante este sprint se han realizado las siguientes tareas:
 
-## Sprint 2
-Actualmente nos encontramos en la fase de desarrollo del Sprint 2, que incluye la creación del proyecto de React, páginas y rutas, formularios de registro y login, entre otros.
-
-### Funcionalidades Implementadas en el Frontend
+### Funcionalidades implementadas en el Frontend
 - Creación de proyecto de React con Vite.
 - Implementación de páginas y rutas con React Router.
 - Desarrollo de formularios para registro, inicio de sesión y recuperación de contraseña.
 - Implementación del contexto para gestionar la información del usuario logueado.
 - Desarrollo de formularios para creación y modificación de espacios (solo para administradores).
+- Respuesta y feedback al usuario mediante toastify.
 
-### Notas
-- Validación de endpoint con Joi.
-- Respuesta y feedback al usuario mediante tostify.
+## Sprint 3 (13/05 - 23/5)
+Durante el último sprint se han realizado las siguientes tareas:
 
-## Sprint 3
-El proyecto está en desarrollo y se seguirá trabajando en el Sprint 3.
+### Funcionalidades implementadas en el Frontend
+- Creación de las páginas correspondientes para el flujo de la plataforma.
+- Creación de un componente para la subida de imágenes.
+- Página de gestión de errores, no encontrado.
+- Panel de administración.
+- Gestión del favicon en distintos dispositivos.
+- Envío de correos al registrarse, cambio de contraseña, reserva de un espacio o cancelación de una reserva.
