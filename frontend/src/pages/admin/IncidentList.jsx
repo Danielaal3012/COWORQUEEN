@@ -173,7 +173,7 @@ useEffect(() => {
           <TableBody>
             {incidentsList && incidentsList.length > 0? (
               incidentsList.map((incidents)=> (
- <TableRow key={incidents.incidentId}>
+              <TableRow key={incidents.id}>
                 <TableCell>
                 <Button variant="link" className="text-text" asChild>
 
