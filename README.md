@@ -83,7 +83,7 @@ Durante este sprint se han realizado las siguientes tareas:
 - Desarrollo de formularios para creación y modificación de espacios (solo para administradores).
 - Respuesta y feedback al usuario mediante toastify.
 
-## Sprint 3 (13/05 - 23/5)
+## Sprint 3 (13/05 - 23/05)
 Durante el último sprint se han realizado las siguientes tareas:
 
 ### Funcionalidades implementadas en el Frontend
