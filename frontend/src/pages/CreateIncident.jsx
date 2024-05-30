@@ -56,6 +56,7 @@ const CreateIncident = () => {
         console.error("Error al cargar la reserva:", error);
       }
     };
+
     const fetchRooms = async () => {
       try {
         const response = await fetch(`${host}/rooms`, {
