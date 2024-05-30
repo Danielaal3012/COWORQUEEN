@@ -76,6 +76,7 @@ reservationRouter.post(
     try {
       const roomId = req.params.roomId;
       const { reservationDateBeg, reservationDateEnd } = req.body;
+      const userId = req.user.id;
 
       const { error } = addReservationSchema.validate({
         roomId,
@@ -209,7 +210,10 @@ reservationRouter.get(
       const reservationId = req.params.reservationId;
       const [[reservation]] = await pool.execute(
         `
-        SELECT reservations.*, users.firstName as userFirstName, users.lastName as userLastName, rooms.name as roomName
+        SELECT reservations.*, 
+        users.firstName as userFirstName, 
+        users.lastName as userLastName, 
+        rooms.name as roomName
         FROM reservations
         JOIN users ON reservations.userId = users.id
         JOIN rooms ON reservations.roomId = rooms.id
